@@ -103,10 +103,10 @@ public class PrefFragment extends PreferenceFragment implements SharedPreference
         DrawerArrayAdapter.current = position - 1;
 
         switch (position) {
-            case 0:
-                addPreferencesFromResource(R.xml.theme_settings);
-                setUpThemeSettings();
-                break;
+//            case 0:
+//                addPreferencesFromResource(R.xml.theme_settings);
+//                setUpThemeSettings();
+//                break;
             case 1:
                 addPreferencesFromResource(R.xml.timelines_settings);
                 setUpTimelinesSettings();
@@ -1116,7 +1116,8 @@ public class PrefFragment extends PreferenceFragment implements SharedPreference
         if (sharedPrefs.getBoolean("push_notifications", true)) {
             if (sharedPrefs.getBoolean("live_streaming", true)) {
                 timeline.setEnabled(false);
-                onStart.setEnabled(false);
+                //onStart.setEnabled(false);
+                onStart.setEnabled(true);
             }
 
             if (!mentionsChanges) {
@@ -1145,7 +1146,8 @@ public class PrefFragment extends PreferenceFragment implements SharedPreference
                     onStart.setEnabled(true);
                 } else {
                     timeline.setEnabled(false);
-                    onStart.setEnabled(false);
+                    //onStart.setEnabled(false);
+                    onStart.setEnabled(true);
                 }
                 return true;
             }
@@ -1161,13 +1163,15 @@ public class PrefFragment extends PreferenceFragment implements SharedPreference
         });
 
         final Preference pull = findPreference("push_notifications");
+        //((CheckBoxPreference) pull).setChecked(false);
         pull.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 if (!((CheckBoxPreference) pull).isChecked()) {
                     if (sharedPrefs.getBoolean("live_streaming", true)) {
                         timeline.setEnabled(false);
-                        onStart.setEnabled(false);
+                        //onStart.setEnabled(false);
+                        onStart.setEnabled(true);
                     }
                     mobileOnly.setEnabled(false);
 
@@ -1256,38 +1260,38 @@ public class PrefFragment extends PreferenceFragment implements SharedPreference
         if (sharedPrefs.getBoolean("manually_config_location", false)) {
             cities.setSummary(sharedPrefs.getString("location", "Chicago"));
         }
-        cities.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                String country = sharedPrefs.getString("country", "United States");
-                final String[][] full = LocalTrendsUtils.getArray(country);
-                String[] names = new String[full.length];
-
-                for (int i = 0; i <names.length; i++) {
-                    String[] s = full[i];
-                    names[i] = s[0];
-                }
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setItems(names, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        String id = full[item][1];
-                        String name = full[item][0];
-
-                        sharedPrefs.edit().putInt("woeid", Integer.parseInt(id)).commit();
-                        sharedPrefs.edit().putString("location", name).commit();
-
-                        cities.setSummary(name);
-
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
-
-                return false;
-            }
-        });
+//        cities.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                String country = sharedPrefs.getString("country", "United States");
+//                final String[][] full = LocalTrendsUtils.getArray(country);
+//                String[] names = new String[full.length];
+//
+//                for (int i = 0; i <names.length; i++) {
+//                    String[] s = full[i];
+//                    names[i] = s[0];
+//                }
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setItems(names, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int item) {
+//                        String id = full[item][1];
+//                        String name = full[item][0];
+//
+//                        sharedPrefs.edit().putInt("woeid", Integer.parseInt(id)).commit();
+//                        sharedPrefs.edit().putString("location", name).commit();
+//
+//                        cities.setSummary(name);
+//
+//                        dialog.dismiss();
+//                    }
+//                });
+//                AlertDialog alert = builder.create();
+//                alert.show();
+//
+//                return false;
+//            }
+//        });
 
         final Preference emojis = findPreference("use_emojis");
         emojis.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

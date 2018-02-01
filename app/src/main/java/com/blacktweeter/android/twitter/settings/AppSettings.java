@@ -237,7 +237,7 @@ public class AppSettings {
         led = sharedPrefs.getBoolean("led", true);
         sound = sharedPrefs.getBoolean("sound", true);
         vibrate = sharedPrefs.getBoolean("vibrate", true);
-        refreshOnStart = sharedPrefs.getBoolean("refresh_on_start", false);
+        refreshOnStart = sharedPrefs.getBoolean("refresh_on_start", true);
         autoTrim = sharedPrefs.getBoolean("auto_trim", true);
         uiExtras = sharedPrefs.getBoolean("ui_extras", true);
         wakeScreen = sharedPrefs.getBoolean("wake", true);
@@ -305,7 +305,7 @@ public class AppSettings {
         }
 
         if (liveStreaming) {
-            refreshOnStart = false;
+            refreshOnStart = true;
         }
 
         // if they have the keyboard trial installed, then go from their preference
@@ -324,7 +324,8 @@ public class AppSettings {
         timelineSize = Integer.parseInt(sharedPrefs.getString("timeline_size", "500"));
         mentionsSize = Integer.parseInt(sharedPrefs.getString("mentions_size", "100"));
         dmSize = Integer.parseInt(sharedPrefs.getString("dm_size", "100"));
-        pageToOpen = Integer.parseInt(sharedPrefs.getString("viewer_page", "0"));
+       // pageToOpen = Integer.parseInt(sharedPrefs.getString("viewer_page", "0"));
+        pageToOpen = 2;
         quoteStyle = Integer.parseInt(sharedPrefs.getString("quote_style", "0"));
 
         // Longs
@@ -586,7 +587,7 @@ public class AppSettings {
         }
 
         if (liveStreaming) {
-            refreshOnStart = false;
+            refreshOnStart = true;
         }
 
         // if they have the keyboard trial installed, then go from their preference
@@ -605,7 +606,8 @@ public class AppSettings {
         timelineSize = Integer.parseInt(sharedPrefs.getString("timeline_size", "500"));
         mentionsSize = Integer.parseInt(sharedPrefs.getString("mentions_size", "100"));
         dmSize = Integer.parseInt(sharedPrefs.getString("dm_size", "100"));
-        pageToOpen = Integer.parseInt(sharedPrefs.getString("viewer_page", "0"));
+       // pageToOpen = Integer.parseInt(sharedPrefs.getString("viewer_page", "0"));
+        pageToOpen = 2;
         quoteStyle = Integer.parseInt(sharedPrefs.getString("quote_style", "0"));
 
         // Longs

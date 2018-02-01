@@ -26,6 +26,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,6 +73,7 @@ public class SettingsActivityOld extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("ben!", "entered settings");
 
         overridePendingTransition(R.anim.slide_in_left, R.anim.activity_zoom_exit);
 
@@ -91,7 +93,7 @@ public class SettingsActivityOld extends FragmentActivity {
         };
 
         settingsItems = new String[] {
-                getResources().getString(R.string.ui_settings),
+               getResources().getString(R.string.ui_settings),
                 getResources().getString(R.string.timelines_settings),
                 getResources().getString(R.string.sync_settings),
                 getResources().getString(R.string.notification_settings),
@@ -99,6 +101,9 @@ public class SettingsActivityOld extends FragmentActivity {
                 getResources().getString(R.string.advanced_settings),
                 getResources().getString(R.string.memory_manage)
         };
+        if (settingsItems.length == 6) {
+            Log.d("ben!", "lenght has changed");
+        }
 
         sharedPrefs = getSharedPreferences("com.klinker.android.twitter_world_preferences",
                 0);

@@ -18,13 +18,15 @@
 
 <resources>
 
-    <color name="app_color">#FF8800</color>
-    <color name="pressed_app_color">#77FF8800</color>
+    <color name="app_color">#79ada2</color>
+    <color name="toast_color">#5e877e</color>
+    <color name="pressed_app_color">#59af9d</color>
+
     <color name="holo_blue">#33B5E5</color>
     <color name="holo_blue_alpha">#4433B5E5</color>
     <color name="pressed_white">#55ffffff</color>
     <color name="pressed_dark">#55000000</color>
-    <color name="toast_color">#DDFF8800</color>
+
     <color name="image_darken">#25222222</color>
     <color name="photo_dialog_background">#90000000</color>
     <color name="white_divider">#40ffffff</color>

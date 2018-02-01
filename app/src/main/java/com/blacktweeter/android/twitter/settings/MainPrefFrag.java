@@ -52,13 +52,13 @@ public class MainPrefFrag extends PreferenceFragment {
 
     public void setClicks() {
 
-        findPreference("ui_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                showSettings(0, preference.getTitle().toString());
-                return false;
-            }
-        });
+//        findPreference("ui_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {benchange
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                showSettings(0, preference.getTitle().toString());
+//                return false;
+//            }
+//        });
 
         findPreference("timeline_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -68,21 +68,21 @@ public class MainPrefFrag extends PreferenceFragment {
             }
         });
 
-        findPreference("sync_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                showSettings(2, preference.getTitle().toString());
-                return false;
-            }
-        });
+//        findPreference("sync_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                showSettings(2, preference.getTitle().toString());
+//                return false;
+//            }
+//        });
 
-        findPreference("notification_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                showSettings(3, preference.getTitle().toString());
-                return false;
-            }
-        });
+//        findPreference("notification_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//                showSettings(3, preference.getTitle().toString());
+//                return false;
+//            }
+//        });
 
         findPreference("browser_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

@@ -18,30 +18,30 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="@string/local_trend_options" >
+    <!--<PreferenceCategory-->
+        <!--android:title="@string/local_trend_options" >-->
 
-        <CheckBoxPreference
-            android:key="manually_config_location"
-            android:title="@string/manually_config_location"
-            android:defaultValue="false"
-            />
+        <!--<CheckBoxPreference-->
+            <!--android:key="manually_config_location"-->
+            <!--android:title="@string/manually_config_location"-->
+            <!--android:defaultValue="false"-->
+            <!--/>-->
 
-        <ListPreference
-            android:key="country"
-            android:title="@string/country_region"
-            android:defaultValue="United States"
-            android:entries="@array/countries"
-            android:entryValues="@array/countries"
-            android:dependency="manually_config_location"
-            />
+        <!--<ListPreference-->
+            <!--android:key="country"-->
+            <!--android:title="@string/country_region"-->
+            <!--android:defaultValue="United States"-->
+            <!--android:entries="@array/countries"-->
+            <!--android:entryValues="@array/countries"-->
+            <!--android:dependency="manually_config_location"-->
+            <!--/>-->
 
-        <Preference
-            android:key="city"
-            android:title="@string/city"
-            android:dependency="manually_config_location" />
+        <!--<Preference-->
+            <!--android:key="city"-->
+            <!--android:title="@string/city"-->
+            <!--android:dependency="manually_config_location" />-->
 
-    </PreferenceCategory>
+    <!--</PreferenceCategory>-->
 
     <PreferenceCategory
         android:key="third_party"
@@ -116,12 +116,12 @@
             android:defaultValue="false"
             />
 
-        <CheckBoxPreference
-            android:key="fav_rt_multiple_accounts"
-            android:title="@string/fav_rt_multiple_accounts"
-            android:summary="@string/fav_rt_multiple_accounts_summary"
-            android:defaultValue="true"
-            />
+        <!--<CheckBoxPreference-->
+            <!--android:key="fav_rt_multiple_accounts"-->
+            <!--android:title="@string/fav_rt_multiple_accounts"-->
+            <!--android:summary="@string/fav_rt_multiple_accounts_summary"-->
+            <!--android:defaultValue="true"-->
+            <!--/>-->
 
     </PreferenceCategory>
 

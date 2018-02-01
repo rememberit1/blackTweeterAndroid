@@ -149,6 +149,7 @@ public class MainActivity extends DrawerActivity {
 
         sharedPrefs.edit().putBoolean("refresh_me", getIntent().getBooleanExtra("from_notification", false)).commit();
 
+
         setUpTheme();
         setUpWindow();
         setContentView(R.layout.main_activity);
@@ -284,7 +285,6 @@ public class MainActivity extends DrawerActivity {
     }
 
     private void setBTCustomDrawer () {
-        // final SharedPreferences sharedPrefs = context.getSharedPreferences("com.klinker.android.twitter_world_preferences", 0);
         int currentAccount = sharedPrefs.getInt("current_account", 1);
         Set<String> set = sharedPrefs.getStringSet("drawer_elements_shown_" + currentAccount, new HashSet<String>());
         set.clear();
@@ -292,6 +292,9 @@ public class MainActivity extends DrawerActivity {
         set.addAll(bTwetDrawerSet);
         Log.d("ben! set after", String.valueOf(set));
         sharedPrefs.edit().putStringSet("drawer_elements_shown_" + currentAccount, set).commit();
+        sharedPrefs.edit().putBoolean("push_notifications", false);
+        sharedPrefs.edit().putBoolean("live_streaming", false);
+        sharedPrefs.edit().putBoolean("refresh_on_start", true);
     }
 
     public void setLauncherPage() {

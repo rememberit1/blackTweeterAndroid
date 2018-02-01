@@ -107,9 +107,13 @@
     <color name="orange_accent_color">#3f51b5</color>
     <color name="orange_accent_color_light">#9fa8da</color>
 
-    <color name="deep_orange_primary_color">#ff5722</color>
-    <color name="deep_orange_primary_color_dark">#e64a19</color>
-    <color name="deep_orange_primary_color_light">#ffab91</color>
+    <!--<color name="deep_orange_primary_color">#ff5722</color>-->
+    <!--<color name="deep_orange_primary_color_dark">#e64a19</color>-->
+    <!--<color name="deep_orange_primary_color_light">#ffab91</color>-->
+
+    <color name="deep_orange_primary_color">#afbfff</color>
+    <color name="deep_orange_primary_color_dark">#5677fc</color>
+    <color name="deep_orange_primary_color_light">#afbfff</color>
     <color name="deep_orange_accent_color">#673ab7</color>
     <color name="deep_orange_accent_color_light">#b39ddb</color>
 

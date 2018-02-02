@@ -18,9 +18,9 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--<Preference android:key="ui_settings"-->
-                <!--android:title="@string/ui_settings"-->
-                <!--android:icon="?themeSettings" />-->
+    <Preference android:key="ui_settings"
+                android:title="@string/ui_settings"
+                android:icon="?themeSettings" />
 
     <Preference android:key="timeline_settings"
                 android:title="@string/timelines_settings"

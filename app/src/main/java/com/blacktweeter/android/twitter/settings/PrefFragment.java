@@ -103,10 +103,10 @@ public class PrefFragment extends PreferenceFragment implements SharedPreference
         DrawerArrayAdapter.current = position - 1;
 
         switch (position) {
-//            case 0:
-//                addPreferencesFromResource(R.xml.theme_settings);
-//                setUpThemeSettings();
-//                break;
+            case 0:
+                addPreferencesFromResource(R.xml.theme_settings);
+                setUpThemeSettings();
+                break;
             case 1:
                 addPreferencesFromResource(R.xml.timelines_settings);
                 setUpTimelinesSettings();

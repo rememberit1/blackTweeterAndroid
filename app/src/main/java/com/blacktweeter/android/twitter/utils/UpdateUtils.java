@@ -176,8 +176,10 @@ public class UpdateUtils {
             e.putInt(pageIdentifier + 3, AppSettings.PAGE_TYPE_MENTIONS);
             e.putInt(pageIdentifier + 4, AppSettings.PAGE_TYPE_DMS);
 
-            e.putInt("default_timeline_page_" + 1, 1);
-            e.putInt("default_timeline_page_" + 2, 1);
+//            e.putInt("default_timeline_page_" + 1, 1);//benchange
+//            e.putInt("default_timeline_page_" + 2, 1);
+            e.putInt("default_timeline_page_" + 1, 0);
+            e.putInt("default_timeline_page_" + 2, 0);
 
             e.commit();
         }

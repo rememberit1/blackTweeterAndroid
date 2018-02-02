@@ -52,13 +52,13 @@ public class MainPrefFrag extends PreferenceFragment {
 
     public void setClicks() {
 
-//        findPreference("ui_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {benchange
-//            @Override
-//            public boolean onPreferenceClick(Preference preference) {
-//                showSettings(0, preference.getTitle().toString());
-//                return false;
-//            }
-//        });
+        findPreference("ui_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {//benchange
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                showSettings(0, preference.getTitle().toString());
+                return false;
+            }
+        });
 
         findPreference("timeline_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

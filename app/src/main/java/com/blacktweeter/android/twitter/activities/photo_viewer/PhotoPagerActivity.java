@@ -114,7 +114,7 @@ public class PhotoPagerActivity extends Activity {
 
         switch (item.getItemId()) {
             case R.id.menu_save_image:
-                ((PhotoFragment)adapter.getItem(pager.getCurrentItem())).saveImage();
+                //((PhotoFragment)adapter.getItem(pager.getCurrentItem())).saveImage();
                 return true;
 
             case R.id.menu_share_image:

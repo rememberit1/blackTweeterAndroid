@@ -5,8 +5,8 @@
             android:key="pages"
             android:title="@string/configure_pages" />
 
-    <!--<Preference-->
-        <!--android:key="drawer_elements"-->
-        <!--android:title="@string/drawer_elements"-->
-        <!--android:summary="@string/drawer_elements_summary" />-->
+    <Preference
+        android:key="drawer_elements"
+        android:title="@string/drawer_elements"
+        android:summary="@string/drawer_elements_summary" />
 </PreferenceScreen>

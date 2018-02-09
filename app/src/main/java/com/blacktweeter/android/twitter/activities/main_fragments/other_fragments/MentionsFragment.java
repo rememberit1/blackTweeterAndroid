@@ -2,6 +2,7 @@
 
 package com.blacktweeter.android.twitter.activities.main_fragments.other_fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -122,6 +123,7 @@ public class MentionsFragment extends MainFragment {
         return Utils.getTwitter(context, DrawerActivity.settings);
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public void onRefreshStarted() {
         new AsyncTask<Void, Void, Cursor>() {
@@ -233,7 +235,7 @@ public class MentionsFragment extends MainFragment {
                 try {
                     c.close();
                 } catch (Exception e) {
-
+                    Log.d("tag", "empty");
                 }
             }
         }.execute();

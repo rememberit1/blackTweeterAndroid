@@ -29,13 +29,17 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,6 +47,7 @@ import android.widget.TextView;
 import com.blacktweeter.android.twitter.activities.MainActivity;
 import com.blacktweeter.android.twitter.activities.drawer_activities.DrawerActivity;
 import com.blacktweeter.android.twitter.adapters.CursorListLoader;
+import com.blacktweeter.android.twitter.adapters.TheLatestAdapter;
 import com.blacktweeter.android.twitter.data.App;
 import com.blacktweeter.android.twitter.settings.AppSettings;
 import com.blacktweeter.android.twitter.utils.Utils;
@@ -52,6 +57,10 @@ import com.blacktweeter.android.twitter.R;
 
 import org.lucasr.smoothie.AsyncListView;
 import org.lucasr.smoothie.ItemManager;
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import twitter4j.Twitter;
 import uk.co.senab.bitmapcache.BitmapLruCache;
@@ -61,12 +70,17 @@ public abstract class MainFragment extends Fragment {
     protected Twitter twitter;
 
     protected AsyncListView listView;
+    protected RecyclerView recyclerView;
+    protected List<String> list;
+    protected TheLatestAdapter theLatestAdapter;
     protected CursorAdapter cursorAdapter;
     protected View toastBar;
     protected TextView toastDescription;
     protected TextView toastButton;
     protected FullScreenSwipeRefreshLayout refreshLayout;
     protected LinearLayout spinner;
+    protected HorizontalScrollView horizontal;
+    protected TextView textText;
 
     public static BitmapLruCache mCache;
 
@@ -231,10 +245,32 @@ public abstract class MainFragment extends Fragment {
         spinner = (LinearLayout) layout.findViewById(R.id.spinner);
     }
 
+//    protected void setHorizontal(View layout) {
+//        horizontal = (HorizontalScrollView) layout.findViewById(R.id.horizontal);
+//
+//    }
+
+    protected void setTestButton(View layout) {
+        textText = (TextView) layout.findViewById(R.id.textText);
+    }
+
     public void setViews(View layout) {
 
         setSpinner(layout);
+       // setHorizontal(layout);
+        setTestButton(layout);
+
         listView = (AsyncListView) layout.findViewById(R.id.listView);
+
+        list = new ArrayList<>();
+        for (int i =0; i <15; i++) {
+            list.add("This is cool.");
+        }
+        recyclerView = (RecyclerView) layout.findViewById(R.id.latest_recycler_view);
+
+
+
+
 
         refreshLayout = (FullScreenSwipeRefreshLayout) layout.findViewById(R.id.swipe_refresh_layout);
         refreshLayout.setFullScreen(true);

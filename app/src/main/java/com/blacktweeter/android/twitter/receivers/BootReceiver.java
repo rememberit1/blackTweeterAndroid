@@ -103,9 +103,9 @@ public class BootReceiver extends BroadcastReceiver {
 
             Log.v("alarm_date", "activity " + new Date(alarm).toString());
 
-            PendingIntent pendingIntent = PendingIntent.getService(context, ActivityFragment.ACTIVITY_REFRESH_ID, new Intent(context, ActivityRefreshService.class), 0);
-
-            am.setRepeating(AlarmManager.RTC_WAKEUP, alarm, settings.activityRefresh, pendingIntent);
+//            PendingIntent pendingIntent = PendingIntent.getService(context, ActivityFragment.ACTIVITY_REFRESH_ID, new Intent(context, ActivityRefreshService.class), 0);
+//
+//            am.setRepeating(AlarmManager.RTC_WAKEUP, alarm, settings.activityRefresh, pendingIntent);
         }
 
         if (settings.autoTrim) { // user only wants manual

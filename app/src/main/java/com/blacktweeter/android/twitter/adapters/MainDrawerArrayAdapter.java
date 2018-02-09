@@ -120,7 +120,8 @@ public class MainDrawerArrayAdapter extends ArrayAdapter<String> {
                     searchPages.add(pageNames.get(i));
                     break;
                 case AppSettings.PAGE_TYPE_ACTIVITY:
-                    text.add(context.getString(R.string.activity));
+                   // text.add(context.getString(R.string.activity));
+                    text.add(context.getString(R.string.the_latest));
                     break;
                 case AppSettings.PAGE_TYPE_FAVORITE_STATUS:
                     text.add(context.getString(R.string.favorite_tweets));
@@ -239,7 +240,7 @@ public class MainDrawerArrayAdapter extends ArrayAdapter<String> {
                 int resource = a.getResourceId(0, 0);
                 a.recycle();
                 holder.icon.setImageResource(resource);
-            } else if(text.get(position).equals(context.getString(R.string.activity))) {
+            } else if(text.get(position).equals(context.getString(R.string.the_latest))) {
                 TypedArray a = context.getTheme().obtainStyledAttributes(new int[]{R.attr.notification_button});
                 int resource = a.getResourceId(0, 0);
                 a.recycle();

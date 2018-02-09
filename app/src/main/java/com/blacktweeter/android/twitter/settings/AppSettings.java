@@ -317,15 +317,16 @@ public class AppSettings {
 
         // Integers
         theme = Integer.parseInt(sharedPrefs.getString("theme", "1")); // default is dark
-        layout = Integer.parseInt(sharedPrefs.getString("layout", "0")); // default is talon
+       // layout = Integer.parseInt(sharedPrefs.getString("layout", "0")); // default is talon
+        layout = 2;
         currentAccount = sharedPrefs.getInt("current_account", 1);
         textSize = Integer.parseInt(sharedPrefs.getString("text_size", "14"));
         maxTweetsRefresh = Integer.parseInt(sharedPrefs.getString("max_tweets", "1"));
         timelineSize = Integer.parseInt(sharedPrefs.getString("timeline_size", "500"));
         mentionsSize = Integer.parseInt(sharedPrefs.getString("mentions_size", "100"));
         dmSize = Integer.parseInt(sharedPrefs.getString("dm_size", "100"));
-       // pageToOpen = Integer.parseInt(sharedPrefs.getString("viewer_page", "0"));
-        pageToOpen = 2;
+       // pageToOpen = Integer.parseInt(sharedPrefs.getString("viewer_page", "0")); //benchange
+        pageToOpen = 1;
         quoteStyle = Integer.parseInt(sharedPrefs.getString("quote_style", "0"));
 
         // Longs
@@ -379,7 +380,8 @@ public class AppSettings {
         if (layout == LAYOUT_TALON) {
             roundContactImages = true;
         } else {
-            roundContactImages = false;
+           // roundContactImages = false; //benchange
+            roundContactImages = true;
         }
 
         if (sharedPrefs.getBoolean("addon_themes", false)) {
@@ -599,7 +601,8 @@ public class AppSettings {
 
         // Integers
         theme = Integer.parseInt(sharedPrefs.getString("theme", "1")); // default is dark
-        layout = Integer.parseInt(sharedPrefs.getString("layout", "0")); // default is talon
+        //layout = Integer.parseInt(sharedPrefs.getString("layout", "0")); // default is talon //benchange
+        layout = 2;
         currentAccount = sharedPrefs.getInt("current_account", 1);
         textSize = Integer.parseInt(sharedPrefs.getString("text_size", "14"));
         maxTweetsRefresh = Integer.parseInt(sharedPrefs.getString("max_tweets", "1"));
@@ -607,7 +610,7 @@ public class AppSettings {
         mentionsSize = Integer.parseInt(sharedPrefs.getString("mentions_size", "100"));
         dmSize = Integer.parseInt(sharedPrefs.getString("dm_size", "100"));
        // pageToOpen = Integer.parseInt(sharedPrefs.getString("viewer_page", "0"));
-        pageToOpen = 2;
+        pageToOpen = 1;
         quoteStyle = Integer.parseInt(sharedPrefs.getString("quote_style", "0"));
 
         // Longs
@@ -660,7 +663,8 @@ public class AppSettings {
         if (layout == LAYOUT_TALON) {
             roundContactImages = true;
         } else {
-            roundContactImages = false;
+            //roundContactImages = false; //benchange
+            roundContactImages = true;
         }
 
         if (sharedPrefs.getBoolean("addon_themes", false)) {

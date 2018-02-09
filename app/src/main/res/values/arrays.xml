@@ -199,6 +199,17 @@
         <item>@string/activity</item>
     </string-array>
 
+    <string-array name="test_array">
+        <item>"this"</item>
+        <item>"is"</item>
+        <item>"horizontal"</item>
+        <item>"words"</item>
+        <item>"words"</item>
+        <item>"words"</item>
+        <item>"words"</item>
+        <item>"words"</item>
+    </string-array>
+
     <string-array name="interactions_notifications">
         <item>@string/favorited_tweet</item>
         <item>@string/retweets</item>

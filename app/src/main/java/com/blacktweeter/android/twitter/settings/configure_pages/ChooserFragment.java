@@ -84,7 +84,8 @@ public class ChooserFragment extends Fragment {
         list.add(getString(R.string.world_trends));
         list.add(getString(R.string.local_trends));
         list.add(getString(R.string.saved_search));
-        list.add(getString(R.string.activity));
+        //list.add(getString(R.string.activity));
+        list.add(getString(R.string.the_latest));
         list.add(getString(R.string.favorite_tweets));
 
         View layout = inflater.inflate(R.layout.configuration_page, null);

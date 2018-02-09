@@ -27,6 +27,8 @@ import com.blacktweeter.android.twitter.activities.main_fragments.home_fragments
 import com.blacktweeter.android.twitter.activities.main_fragments.home_fragments.extentions.LinksFragment;
 import com.blacktweeter.android.twitter.activities.main_fragments.home_fragments.extentions.PicFragment;
 import com.blacktweeter.android.twitter.activities.main_fragments.other_fragments.ActivityFragment;
+import com.blacktweeter.android.twitter.activities.main_fragments.other_fragments.TheLatestFragment;
+
 import com.blacktweeter.android.twitter.activities.main_fragments.other_fragments.DMFragment;
 import com.blacktweeter.android.twitter.activities.main_fragments.other_fragments.FavoriteTweetsFragment;
 import com.blacktweeter.android.twitter.activities.main_fragments.other_fragments.ListFragment;
@@ -134,8 +136,11 @@ public class TimelinePagerAdapter extends FragmentPagerAdapter {
                     names.add(context.getString(R.string.favorite_tweets));
                     break;
                 case AppSettings.PAGE_TYPE_ACTIVITY:
-                    frags.add(new ActivityFragment());
-                    names.add(context.getString(R.string.activity));
+                    //frags.add(new ActivityFragment());//benchange
+                    // names.add(context.getString(R.string.activity));
+                    names.add(("The Latest"));
+                    frags.add( new TheLatestFragment());
+
                     mentionIndex = i;
                     break;
                 default:

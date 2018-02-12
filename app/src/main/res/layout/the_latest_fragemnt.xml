@@ -5,31 +5,32 @@
 
     <com.blacktweeter.android.twitter.views.swipe_refresh_layout.FullScreenSwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
+        android:layout_below="@id/no_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <org.lucasr.smoothie.AsyncListView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/listView"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_width="wrap_content"
             android:divider="@null"
             android:dividerHeight="0dp"
             android:scrollbars="vertical"
             android:background="@android:color/transparent"
             android:listSelector="@android:color/transparent"
-            android:visibility="gone"
+            android:visibility="visible"
             />
 
     </com.blacktweeter.android.twitter.views.swipe_refresh_layout.FullScreenSwipeRefreshLayout>
 
     <LinearLayout android:id="@+id/no_content"
         android:orientation="vertical"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_width="fill_parent">
 
         <TextView
-            android:id="@+id/textText"
+            android:id="@+id/swipeText"
             android:background="#59af9d"
             android:layout_marginTop="70dp"
             android:textSize="20dp"
@@ -38,6 +39,7 @@
             android:textColor="@color/black_background"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
+
             android:text="Swipe this Area to go to Timeline"/>
 
         <android.support.v7.widget.RecyclerView
@@ -47,35 +49,43 @@
             android:id="@+id/latest_recycler_view"
             android:layout_gravity="top"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"/>
 
+        <Button
+            android:id="@+id/testButton"
+            android:textAllCaps="false"
+            android:text="Test Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
 
 
-        <!--<com.blacktweeter.android.twitter.views.HoloTextView-->
-            <!--android:layout_width="275dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/no_activity_yet"-->
-            <!--android:textColor="?textColor"-->
-            <!--android:gravity="center"-->
-            <!--android:textSize="25dp"-->
-            <!--android:layout_marginBottom="30dp"/>-->
 
         <!--<com.blacktweeter.android.twitter.views.HoloTextView-->
-            <!--android:layout_width="275dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/no_activity_yet_desc"-->
-            <!--android:textColor="?textColor"-->
-            <!--android:gravity="center"-->
-            <!--android:textStyle="italic"-->
-            <!--android:textSize="14dp"-->
-            <!--android:layout_marginBottom="25dp"/>-->
+        <!--android:layout_width="275dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/no_activity_yet"-->
+        <!--android:textColor="?textColor"-->
+        <!--android:gravity="center"-->
+        <!--android:textSize="25dp"-->
+        <!--android:layout_marginBottom="30dp"/>-->
+
+        <!--<com.blacktweeter.android.twitter.views.HoloTextView-->
+        <!--android:layout_width="275dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/no_activity_yet_desc"-->
+        <!--android:textColor="?textColor"-->
+        <!--android:gravity="center"-->
+        <!--android:textStyle="italic"-->
+        <!--android:textSize="14dp"-->
+        <!--android:layout_marginBottom="25dp"/>-->
 
         <!--<Button android:id="@+id/activity_info"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="15dp"-->
-            <!--android:text="@string/info" />-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:text="@string/info" />-->
 
     </LinearLayout>
 
@@ -84,7 +94,7 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"
+
         android:gravity="bottom">
 
         <LinearLayout

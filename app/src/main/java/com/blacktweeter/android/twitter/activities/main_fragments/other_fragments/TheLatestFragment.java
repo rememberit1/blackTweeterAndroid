@@ -4,36 +4,52 @@ package com.blacktweeter.android.twitter.activities.main_fragments.other_fragmen
  * Created by benakinlosotuwork on 2/2/18.
  */
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import com.blacktweeter.android.twitter.adapters.ArrayListLoader;
 import com.blacktweeter.android.twitter.adapters.TheLatestAdapter;
-import com.blacktweeter.android.twitter.data.sq_lite.ActivityDataSource;
-import com.blacktweeter.android.twitter.services.ActivityRefreshService;
-import com.blacktweeter.android.twitter.services.SecondActivityRefreshService;
+import com.blacktweeter.android.twitter.adapters.TimelineArrayAdapter;
+import com.blacktweeter.android.twitter.data.App;
 import com.blacktweeter.android.twitter.R;
 import com.blacktweeter.android.twitter.adapters.ActivityCursorAdapter;
 import com.blacktweeter.android.twitter.activities.drawer_activities.DrawerActivity;
 import com.blacktweeter.android.twitter.activities.main_fragments.MainFragment;
+import com.blacktweeter.android.twitter.settings.AppSettings;
 import com.blacktweeter.android.twitter.utils.ActivityUtils;
 import com.blacktweeter.android.twitter.utils.Utils;
+
+import org.lucasr.smoothie.AsyncListView;
+import org.lucasr.smoothie.ItemManager;
+import org.w3c.dom.Text;
+
+import twitter4j.Paging;
+import twitter4j.ResponseList;
+import twitter4j.Status;
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import uk.co.senab.bitmapcache.BitmapLruCache;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +61,16 @@ public class TheLatestFragment extends MainFragment {
     public static final int ACTIVITY_REFRESH_ID = 131;
 
     public int unread = 0;
-    HorizontalScrollView horizontalScrollView;
+
+
+    public View layout;
+    public AppSettings settings;
+    public SharedPreferences sharedPrefs;
+    public AsyncListView listView;
+    public LinearLayout spinner;
+    public String screenName;
+
+
 
     public BroadcastReceiver refreshActivity = new BroadcastReceiver() {
         @Override
@@ -53,6 +78,180 @@ public class TheLatestFragment extends MainFragment {
             getCursorAdapter(false);
         }
     };
+
+
+    /**
+     *to get a colletion of specific tweets (black tweets) use twitter.lookup
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
+
+
+        settings = AppSettings.getInstance(context);
+        sharedPrefs = context.getSharedPreferences("com.klinker.android.twitter_world_preferences",
+                0);
+      //  screenName = sharedPrefs.getString("twitter_screen_name_1", "");
+        screenName = settings.myScreenName;
+
+        inflater = LayoutInflater.from(context);
+
+       // layout = inflater.inflate(R.layout.list_fragment, null);
+        layout = inflater.inflate(R.layout.the_latest_fragemnt, null);
+
+        listView = (AsyncListView) layout.findViewById(R.id.listView);
+       // spinner = (LinearLayout) layout.findViewById(R.id.spinner);
+
+        BitmapLruCache cache = App.getInstance(context).getBitmapCache();
+        ArrayListLoader loader = new ArrayListLoader(cache, context);
+
+        ItemManager.Builder builder = new ItemManager.Builder(loader);
+        builder.setPreloadItemsEnabled(true).setPreloadItemsCount(50);
+        builder.setThreadPoolSize(4);
+
+        listView.setItemManager(builder.build());
+
+
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                final int lastItem = firstVisibleItem + visibleItemCount;
+
+                if(lastItem == totalItemCount && canRefresh) {
+                  //  getMore();
+                }
+            }
+        });
+
+        doSearch();
+
+        return layout;
+    }
+
+    public ArrayList<Status> tweets = new ArrayList<Status>();
+    public Paging paging = new Paging(1, 20);
+    public boolean hasMore = true;
+    public boolean canRefresh = false;
+    public TimelineArrayAdapter normalAdapter;
+
+    public void doSearch() {
+       // spinner.setVisibility(View.VISIBLE);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Twitter twitter = Utils.getTwitter(context, settings);
+
+                    ResponseList<Status> result;
+                    try {
+                        //change this to twitter.lookup(); //and keep evryting the same
+                        tweets.clear();
+                        result = twitter.lookup(20L, 962875856409407488L, 1000L);
+                       // result = twitter.getFavorites(screenName, paging);
+                    } catch (OutOfMemoryError e) {
+                        return;
+                    }
+
+                    tweets.clear();
+
+                    for (Status status : result) {
+                        tweets.add(status);
+                    }
+
+                    if (result.size() > 17) {
+                      //  hasMore = true;
+                    } else {
+                        hasMore = false;
+                    }
+
+                    ((Activity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            normalAdapter = new TimelineArrayAdapter(context, tweets);
+                            listView.setAdapter(normalAdapter);
+                            listView.setVisibility(View.VISIBLE);
+
+                           // spinner.setVisibility(View.GONE);
+                            canRefresh = true;
+
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ((Activity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                           // spinner.setVisibility(View.GONE);
+                            canRefresh = false;
+                        }
+                    });
+
+                }
+
+            }
+        }).start();
+    }
+
+    public void getMore() {
+        canRefresh = false;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Twitter twitter = Utils.getTwitter(context, settings);
+
+                    paging.setPage(paging.getPage() + 1);
+
+                    ResponseList<Status> result = twitter.getFavorites(screenName, paging);
+
+                    for (twitter4j.Status status : result) {
+                      //  tweets.add(status);
+                    }
+
+                    if (result.size() > 17) {
+                       // hasMore = true;
+                    } else {
+                        hasMore = false;
+                    }
+
+                    ((Activity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            normalAdapter.notifyDataSetChanged();
+                            canRefresh = true;
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ((Activity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            canRefresh = false;
+                            hasMore = false;
+                        }
+                    });
+
+                }
+
+            }
+        }).start();
+    }
+
+
+
+
+
+
+
 
     public View getLayout(LayoutInflater inflater) {
         return inflater.inflate(R.layout.the_latest_fragemnt, null);
@@ -72,27 +271,19 @@ public class TheLatestFragment extends MainFragment {
 //        });
     }
 
-//    protected void setHorizontal(View layout) {
-//        horizontalScrollView = (HorizontalScrollView) layout.findViewById(R.id.horizontal);
-//        /// Getting list of Strings from your resource
-//        String[] testArray = getResources().getStringArray(R.array.test_array);
-//        List<String> testList = Arrays.asList(testArray);
-//
-//        // Instanciating Adapter
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
-//                android.R.layout.simple_list_item_1, testList);
-//
-//        // setting adapter on listview
-//       // horizontal.set
-//    }
+
 
     @Override
     public void setUpListScroll() {
 
     }
 
-    public Twitter getTwitter() {
-        return Utils.getTwitter(context, DrawerActivity.settings);
+    public Twitter getTwitter() throws TwitterException {
+
+         twitter = Utils.getTwitter(context, DrawerActivity.settings);
+         String myScreenname = twitter.getScreenName();
+         Log.d("ben!",  "screenname test: " +  myScreenname);
+         return twitter;
     }
 
 //    @Override
@@ -182,8 +373,16 @@ public class TheLatestFragment extends MainFragment {
 //
 //    @Override
     public void onResume() {
+
+//        try {
+//            getTwitter();
+//        } catch (TwitterException e) {
+//            e.printStackTrace();
+//            Log.d("ben!", "did not get twitter");
+//        }
+
         super.onResume();
-        textText.setAlpha((float) 0.5);
+        testButton.setAlpha((float) 0.5);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         theLatestAdapter = new TheLatestAdapter(getActivity(), list);

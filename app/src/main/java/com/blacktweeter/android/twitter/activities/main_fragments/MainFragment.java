@@ -71,6 +71,8 @@ public abstract class MainFragment extends Fragment {
 
     protected AsyncListView listView;
     protected RecyclerView recyclerView;
+    protected TextView swipeText;
+    protected Button testButton;
     protected List<String> list;
     protected TheLatestAdapter theLatestAdapter;
     protected CursorAdapter cursorAdapter;
@@ -79,7 +81,6 @@ public abstract class MainFragment extends Fragment {
     protected TextView toastButton;
     protected FullScreenSwipeRefreshLayout refreshLayout;
     protected LinearLayout spinner;
-    protected HorizontalScrollView horizontal;
     protected TextView textText;
 
     public static BitmapLruCache mCache;
@@ -245,19 +246,15 @@ public abstract class MainFragment extends Fragment {
         spinner = (LinearLayout) layout.findViewById(R.id.spinner);
     }
 
-//    protected void setHorizontal(View layout) {
-//        horizontal = (HorizontalScrollView) layout.findViewById(R.id.horizontal);
-//
-//    }
+
 
     protected void setTestButton(View layout) {
-        textText = (TextView) layout.findViewById(R.id.textText);
+        testButton = (Button) layout.findViewById(R.id.testButton);
     }
 
     public void setViews(View layout) {
 
         setSpinner(layout);
-       // setHorizontal(layout);
         setTestButton(layout);
 
         listView = (AsyncListView) layout.findViewById(R.id.listView);
@@ -267,6 +264,8 @@ public abstract class MainFragment extends Fragment {
             list.add("This is cool.");
         }
         recyclerView = (RecyclerView) layout.findViewById(R.id.latest_recycler_view);
+        swipeText = (TextView) layout.findViewById(R.id.swipeText);
+
 
 
 

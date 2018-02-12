@@ -1080,6 +1080,7 @@ public class HomeFragment extends MainFragment { // implements LoaderManager.Loa
     public void onResume() {
         super.onResume();
 
+
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.klinker.android.twitter.NEW_TWEET");
         context.registerReceiver(pullReceiver, filter);
@@ -1115,7 +1116,6 @@ public class HomeFragment extends MainFragment { // implements LoaderManager.Loa
     @Override
     public void onStart() {
         super.onStart();
-
         if (HomeFragment.refreshHandler == null) {
             HomeFragment.refreshHandler = new Handler();
         }

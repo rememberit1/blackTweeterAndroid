@@ -17,17 +17,17 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:layout_width="250dp"
     android:background="?fullScreenTweet">
 
     <LinearLayout
         android:id="@+id/background"
         android:orientation="vertical"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingRight="15dp"
-        android:paddingLeft="15dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
         android:paddingTop="10dp"
         android:layoutDirection="ltr"
         android:background="?fullScreenTweet" >
@@ -40,7 +40,8 @@
             android:layoutDirection="ltr">
 
             <!-- The tweeters picture -->
-            <com.blacktweeter.android.twitter.views.NetworkedCacheableImageView
+            <!--<com.blacktweeter.android.twitter.views.NetworkedCacheableImageView-->
+            <ImageView
                 android:layout_width="@dimen/pro_pic_size"
                 android:layout_height="@dimen/pro_pic_size"
                 android:id="@+id/profile_pic"

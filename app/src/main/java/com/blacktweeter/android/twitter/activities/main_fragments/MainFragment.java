@@ -72,7 +72,7 @@ public abstract class MainFragment extends Fragment {
     protected AsyncListView listView;
     protected RecyclerView recyclerView;
     protected TextView swipeText;
-    protected Button testButton;
+    //protected Button testButton;
     protected List<String> list;
     protected TheLatestAdapter theLatestAdapter;
     protected CursorAdapter cursorAdapter;
@@ -249,7 +249,7 @@ public abstract class MainFragment extends Fragment {
 
 
     protected void setTestButton(View layout) {
-        testButton = (Button) layout.findViewById(R.id.testButton);
+
     }
 
     public void setViews(View layout) {
@@ -259,17 +259,8 @@ public abstract class MainFragment extends Fragment {
 
         listView = (AsyncListView) layout.findViewById(R.id.listView);
 
-        list = new ArrayList<>();
-        for (int i =0; i <15; i++) {
-            list.add("This is cool.");
-        }
-        recyclerView = (RecyclerView) layout.findViewById(R.id.latest_recycler_view);
+
         swipeText = (TextView) layout.findViewById(R.id.swipeText);
-
-
-
-
-
 
         refreshLayout = (FullScreenSwipeRefreshLayout) layout.findViewById(R.id.swipe_refresh_layout);
         refreshLayout.setFullScreen(true);

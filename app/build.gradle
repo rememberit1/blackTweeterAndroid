@@ -91,14 +91,10 @@ android {
 }
 
 dependencies {
-
-   // wearApp project(':wear')
-    
+    // wearApp project(':wear')
     provided 'org.projectlombok:lombok:1.14.8'
-
     compile "com.android.support:appcompat-v7:${project.ANDROID_SUPPORT_VERSION}"
     compile "com.android.support:customtabs:${project.ANDROID_SUPPORT_VERSION}"
-
     compile 'com.klinkerapps:article_viewer:0.15.6'
     compile 'com.klinkerapps:searchview:2.2.5'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
@@ -110,21 +106,19 @@ dependencies {
     compile 'com.google.android.apps.dashclock:dashclock-api:+'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.yalantis:ucrop:1.5.0'
-
     //compile 'org.twitter4j:twitter4j-core:4.0.4'
     //compile 'org.twitter4j:twitter4j-stream:4.0.4'
-
     compile 'org.apache.httpcomponents:httpmime:4.3.5'
     compile 'org.apache.httpcomponents:httpcore:4.3.2'
     compile 'org.jsoup:jsoup:1.7.3'
-
-    compile files('lib/YouTubeAndroidPlayerApi.jar') // version 1.2.1
+    compile files('lib/YouTubeAndroidPlayerApi.jar')
+    // version 1.2.1
     compile files('lib/twitter4j-klinker24-fork.jar')
     compile files('lib/twitter4j-stream-klinker24-fork.jar')
     compile(name: 'datetimepicker', ext: 'aar')
     compile(name: 'bitmap-cache', ext: 'aar')
     compile(name: 'sectioned-recyclerview', ext: 'aar')
-
     compile project(':shared_assets')
-   // compile project(path: ':wear')
+    // compile project(path: ':wear')
+    compile files('lib/picasso-2.5.2.jar')
 }

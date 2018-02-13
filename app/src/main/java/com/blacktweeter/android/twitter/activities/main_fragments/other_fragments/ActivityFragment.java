@@ -42,7 +42,7 @@ public class ActivityFragment extends MainFragment {
     };
 
     public View getLayout(LayoutInflater inflater) {
-        return inflater.inflate(R.layout.the_latest_fragemnt, null);
+        return inflater.inflate(R.layout.the_latest_fragment, null);
     }
 
     protected void setSpinner(View layout) {

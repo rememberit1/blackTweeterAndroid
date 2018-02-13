@@ -42,6 +42,8 @@ public class TheLatestAdapter extends RecyclerView.Adapter<TheLatestAdapter.TheL
         return list.size();
     }
 
+
+
     class TheLatestViewHolder extends RecyclerView.ViewHolder{
 
         TextView textView;
@@ -52,4 +54,6 @@ public class TheLatestAdapter extends RecyclerView.Adapter<TheLatestAdapter.TheL
             textView = (TextView) itemView.findViewById(R.id.tv);
         }
     }
+
+
 }

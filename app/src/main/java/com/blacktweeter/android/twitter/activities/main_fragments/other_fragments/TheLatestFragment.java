@@ -5,16 +5,12 @@ package com.blacktweeter.android.twitter.activities.main_fragments.other_fragmen
  */
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,26 +19,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
-import android.widget.HorizontalScrollView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.blacktweeter.android.twitter.adapters.ArrayListLoader;
+import com.blacktweeter.android.twitter.adapters.HorizontalAdapter;
 import com.blacktweeter.android.twitter.adapters.TheLatestAdapter;
-import com.blacktweeter.android.twitter.adapters.TimelineArrayAdapter;
 import com.blacktweeter.android.twitter.data.App;
 import com.blacktweeter.android.twitter.R;
 import com.blacktweeter.android.twitter.adapters.ActivityCursorAdapter;
 import com.blacktweeter.android.twitter.activities.drawer_activities.DrawerActivity;
 import com.blacktweeter.android.twitter.activities.main_fragments.MainFragment;
 import com.blacktweeter.android.twitter.settings.AppSettings;
-import com.blacktweeter.android.twitter.utils.ActivityUtils;
 import com.blacktweeter.android.twitter.utils.Utils;
 
-import org.lucasr.smoothie.AsyncListView;
-import org.lucasr.smoothie.ItemManager;
-import org.w3c.dom.Text;
 
 import twitter4j.Paging;
 import twitter4j.ResponseList;
@@ -52,9 +42,6 @@ import twitter4j.TwitterException;
 import uk.co.senab.bitmapcache.BitmapLruCache;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 public class TheLatestFragment extends MainFragment {
 
@@ -66,7 +53,8 @@ public class TheLatestFragment extends MainFragment {
     public View layout;
     public AppSettings settings;
     public SharedPreferences sharedPrefs;
-    public AsyncListView listView;
+    //public AsyncListView listView;
+    public RecyclerView rListView;
     public LinearLayout spinner;
     public String screenName;
 
@@ -98,37 +86,39 @@ public class TheLatestFragment extends MainFragment {
         inflater = LayoutInflater.from(context);
 
        // layout = inflater.inflate(R.layout.list_fragment, null);
-        layout = inflater.inflate(R.layout.the_latest_fragemnt, null);
+        layout = inflater.inflate(R.layout.the_latest_fragment, null);
 
-        listView = (AsyncListView) layout.findViewById(R.id.listView);
+
+
+        rListView = (RecyclerView) layout.findViewById(R.id.latest_recycler_view);
        // spinner = (LinearLayout) layout.findViewById(R.id.spinner);
 
         BitmapLruCache cache = App.getInstance(context).getBitmapCache();
         ArrayListLoader loader = new ArrayListLoader(cache, context);
 
-        ItemManager.Builder builder = new ItemManager.Builder(loader);
-        builder.setPreloadItemsEnabled(true).setPreloadItemsCount(50);
-        builder.setThreadPoolSize(4);
+//        ItemManager.Builder builder = new ItemManager.Builder(loader);
+//        builder.setPreloadItemsEnabled(true).setPreloadItemsCount(50);
+//        builder.setThreadPoolSize(4);
 
-        listView.setItemManager(builder.build());
-
-
-
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView absListView, int i) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                final int lastItem = firstVisibleItem + visibleItemCount;
-
-                if(lastItem == totalItemCount && canRefresh) {
-                  //  getMore();
-                }
-            }
-        });
+//        listView.setItemManager(builder.build());
+//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(AbsListView absListView, int i) {
+//
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                final int lastItem = firstVisibleItem + visibleItemCount;
+//
+//                if(lastItem == totalItemCount && canRefresh) {
+//                  //  getMore();
+//                }
+//            }
+//        });
+        Button testButton;
+        testButton = (Button) layout.findViewById(R.id.testButton);
+        testButton.setAlpha((float) 0.5);
 
         doSearch();
 
@@ -139,7 +129,7 @@ public class TheLatestFragment extends MainFragment {
     public Paging paging = new Paging(1, 20);
     public boolean hasMore = true;
     public boolean canRefresh = false;
-    public TimelineArrayAdapter normalAdapter;
+    public HorizontalAdapter normalAdapter;
 
     public void doSearch() {
        // spinner.setVisibility(View.VISIBLE);
@@ -175,9 +165,11 @@ public class TheLatestFragment extends MainFragment {
                     ((Activity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            normalAdapter = new TimelineArrayAdapter(context, tweets);
-                            listView.setAdapter(normalAdapter);
-                            listView.setVisibility(View.VISIBLE);
+                            normalAdapter = new HorizontalAdapter(context, tweets);
+                            rListView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                            Log.d("ben!",  "gotten tweets: " + normalAdapter.getItemCount());
+                            rListView.setAdapter(normalAdapter);
+                            rListView.setVisibility(View.VISIBLE);
 
                            // spinner.setVisibility(View.GONE);
                             canRefresh = true;
@@ -254,7 +246,7 @@ public class TheLatestFragment extends MainFragment {
 
 
     public View getLayout(LayoutInflater inflater) {
-        return inflater.inflate(R.layout.the_latest_fragemnt, null);
+        return inflater.inflate(R.layout.the_latest_fragment, null);
     }
 
     protected void setSpinner(View layout) {
@@ -370,8 +362,8 @@ public class TheLatestFragment extends MainFragment {
     public ActivityCursorAdapter setAdapter(Cursor c) {
         return new ActivityCursorAdapter(context, c);
     }
-//
-//    @Override
+
+    @Override
     public void onResume() {
 
 //        try {
@@ -382,11 +374,16 @@ public class TheLatestFragment extends MainFragment {
 //        }
 
         super.onResume();
-        testButton.setAlpha((float) 0.5);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
+        list = new ArrayList<>();
+        for (int i =0; i <15; i++) {
+            list.add("This is cool.");
+        }
+//        recyclerView = (RecyclerView) layout.findViewById(R.id.latest_recycler_view);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         theLatestAdapter = new TheLatestAdapter(getActivity(), list);
-        recyclerView.setAdapter(theLatestAdapter);
+       // recyclerView.setAdapter(theLatestAdapter);
 
 
         if (sharedPrefs.getBoolean("refresh_me_activity", false)) {

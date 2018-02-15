@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 
 import com.blacktweeter.android.twitter.adapters.ArrayListLoader;
 import com.blacktweeter.android.twitter.adapters.HorizontalAdapter;
+import com.blacktweeter.android.twitter.adapters.RecyclerViewDataAdapter;
 import com.blacktweeter.android.twitter.adapters.TheLatestAdapter;
 import com.blacktweeter.android.twitter.data.App;
 import com.blacktweeter.android.twitter.R;

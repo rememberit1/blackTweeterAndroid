@@ -194,11 +194,8 @@ public class TheLatestFragment extends MainFragment {
                     result2.add(result.get(3));
                     result2.add(result.get(4));
                     result2.add(result.get(5));
-                    Log.d("ben!", "working tweet: " + result2.get(0).getText());
-
                    // mGroupOfListOfStatuses = Lists.partition(result, result.size()/2);
                     mGroupOfListOfStatuses.add(result1);
-                    Log.d("ben!", "tweet2: " + mGroupOfListOfStatuses.toString());
                     mGroupOfListOfStatuses.add(result2);
                     arrangeDummyData(mGroupOfListOfStatuses);//this is how we get all the tweets (through mGroupOfListOfStatuses)
 

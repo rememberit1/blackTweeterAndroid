@@ -27,7 +27,7 @@
     <LinearLayout android:id="@+id/no_content"
         android:orientation="vertical"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent">
+        android:layout_width="match_parent">
 
         <TextView
             android:id="@+id/swipeText"
@@ -48,10 +48,10 @@
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:id="@+id/latest_recycler_horizon"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:visibility="visible"
             android:orientation="horizontal"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"/>
 
 
 

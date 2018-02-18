@@ -19,11 +19,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.blacktweeter.android.twitter.adapters.ArrayListLoader;
-import com.blacktweeter.android.twitter.adapters.HorizontalAdapter;
 import com.blacktweeter.android.twitter.adapters.RecyclerViewDataAdapter;
 import com.blacktweeter.android.twitter.adapters.TheLatestAdapter;
 import com.blacktweeter.android.twitter.data.App;
@@ -31,6 +29,7 @@ import com.blacktweeter.android.twitter.R;
 import com.blacktweeter.android.twitter.adapters.ActivityCursorAdapter;
 import com.blacktweeter.android.twitter.activities.drawer_activities.DrawerActivity;
 import com.blacktweeter.android.twitter.activities.main_fragments.MainFragment;
+import com.blacktweeter.android.twitter.data.SectionDataModel;
 import com.blacktweeter.android.twitter.settings.AppSettings;
 import com.blacktweeter.android.twitter.utils.Utils;
 
@@ -43,6 +42,8 @@ import twitter4j.TwitterException;
 import uk.co.senab.bitmapcache.BitmapLruCache;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class TheLatestFragment extends MainFragment {
 
@@ -55,9 +56,20 @@ public class TheLatestFragment extends MainFragment {
     public AppSettings settings;
     public SharedPreferences sharedPrefs;
     //public AsyncListView listView;
-    public RecyclerView rListView;
+    public RecyclerView recyclerViewHori;
+    //public RecyclerView recyclerViewVert;
+
+    ArrayList<SectionDataModel> listOfSectionDataModels;
+    ArrayList<List<Status>> mGroupOfListOfStatuses = new ArrayList<List<Status>>();
     public LinearLayout spinner;
     public String screenName;
+
+    public ArrayList<Status> tweets = new ArrayList<Status>();
+    public ArrayList<ArrayList<Status>> groupOfListofTweets;
+    public Paging paging = new Paging(1, 20);
+    public boolean hasMore = true;
+    public boolean canRefresh = false;
+    //public VerticalAdapter normalAdapter;
 
 
 
@@ -83,15 +95,17 @@ public class TheLatestFragment extends MainFragment {
                 0);
       //  screenName = sharedPrefs.getString("twitter_screen_name_1", "");
         screenName = settings.myScreenName;
+        listOfSectionDataModels = new ArrayList<SectionDataModel>();
 
         inflater = LayoutInflater.from(context);
 
        // layout = inflater.inflate(R.layout.list_fragment, null);
         layout = inflater.inflate(R.layout.the_latest_fragment, null);
+        recyclerViewHori = (RecyclerView) layout.findViewById(R.id.latest_recycler_horizon);
 
 
 
-        rListView = (RecyclerView) layout.findViewById(R.id.latest_recycler_view);
+       // rListView = (RecyclerView) layout.findViewById(R.id.latest_recycler_view);
        // spinner = (LinearLayout) layout.findViewById(R.id.spinner);
 
         BitmapLruCache cache = App.getInstance(context).getBitmapCache();
@@ -117,20 +131,39 @@ public class TheLatestFragment extends MainFragment {
 //                }
 //            }
 //        });
-        Button testButton;
-        testButton = (Button) layout.findViewById(R.id.testButton);
-        testButton.setAlpha((float) 0.5);
+//        Button testButton;
+//        testButton = (Button) layout.findViewById(R.id.testButton);
+//        testButton.setAlpha((float) 0.5);
 
         doSearch();
 
         return layout;
     }
 
-    public ArrayList<Status> tweets = new ArrayList<Status>();
-    public Paging paging = new Paging(1, 20);
-    public boolean hasMore = true;
-    public boolean canRefresh = false;
-    public HorizontalAdapter normalAdapter;
+    public void arrangeDummyData(List<List<Status>> listOfListOfStatuses) {
+        Random random = new Random();
+        for (List<Status> listOfStatuses : listOfListOfStatuses) {
+
+            SectionDataModel dm = new SectionDataModel();
+
+            int  n = random.nextInt(100) + 1;
+
+
+            dm.setHeaderTitle("Section " + n);
+
+//            ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+//            for (int j = 0; j <= 5; j++) {
+//                singleItem.add(new SingleItemModel("Item " + j, "URL " + j));
+//            }
+            for (Status status : listOfStatuses) {
+                //  tweets.add(status);
+            }
+            dm.setAllItemsInSection((ArrayList<Status>) listOfStatuses);
+            listOfSectionDataModels.add(dm);
+        }
+    }
+
+
 
     public void doSearch() {
        // spinner.setVisibility(View.VISIBLE);
@@ -145,16 +178,33 @@ public class TheLatestFragment extends MainFragment {
                     try {
                         //change this to twitter.lookup(); //and keep evryting the same
                         tweets.clear();
-                        result = twitter.lookup(20L, 962875856409407488L, 1000L);
-                       // result = twitter.getFavorites(screenName, paging);
+                        result = twitter.lookup(20L, 964658962892169216L, 964734223688110080L, 965098414089342976L, 963823438304604160L, 965001815568912390L);
+
                     } catch (OutOfMemoryError e) {
                         return;
                     }
 
                     tweets.clear();
 
+                    List<Status> result1 = new ArrayList<>();
+                    List<Status> result2 = new ArrayList<>();
+                    result1.add(result.get(0));
+                    result1.add(result.get(1));
+                    result1.add(result.get(2));
+                    result2.add(result.get(3));
+                    result2.add(result.get(4));
+                    result2.add(result.get(5));
+                    Log.d("ben!", "working tweet: " + result2.get(0).getText());
+
+                   // mGroupOfListOfStatuses = Lists.partition(result, result.size()/2);
+                    mGroupOfListOfStatuses.add(result1);
+                    Log.d("ben!", "tweet2: " + mGroupOfListOfStatuses.toString());
+                    mGroupOfListOfStatuses.add(result2);
+                    arrangeDummyData(mGroupOfListOfStatuses);//this is how we get all the tweets (through mGroupOfListOfStatuses)
+
+
                     for (Status status : result) {
-                        tweets.add(status);
+                       // tweets.add(status);
                     }
 
                     if (result.size() > 17) {
@@ -166,11 +216,16 @@ public class TheLatestFragment extends MainFragment {
                     ((Activity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            normalAdapter = new HorizontalAdapter(context, tweets);
-                            rListView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-                            Log.d("ben!",  "gotten tweets: " + normalAdapter.getItemCount());
-                            rListView.setAdapter(normalAdapter);
-                            rListView.setVisibility(View.VISIBLE);
+//                            normalAdapter = new VerticalAdapter(context, tweets);
+//                            rListView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+//                            Log.d("ben!",  "gotten tweets: " + normalAdapter.getItemCount());
+//                            rListView.setAdapter(normalAdapter);
+//                            rListView.setVisibility(View.VISIBLE);
+                            RecyclerViewDataAdapter horizontalAdapter = new RecyclerViewDataAdapter(context, listOfSectionDataModels);
+                            recyclerViewHori.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                            recyclerViewHori.setAdapter(horizontalAdapter);
+                            Log.d("ben!",  "gotten tweets: " + horizontalAdapter.getItemCount());
+                            recyclerViewHori.setVisibility(View.VISIBLE);
 
                            // spinner.setVisibility(View.GONE);
                             canRefresh = true;
@@ -219,8 +274,8 @@ public class TheLatestFragment extends MainFragment {
                     ((Activity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            normalAdapter.notifyDataSetChanged();
-                            canRefresh = true;
+                           // normalAdapter.notifyDataSetChanged();
+                         //   canRefresh = true;
                         }
                     });
                 } catch (Exception e) {

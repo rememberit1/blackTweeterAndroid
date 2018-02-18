@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
@@ -28,7 +27,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -51,7 +49,6 @@ import com.blacktweeter.android.twitter.data.App;
 import com.blacktweeter.android.twitter.activities.profile_viewer.ProfilePager;
 import com.blacktweeter.android.twitter.activities.tweet_viewer.TweetPager;
 import com.blacktweeter.android.twitter.activities.photo_viewer.PhotoViewerActivity;
-import com.blacktweeter.android.twitter.utils.*;
 import com.blacktweeter.android.twitter.utils.text.TextUtils;
 import com.squareup.picasso.Picasso;
 
@@ -64,7 +61,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Pattern;
 
@@ -76,7 +72,7 @@ import uk.co.senab.bitmapcache.CacheableBitmapDrawable;
  * Created by benakinlosotuwork on 2/12/18.
  */
 
-public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.HorizontalViewHolder>{
+public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.VerticalViewHolder>{
 
     Context context;
     public ArrayList<Status> statuses;
@@ -112,7 +108,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
     public static final int RETWEET = 1;
     public static final int FAVORITE = 2;
 
-    public HorizontalAdapter (Context context, ArrayList<Status> statuses) {
+    public VerticalAdapter(Context context, ArrayList<Status> statuses) {
        // super(context, R.layout.tweet);
         this.statuses = statuses;
         this.context = context;
@@ -183,13 +179,13 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
     }
 
     @Override
-    public HorizontalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public VerticalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.the_latest_tweet, parent, false );
-        return new HorizontalViewHolder(view);
+        return new VerticalViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final HorizontalViewHolder holder, int position) {
+    public void onBindViewHolder(final VerticalViewHolder holder, int position) {
        // holder.textView.setText(statuses.get(position));
 
 
@@ -559,7 +555,9 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         if (picture) {
             CacheableBitmapDrawable wrapper = mCache.getFromMemoryCache(holder.picUrl);
             if (wrapper != null) {
-                holder.image.setImageDrawable(wrapper);
+               // holder.image.setImageDrawable(wrapper);
+                holder.image.setVisibility(View.VISIBLE);
+                Picasso.with(context).load(picUrl).into(holder.image);
                 Log.d("ben!", "pic url 554: " + holder.picUrl);
                 picture = false;
             }
@@ -676,7 +674,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
 
 
 
-    class HorizontalViewHolder extends RecyclerView.ViewHolder{
+    class VerticalViewHolder extends RecyclerView.ViewHolder{
 
         public TextView name;
         public ImageView profilePic;
@@ -708,7 +706,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         public boolean preventNextClick = false;
 
 
-        public HorizontalViewHolder(View itemView) {
+        public VerticalViewHolder(View itemView) {
             super(itemView);
            // textView = (TextView) itemView.findViewById(R.id.tv);
           //  v = inflater.inflate(layout, viewGroup, false);
@@ -724,7 +722,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
             retweetCount = (TextView) itemView.findViewById(R.id.retweet_count);
             expandArea = (LinearLayout) itemView.findViewById(R.id.expansion);
             replyButton = (ImageButton) itemView.findViewById(R.id.reply_button);
-            image = (NetworkedCacheableImageView) itemView.findViewById(R.id.image);
+            image = (ImageView) itemView.findViewById(R.id.image);
             retweeter = (TextView) itemView.findViewById(R.id.retweeter);
             background = (LinearLayout) itemView.findViewById(R.id.background);
             playButton = (NetworkedCacheableImageView) itemView.findViewById(R.id.play_button);
@@ -753,7 +751,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         }
     }
 
-    public void removeExpansionWithAnimation(HorizontalViewHolder holder) {
+    public void removeExpansionWithAnimation(VerticalViewHolder holder) {
         //ExpansionAnimation expandAni = new ExpansionAnimation(holder.expandArea, 450);
         holder.expandArea.setVisibility(View.GONE);//startAnimation(expandAni);
 
@@ -764,7 +762,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         holder.favorite.clearColorFilter();
     }
 
-    public void removeExpansionNoAnimation(HorizontalViewHolder holder) {
+    public void removeExpansionNoAnimation(VerticalViewHolder holder) {
         //ExpansionAnimation expandAni = new ExpansionAnimation(holder.expandArea, 10);
         holder.expandArea.setVisibility(View.GONE);//startAnimation(expandAni);
 
@@ -778,7 +776,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
 
 
 
-    public void addExpansion(final HorizontalViewHolder holder, String screenname, String users, final String[] otherLinks, final String webpage, final long id){
+    public void addExpansion(final VerticalViewHolder holder, String screenname, String users, final String[] otherLinks, final String webpage, final long id){
 
         holder.retweet.setVisibility(View.VISIBLE);
         holder.retweetCount.setVisibility(View.VISIBLE);
@@ -836,7 +834,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
             @Override
             public void onClick(View view) {
                 if (holder.isFavorited || !settings.crossAccActions) {
-                    new HorizontalAdapter.FavoriteStatus(holder, holder.tweetId, TimelineArrayAdapter.FavoriteStatus.TYPE_ACC_ONE).execute();
+                    new VerticalAdapter.FavoriteStatus(holder, holder.tweetId, TimelineArrayAdapter.FavoriteStatus.TYPE_ACC_ONE).execute();
                 } else if (settings.crossAccActions) {
                     // dialog for favoriting
                     String[] options = new String[3];
@@ -848,7 +846,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
                     new AlertDialog.Builder(context)
                             .setItems(options, new DialogInterface.OnClickListener() {
                                 public void onClick(final DialogInterface dialog, final int item) {
-                                    new HorizontalAdapter.FavoriteStatus(holder, holder.tweetId, item + 1).execute();
+                                    new VerticalAdapter.FavoriteStatus(holder, holder.tweetId, item + 1).execute();
                                 }
                             })
                             .create().show();
@@ -860,7 +858,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
             @Override
             public void onClick(View view) {
                 if (!settings.crossAccActions) {
-                    new HorizontalAdapter.RetweetStatus(holder, holder.tweetId, TimelineArrayAdapter.FavoriteStatus.TYPE_ACC_ONE).execute();
+                    new VerticalAdapter.RetweetStatus(holder, holder.tweetId, TimelineArrayAdapter.FavoriteStatus.TYPE_ACC_ONE).execute();
                 } else {
                     // dialog for favoriting
                     String[] options = new String[3];
@@ -872,7 +870,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
                     new AlertDialog.Builder(context)
                             .setItems(options, new DialogInterface.OnClickListener() {
                                 public void onClick(final DialogInterface dialog, final int item) {
-                                    new HorizontalAdapter.RetweetStatus(holder, holder.tweetId, item + 1).execute();
+                                    new VerticalAdapter.RetweetStatus(holder, holder.tweetId, item + 1).execute();
                                 }
                             })
                             .create().show();
@@ -969,7 +967,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
             holder.replyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new HorizontalAdapter.ReplyToStatus(holder, holder.tweetId).execute();
+                    new VerticalAdapter.ReplyToStatus(holder, holder.tweetId).execute();
                 }
             });
         }
@@ -1212,13 +1210,13 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         }
     }
 
-    public void removeKeyboard(HorizontalViewHolder holder) {
+    public void removeKeyboard(VerticalViewHolder holder) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(holder.reply.getWindowToken(), 0);
     }
 
-    public void getFavoriteCount(final HorizontalViewHolder holder, final long tweetId) {
+    public void getFavoriteCount(final VerticalViewHolder holder, final long tweetId) {
 
         Thread getCount = new Thread(new Runnable() {
             @Override
@@ -1275,7 +1273,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         getCount.start();
     }
 
-    public void getCounts(final HorizontalViewHolder holder, final long tweetId) {
+    public void getCounts(final VerticalViewHolder holder, final long tweetId) {
 
         Thread getCount = new Thread(new Runnable() {
             @Override
@@ -1340,7 +1338,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         getCount.start();
     }
 
-    public void getRetweetCount(final HorizontalViewHolder holder, final long tweetId) {
+    public void getRetweetCount(final VerticalViewHolder holder, final long tweetId) {
 
         Thread getRetweetCount = new Thread(new Runnable() {
             @Override
@@ -1386,11 +1384,11 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         public static final int TYPE_ACC_TWO = 2;
         public static final int TYPE_BOTH_ACC = 3;
 
-        private HorizontalViewHolder holder;
+        private VerticalViewHolder holder;
         private long tweetId;
         private int type;
 
-        public FavoriteStatus(HorizontalViewHolder holder, long tweetId, int type) {
+        public FavoriteStatus(VerticalViewHolder holder, long tweetId, int type) {
             this.holder = holder;
             this.tweetId = tweetId;
             this.type = type;
@@ -1449,11 +1447,11 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         public static final int TYPE_ACC_TWO = 2;
         public static final int TYPE_BOTH_ACC = 3;
 
-        private HorizontalViewHolder holder;
+        private VerticalViewHolder holder;
         private long tweetId;
         private int type;
 
-        public RetweetStatus(HorizontalViewHolder holder, long tweetId, int type) {
+        public RetweetStatus(VerticalViewHolder holder, long tweetId, int type) {
             this.holder = holder;
             this.tweetId = tweetId;
             this.type = type;
@@ -1500,10 +1498,10 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
 
     class ReplyToStatus extends AsyncTask<String, Void, String> {
 
-        private HorizontalViewHolder holder;
+        private VerticalViewHolder holder;
         private long tweetId;
 
-        public ReplyToStatus(HorizontalViewHolder holder, long tweetId) {
+        public ReplyToStatus(VerticalViewHolder holder, long tweetId) {
             this.holder = holder;
             this.tweetId = tweetId;
         }
@@ -1533,7 +1531,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
     // used to place images on the timeline
     public static ImageUrlAsyncTask mCurrentTask;
 
-    public void loadImage(Context context, final HorizontalViewHolder holder, final String url, BitmapLruCache mCache, final long tweetId) {
+    public void loadImage(Context context, final VerticalViewHolder holder, final String url, BitmapLruCache mCache, final long tweetId) {
         // First check whether there's already a task running, if so cancel it
         /*if (null != mCurrentTask) {
             mCurrentTask.cancel(true);
@@ -1576,10 +1574,10 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
 
         private BitmapLruCache mCache;
         private Context context;
-        private HorizontalViewHolder holder;
+        private VerticalViewHolder holder;
         private long id;
 
-        ImageUrlAsyncTask(Context context, HorizontalViewHolder holder, BitmapLruCache cache, long tweetId) {
+        ImageUrlAsyncTask(Context context, VerticalViewHolder holder, BitmapLruCache cache, long tweetId) {
             this.context = context;
             mCache = cache;
             this.holder = holder;
@@ -1778,8 +1776,11 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
 
             try {
                 if (result != null && holder.tweetId == id) {
-                    holder.image.setImageDrawable(result);
+                   // holder.image.setImageDrawable(result);
                     Log.d("ben!", "pic url 1773: " + result.getUrl());
+                    holder.image.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(result.getUrl()).into(holder.image);
+
                     Animation fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in_fast);
 
                     if (holder.tweetId == id) {

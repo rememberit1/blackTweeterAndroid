@@ -39,12 +39,13 @@
             android:gravity="center_vertical"
             android:layoutDirection="ltr">
 
-            <!-- The tweeters picture -->
+            <!-- The tweeters prof picture -->
             <!--<com.blacktweeter.android.twitter.views.NetworkedCacheableImageView-->
             <ImageView
                 android:layout_width="@dimen/pro_pic_size"
                 android:layout_height="@dimen/pro_pic_size"
                 android:id="@+id/profile_pic"
+                android:visibility="visible"
                 android:contentDescription="Profile Picture"
                 android:src="?circleBorder"
                 android:minHeight="@dimen/pro_pic_size" android:minWidth="@dimen/pro_pic_size"
@@ -313,7 +314,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.blacktweeter.android.twitter.views.NetworkedCacheableImageView
+            <!--<com.blacktweeter.android.twitter.views.NetworkedCacheableImageView-->
+            <ImageView
                 android:id="@+id/image"
                 android:layout_marginTop="6dp"
                 android:layout_width="match_parent"

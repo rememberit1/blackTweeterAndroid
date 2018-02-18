@@ -66,6 +66,7 @@ import com.blacktweeter.android.twitter.activities.tweet_viewer.TweetPager;
 import com.blacktweeter.android.twitter.activities.photo_viewer.PhotoViewerActivity;
 import com.blacktweeter.android.twitter.utils.*;
 import com.blacktweeter.android.twitter.utils.text.TextUtils;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -1718,7 +1719,8 @@ public class TimelineArrayAdapter extends ArrayAdapter<Status> {
 
         if (null != wrapper && holder.image.getVisibility() != View.GONE) {
             // The cache has it, so just display it
-            holder.image.setImageDrawable(wrapper);
+            Picasso.with(context).load(url).into(holder.image);
+           // holder.image.setImageDrawable(wrapper);
             Log.d("ben!", "pic timelinearray url 1722: " + url);
             Animation fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in);
 

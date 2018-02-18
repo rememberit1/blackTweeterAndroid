@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.blacktweeter.android.twitter.R;
-import com.blacktweeter.android.twitter.data.EachSectionDataModel;
+import com.blacktweeter.android.twitter.data.SectionDataModel;
 
 import java.util.ArrayList;
 
@@ -19,37 +19,37 @@ import twitter4j.Status;
  * Created by benakinlosotuwork on 2/13/18.
  */
 
-public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDataAdapter.ItemRowHolder> {
+public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDataAdapter.ItemColumnHolder> {
 
-    private ArrayList<EachSectionDataModel> allSectionsMadeOfTweets;
+    private ArrayList<SectionDataModel> allSectionsMadeOfTweets;
     private Context mContext;
 
-    public RecyclerViewDataAdapter(Context context, ArrayList<EachSectionDataModel> allSectionsMadeOfTweets) {
+    public RecyclerViewDataAdapter(Context context, ArrayList<SectionDataModel> allSectionsMadeOfTweets) {
         this.allSectionsMadeOfTweets = allSectionsMadeOfTweets;
         this.mContext = context;
     }
 
     @Override
-    public ItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ItemColumnHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, null);
-        ItemRowHolder mh = new ItemRowHolder(v);
+        ItemColumnHolder mh = new ItemColumnHolder(v);
         return mh;
     }
 
     @Override
-    public void onBindViewHolder(ItemRowHolder itemRowHolder, int i) {
+    public void onBindViewHolder(ItemColumnHolder itemColumnHolder, int i) {
 
         final String sectionName = allSectionsMadeOfTweets.get(i).getHeaderTitle();
 
         ArrayList <Status> singleSectionOfTweets = allSectionsMadeOfTweets.get(i).getAllItemsInSection();
 
-        itemRowHolder.itemTitle.setText(sectionName);
+        itemColumnHolder.itemTitle.setText(sectionName);
 
-        HorizontalAdapter horizontalAdapter = new HorizontalAdapter(mContext, singleSectionOfTweets);
+        VerticalAdapter verticalAdapter = new VerticalAdapter(mContext, singleSectionOfTweets);
 
-        itemRowHolder.recycler_view_list.setHasFixedSize(true);
-        itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        itemRowHolder.recycler_view_list.setAdapter(horizontalAdapter);
+       // itemColumnHolder.recycler_view_list.setHasFixedSize(false);
+        itemColumnHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        itemColumnHolder.recycler_view_list.setAdapter(verticalAdapter);
 
 
 
@@ -66,7 +66,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         return (null != allSectionsMadeOfTweets ? allSectionsMadeOfTweets.size() : 0);
     }
 
-    public class ItemRowHolder extends RecyclerView.ViewHolder {
+    public class ItemColumnHolder extends RecyclerView.ViewHolder {
 
         protected TextView itemTitle;
 
@@ -76,7 +76,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
 
 
-        public ItemRowHolder(View view) {
+        public ItemColumnHolder(View view) {
             super(view);
 
             this.itemTitle = (TextView) view.findViewById(R.id.itemTitle);

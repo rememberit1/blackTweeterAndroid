@@ -42,20 +42,15 @@
 
             android:text="Swipe this Area to go to Timeline"/>
 
-        <Button
-            android:id="@+id/testButton"
-            android:textAllCaps="false"
-            android:text="Test Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <android.support.v7.widget.RecyclerView
 
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:id="@+id/latest_recycler_view"
+            android:id="@+id/latest_recycler_horizon"
             android:layout_width="wrap_content"
             android:visibility="visible"
+            android:orientation="horizontal"
             android:layout_height="wrap_content"/>
 
 

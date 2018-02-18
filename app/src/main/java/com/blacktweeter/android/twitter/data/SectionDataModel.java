@@ -10,7 +10,8 @@ import twitter4j.Status;
  * Created by benakinlosotuwork on 2/13/18.
  */
 
-public class EachSectionDataModel {
+public class SectionDataModel {
+
 
 
 
@@ -18,10 +19,10 @@ public class EachSectionDataModel {
     private ArrayList<Status> allItemsInSection;
 
 
-    public EachSectionDataModel() {
+    public SectionDataModel() {
 
     }
-    public EachSectionDataModel(String headerTitle, ArrayList<Status> allItemsInSection) {
+    public SectionDataModel(String headerTitle, ArrayList<Status> allItemsInSection) {
         this.headerTitle = headerTitle;
         this.allItemsInSection = allItemsInSection;
     }
@@ -46,3 +47,4 @@ public class EachSectionDataModel {
 
 
 }
+

@@ -675,12 +675,12 @@ S
                  android:exported="true" >
         </service>
 
-        <service android:name="com.blacktweeter.android.twitter.services.TweetWearableService">
-            <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER"
-                    tools:ignore="WearableBindListener" />
-            </intent-filter>
-        </service>
+        <!--<service android:name="com.blacktweeter.android.twitter.services.TweetWearableService">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.android.gms.wearable.BIND_LISTENER"-->
+                    <!--tools:ignore="WearableBindListener" />-->
+            <!--</intent-filter>-->
+        <!--</service>-->
 
         <receiver android:name="com.blacktweeter.android.twitter.receivers.BootReceiver">
             <intent-filter>

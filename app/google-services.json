@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "15563258590",
+    "firebase_url": "https://blacktweeter-305cc.firebaseio.com",
+    "project_id": "blacktweeter-305cc",
+    "storage_bucket": "blacktweeter-305cc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:15563258590:android:01256fbaa99abc4b",
+        "android_client_info": {
+          "package_name": "com.blacktweeter.android.twitter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "15563258590-m9tss6thkhuriahtbpgqpe1b1ksspn8n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCagZ7YEdpcAr_C2w6aO_HEV80e-Qa7geI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

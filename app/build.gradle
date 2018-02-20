@@ -1,5 +1,5 @@
-apply plugin: 'com.android.application'
 
+apply plugin: 'com.android.application'
 File keystoreProperties = rootProject.file("keystore.properties")
 def props = new Properties()
 if (keystoreProperties.exists()) {
@@ -121,4 +121,10 @@ dependencies {
     compile project(':shared_assets')
     // compile project(path: ':wear')
     compile files('lib/picasso-2.5.2.jar')
+    compile 'com.google.firebase:firebase-core:11.8.0'
+    compile 'com.google.firebase:firebase-database:11.8.0'
+
+
 }
+apply plugin: 'com.google.gms.google-services'
+

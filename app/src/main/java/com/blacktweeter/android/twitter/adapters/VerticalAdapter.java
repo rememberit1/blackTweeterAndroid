@@ -221,8 +221,6 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
         final long id = holder.tweetId;
         final String profileImageRegURL = user.getBiggerProfileImageURL();
         final String profilePicOriURL = user.getOriginalProfileImageURL();
-        Log.d("ben!", "profile pic bigger from horiz:  " + profileImageRegURL);
-        Log.d("ben!", "profile pic original from horiz:  " + profilePicOriURL);
         Picasso.with(context).load(profileImageRegURL).into(holder.profilePic);
 
 

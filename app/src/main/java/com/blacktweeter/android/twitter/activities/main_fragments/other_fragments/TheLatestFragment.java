@@ -32,6 +32,11 @@ import com.blacktweeter.android.twitter.activities.main_fragments.MainFragment;
 import com.blacktweeter.android.twitter.data.SectionDataModel;
 import com.blacktweeter.android.twitter.settings.AppSettings;
 import com.blacktweeter.android.twitter.utils.Utils;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 import twitter4j.Paging;
@@ -51,6 +56,8 @@ public class TheLatestFragment extends MainFragment {
 
     public int unread = 0;
 
+    private DatabaseReference firebaseRef;
+    private ArrayList<Object> bigBlackList = new ArrayList();
 
     public View layout;
     public AppSettings settings;
@@ -65,7 +72,6 @@ public class TheLatestFragment extends MainFragment {
     public String screenName;
 
     public ArrayList<Status> tweets = new ArrayList<Status>();
-    public ArrayList<ArrayList<Status>> groupOfListofTweets;
     public Paging paging = new Paging(1, 20);
     public boolean hasMore = true;
     public boolean canRefresh = false;
@@ -87,7 +93,8 @@ public class TheLatestFragment extends MainFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
+        firebaseRef = FirebaseDatabase.getInstance().getReference();
+        childEventListener();
 
 
         settings = AppSettings.getInstance(context);
@@ -140,6 +147,37 @@ public class TheLatestFragment extends MainFragment {
         return layout;
     }
 
+    private void childEventListener (){
+        firebaseRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Object string = dataSnapshot.getValue();
+                bigBlackList.add(string);
+                Log.d("ben!", "first BlackList: " + string.toString());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void arrangeDummyData(List<List<Status>> listOfListOfStatuses) {
         Random random = new Random();
         for (List<Status> listOfStatuses : listOfListOfStatuses) {
@@ -178,6 +216,7 @@ public class TheLatestFragment extends MainFragment {
                     try {
                         //change this to twitter.lookup(); //and keep evryting the same
                         tweets.clear();
+
                         result = twitter.lookup(20L, 964658962892169216L, 964734223688110080L, 965098414089342976L, 963823438304604160L, 965001815568912390L);
 
                     } catch (OutOfMemoryError e) {
@@ -194,7 +233,6 @@ public class TheLatestFragment extends MainFragment {
                     result2.add(result.get(3));
                     result2.add(result.get(4));
                     result2.add(result.get(5));
-                   // mGroupOfListOfStatuses = Lists.partition(result, result.size()/2);
                     mGroupOfListOfStatuses.add(result1);
                     mGroupOfListOfStatuses.add(result2);
                     arrangeDummyData(mGroupOfListOfStatuses);//this is how we get all the tweets (through mGroupOfListOfStatuses)

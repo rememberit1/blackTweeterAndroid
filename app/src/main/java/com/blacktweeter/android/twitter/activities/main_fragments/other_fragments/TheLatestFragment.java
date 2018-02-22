@@ -71,6 +71,8 @@ public class TheLatestFragment extends MainFragment {
 
     ArrayList<LatestTweetModel> allLatestTweetModels = new ArrayList<>();
     ArrayList<Long> allTweetIDsLong = new ArrayList<>();
+    Map<String, ArrayList<LatestTweetModel>> mEachTheseSection = new HashMap<>();
+    int numberOfTopics;
 
     ArrayList<SectionDataModel> listOfSectionDataModels;
     ArrayList<List<Status>> mGroupOfListOfStatuses = new ArrayList<List<Status>>();
@@ -125,7 +127,7 @@ public class TheLatestFragment extends MainFragment {
 //        testButton.setAlpha((float) 0.5);
 
         childEventListener();
-       // doSearch();
+        // doSearch();
 
         return layout;
     }
@@ -137,40 +139,52 @@ public class TheLatestFragment extends MainFragment {
 
         firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {//were doing this to wait for all firebase data BEFORE we go to twitter. https://stackoverflow.com/questions/34530566
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("ben! We're done loading the initial "+dataSnapshot.getChildrenCount()+" item");
+                System.out.println("ben! We're done loading the initial " + dataSnapshot.getChildrenCount() + " item");
                 doSearch();
             }
-            public void onCancelled(DatabaseError firebaseError) { }
+
+            public void onCancelled(DatabaseError firebaseError) {
+            }
         });
 
         firebaseRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Map<String, Object> eachTopic = new HashMap<>();
+
+                numberOfTopics = (int) dataSnapshot.getChildrenCount();
+                Map<String, ArrayList<LatestTweetModel>> eachTheseSection = new HashMap<>();
+
                 for (DataSnapshot topic : dataSnapshot.getChildren()) {
+                    ArrayList<LatestTweetModel> listOfTheseTweets = new ArrayList<>();
                     Map<String, String> tweetIDs = (Map<String, String>) topic.getValue();//this are hashmaps
                     // Log.d("ben!", "tweet as shown in db: " + topic);//looks like: DataSnapshot { key = Engineering, value = {id1=https://twitter.com/ycschools_us/status/938164182058496001,
                     for (DataSnapshot tweet : topic.getChildren()) {
                         LatestTweetModel latestTweetModel = new LatestTweetModel();
                         latestTweetModel.topic = topic.getKey();
-                        if (tweet.getValue().getClass().getName().equals("java.lang.Long")){
+                        if (tweet.getValue().getClass().getName().equals("java.lang.Long")) {
                             latestTweetModel.tweetID = (Long) tweet.getValue();
-                        }else {
+                        } else {
                             if (tweet.getValue().toString().length() > 21) {
                                 String tweetWithID = tweet.getValue().toString();
                                 tweetWithID = tweetWithID.substring(tweetWithID.lastIndexOf('/') + 1);
                                 latestTweetModel.tweetID = Long.valueOf(tweetWithID);
-                            }else {
-                                latestTweetModel.tweetID = Long.valueOf(tweet.getValue().toString()) ;
+                            } else {
+                                latestTweetModel.tweetID = Long.valueOf(tweet.getValue().toString());
                             }
                         }
                         allLatestTweetModels.add(latestTweetModel);//this where all of them are stored
                         Log.d("ben!", "tweet key: " + latestTweetModel.topic + " and value: " + latestTweetModel.tweetID);
+                        listOfTheseTweets.add(latestTweetModel);
                     }
                     //{Scholarships={id4=https://twitter.com/blackenterprise/status/956756340831019009, id1=https://twitter.com/Becauseofthem/status/955622587165442048}, Engineering={id1=https://twi
                     eachTopic.put(topic.getKey(), tweetIDs);
+                    eachTheseSection.put(topic.getKey(), listOfTheseTweets);
                 }
+
+                //we need a map with a key of the name of the topic (probably going to use this below)
                 allTweetsByTopic = eachTopic;
+                mEachTheseSection = eachTheseSection;
             }
 
             @Override
@@ -214,7 +228,7 @@ public class TheLatestFragment extends MainFragment {
         }
     }
 
-    private void myFunction (Long ... longs) {
+    private void myFunction(Long... longs) {
 
     }
 
@@ -227,21 +241,20 @@ public class TheLatestFragment extends MainFragment {
                 try {
                     Twitter twitter = Utils.getTwitter(context, settings);
 
-                    Long[] longObjects = { 1L, 2L, 3L };
-                    long[] longArray = ArrayUtils.toPrimitive(longObjects);
 
                     ResponseList<Status> result;
                     try {
                         tweets.clear();
 
+
                         allTweetIDsLong.clear();
-                        for(LatestTweetModel oneTweetModel : allLatestTweetModels){
+                        for (LatestTweetModel oneTweetModel : allLatestTweetModels) {
                             allTweetIDsLong.add(oneTweetModel.tweetID);
                         }
 
-                       // result = twitter.lookup(20L, 964658962892169216L, 964734223688110080L, 965098414089342976L, 963823438304604160L, Long.valueOf("965001815568912390"));
-                        Long [] idsNonPrimitive = allTweetIDsLong.toArray(new Long[allTweetIDsLong.size()]);
-                        long [] ids = ArrayUtils.toPrimitive(idsNonPrimitive);
+                        // result = twitter.lookup(20L, 964658962892169216L, 964734223688110080L, 965098414089342976L, 963823438304604160L, Long.valueOf("965001815568912390"));
+                        Long[] idsNonPrimitive = allTweetIDsLong.toArray(new Long[allTweetIDsLong.size()]);
+                        long[] ids = ArrayUtils.toPrimitive(idsNonPrimitive);
 
                         result = twitter.lookup(ids);
 
@@ -250,6 +263,33 @@ public class TheLatestFragment extends MainFragment {
                     }
 
                     tweets.clear();
+
+                    //iterate through this and then compare the LatestTweetModel.tweetId to result.get(5).getId();
+                    for (String key : mEachTheseSection.keySet()) {
+                        SectionDataModel dm = new SectionDataModel();
+                        ArrayList<Status> statuses = new ArrayList<>();
+                        ArrayList<LatestTweetModel> listOfTweetModels = mEachTheseSection.get(key);
+                        for (LatestTweetModel tweetModel : listOfTweetModels) {
+                            Long tweetId = tweetModel.tweetID;
+                            for (Status status : result) {
+                                if (tweetId == status.getId()) {
+                                    statuses.add(status);
+                                }
+                            }
+                        }
+                        dm.setAllItemsInSection(statuses);
+                        System.out.println("ben! list of all tweets this section sections " + dm.getAllItemsInSection());
+
+                        dm.setHeaderTitle(key);
+                        System.out.println("ben! headertitle " + dm.getAllItemsInSection());
+                        listOfSectionDataModels.add(dm);
+                    }
+
+                    for (Status eachTweet : result) {
+//                        Long tweetId = eachTweet.getId();
+//                        mEachTheseSection.get()
+                    }
+
 
                     List<Status> result1 = new ArrayList<>();
                     List<Status> result2 = new ArrayList<>();
@@ -262,7 +302,9 @@ public class TheLatestFragment extends MainFragment {
                     result.get(5).getId();
                     mGroupOfListOfStatuses.add(result1);
                     mGroupOfListOfStatuses.add(result2);
-                    arrangeDummyData(mGroupOfListOfStatuses);//this is how we get all the tweets (through mGroupOfListOfStatuses)
+
+                    //this/the replacement sets the list of statuses for a section and the section title. because we are using a map, this can be done quicly/in one heap
+                   // arrangeDummyData(mGroupOfListOfStatuses);//this is how we get all the tweets (through mGroupOfListOfStatuses)
 
 
                     if (result.size() > 17) {

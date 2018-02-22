@@ -290,7 +290,6 @@ public class MainActivity extends DrawerActivity {
         set.clear();
         Set<String> bTwetDrawerSet = new HashSet<>(Arrays.asList("0", "5", "7", "9", "8", "1", "3", "2"));
         set.addAll(bTwetDrawerSet);
-        Log.d("ben! set after", String.valueOf(set));
         sharedPrefs.edit().putStringSet("drawer_elements_shown_" + currentAccount, set).commit();
         sharedPrefs.edit().putBoolean("push_notifications", false);
         sharedPrefs.edit().putBoolean("live_streaming", false);

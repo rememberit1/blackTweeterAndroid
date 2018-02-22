@@ -37,7 +37,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import twitter4j.Paging;
 import twitter4j.ResponseList;
@@ -47,8 +50,11 @@ import twitter4j.TwitterException;
 import uk.co.senab.bitmapcache.BitmapLruCache;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class TheLatestFragment extends MainFragment {
 
@@ -57,26 +63,25 @@ public class TheLatestFragment extends MainFragment {
     public int unread = 0;
 
     private DatabaseReference firebaseRef;
-    private ArrayList<Object> bigBlackList = new ArrayList();
 
     public View layout;
     public AppSettings settings;
     public SharedPreferences sharedPrefs;
-    //public AsyncListView listView;
     public RecyclerView recyclerViewHori;
-    //public RecyclerView recyclerViewVert;
+
+    ArrayList<LatestTweetModel> allLatestTweetModels = new ArrayList<>();
+    ArrayList<Long> allTweetIDsLong = new ArrayList<>();
 
     ArrayList<SectionDataModel> listOfSectionDataModels;
     ArrayList<List<Status>> mGroupOfListOfStatuses = new ArrayList<List<Status>>();
     public LinearLayout spinner;
     public String screenName;
 
+    Map<String, Object> allTweetsByTopic = new HashMap<>();
     public ArrayList<Status> tweets = new ArrayList<Status>();
     public Paging paging = new Paging(1, 20);
     public boolean hasMore = true;
     public boolean canRefresh = false;
-    //public VerticalAdapter normalAdapter;
-
 
 
     public BroadcastReceiver refreshActivity = new BroadcastReceiver() {
@@ -88,72 +93,84 @@ public class TheLatestFragment extends MainFragment {
 
 
     /**
-     *to get a colletion of specific tweets (black tweets) use twitter.lookup
+     * to get a colletion of specific tweets (black tweets) use twitter.lookup
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         firebaseRef = FirebaseDatabase.getInstance().getReference();
-        childEventListener();
 
 
         settings = AppSettings.getInstance(context);
         sharedPrefs = context.getSharedPreferences("com.klinker.android.twitter_world_preferences",
                 0);
-      //  screenName = sharedPrefs.getString("twitter_screen_name_1", "");
+
         screenName = settings.myScreenName;
         listOfSectionDataModels = new ArrayList<SectionDataModel>();
 
         inflater = LayoutInflater.from(context);
 
-       // layout = inflater.inflate(R.layout.list_fragment, null);
+
         layout = inflater.inflate(R.layout.the_latest_fragment, null);
         recyclerViewHori = (RecyclerView) layout.findViewById(R.id.latest_recycler_horizon);
 
 
-
-       // rListView = (RecyclerView) layout.findViewById(R.id.latest_recycler_view);
-       // spinner = (LinearLayout) layout.findViewById(R.id.spinner);
+        // spinner = (LinearLayout) layout.findViewById(R.id.spinner);
 
         BitmapLruCache cache = App.getInstance(context).getBitmapCache();
         ArrayListLoader loader = new ArrayListLoader(cache, context);
 
-//        ItemManager.Builder builder = new ItemManager.Builder(loader);
-//        builder.setPreloadItemsEnabled(true).setPreloadItemsCount(50);
-//        builder.setThreadPoolSize(4);
-
-//        listView.setItemManager(builder.build());
-//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(AbsListView absListView, int i) {
-//
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                final int lastItem = firstVisibleItem + visibleItemCount;
-//
-//                if(lastItem == totalItemCount && canRefresh) {
-//                  //  getMore();
-//                }
-//            }
-//        });
 //        Button testButton;
 //        testButton = (Button) layout.findViewById(R.id.testButton);
 //        testButton.setAlpha((float) 0.5);
 
-        doSearch();
+        childEventListener();
+       // doSearch();
 
         return layout;
     }
 
-    private void childEventListener (){
+
+    private void childEventListener() {
+
+        allLatestTweetModels.clear();//Maybe unnecessary or cause a bug. Watch out.
+
+        firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {//were doing this to wait for all firebase data BEFORE we go to twitter. https://stackoverflow.com/questions/34530566
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("ben! We're done loading the initial "+dataSnapshot.getChildrenCount()+" item");
+                doSearch();
+            }
+            public void onCancelled(DatabaseError firebaseError) { }
+        });
+
         firebaseRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Object string = dataSnapshot.getValue();
-                bigBlackList.add(string);
-                Log.d("ben!", "first BlackList: " + string.toString());
+                Map<String, Object> eachTopic = new HashMap<>();
+                for (DataSnapshot topic : dataSnapshot.getChildren()) {
+                    Map<String, String> tweetIDs = (Map<String, String>) topic.getValue();//this are hashmaps
+                    // Log.d("ben!", "tweet as shown in db: " + topic);//looks like: DataSnapshot { key = Engineering, value = {id1=https://twitter.com/ycschools_us/status/938164182058496001,
+                    for (DataSnapshot tweet : topic.getChildren()) {
+                        LatestTweetModel latestTweetModel = new LatestTweetModel();
+                        latestTweetModel.topic = topic.getKey();
+                        if (tweet.getValue().getClass().getName().equals("java.lang.Long")){
+                            latestTweetModel.tweetID = (Long) tweet.getValue();
+                        }else {
+                            if (tweet.getValue().toString().length() > 21) {
+                                String tweetWithID = tweet.getValue().toString();
+                                tweetWithID = tweetWithID.substring(tweetWithID.lastIndexOf('/') + 1);
+                                latestTweetModel.tweetID = Long.valueOf(tweetWithID);
+                            }else {
+                                latestTweetModel.tweetID = Long.valueOf(tweet.getValue().toString()) ;
+                            }
+                        }
+                        allLatestTweetModels.add(latestTweetModel);//this where all of them are stored
+                        Log.d("ben!", "tweet key: " + latestTweetModel.topic + " and value: " + latestTweetModel.tweetID);
+                    }
+                    //{Scholarships={id4=https://twitter.com/blackenterprise/status/956756340831019009, id1=https://twitter.com/Becauseofthem/status/955622587165442048}, Engineering={id1=https://twi
+                    eachTopic.put(topic.getKey(), tweetIDs);
+                }
+                allTweetsByTopic = eachTopic;
             }
 
             @Override
@@ -184,27 +201,25 @@ public class TheLatestFragment extends MainFragment {
 
             SectionDataModel dm = new SectionDataModel();
 
-            int  n = random.nextInt(100) + 1;
+            int n = random.nextInt(100) + 1;
 
 
             dm.setHeaderTitle("Section " + n);
 
-//            ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
-//            for (int j = 0; j <= 5; j++) {
-//                singleItem.add(new SingleItemModel("Item " + j, "URL " + j));
+//            for (Status status : listOfStatuses) {
+//                //  tweets.add(status);
 //            }
-            for (Status status : listOfStatuses) {
-                //  tweets.add(status);
-            }
             dm.setAllItemsInSection((ArrayList<Status>) listOfStatuses);
             listOfSectionDataModels.add(dm);
         }
     }
 
+    private void myFunction (Long ... longs) {
 
+    }
 
     public void doSearch() {
-       // spinner.setVisibility(View.VISIBLE);
+        // spinner.setVisibility(View.VISIBLE);
 
         new Thread(new Runnable() {
             @Override
@@ -212,12 +227,23 @@ public class TheLatestFragment extends MainFragment {
                 try {
                     Twitter twitter = Utils.getTwitter(context, settings);
 
+                    Long[] longObjects = { 1L, 2L, 3L };
+                    long[] longArray = ArrayUtils.toPrimitive(longObjects);
+
                     ResponseList<Status> result;
                     try {
-                        //change this to twitter.lookup(); //and keep evryting the same
                         tweets.clear();
 
-                        result = twitter.lookup(20L, 964658962892169216L, 964734223688110080L, 965098414089342976L, 963823438304604160L, 965001815568912390L);
+                        allTweetIDsLong.clear();
+                        for(LatestTweetModel oneTweetModel : allLatestTweetModels){
+                            allTweetIDsLong.add(oneTweetModel.tweetID);
+                        }
+
+                       // result = twitter.lookup(20L, 964658962892169216L, 964734223688110080L, 965098414089342976L, 963823438304604160L, Long.valueOf("965001815568912390"));
+                        Long [] idsNonPrimitive = allTweetIDsLong.toArray(new Long[allTweetIDsLong.size()]);
+                        long [] ids = ArrayUtils.toPrimitive(idsNonPrimitive);
+
+                        result = twitter.lookup(ids);
 
                     } catch (OutOfMemoryError e) {
                         return;
@@ -233,22 +259,19 @@ public class TheLatestFragment extends MainFragment {
                     result2.add(result.get(3));
                     result2.add(result.get(4));
                     result2.add(result.get(5));
+                    result.get(5).getId();
                     mGroupOfListOfStatuses.add(result1);
                     mGroupOfListOfStatuses.add(result2);
                     arrangeDummyData(mGroupOfListOfStatuses);//this is how we get all the tweets (through mGroupOfListOfStatuses)
 
 
-                    for (Status status : result) {
-                       // tweets.add(status);
-                    }
-
                     if (result.size() > 17) {
-                      //  hasMore = true;
+                        //  hasMore = true;
                     } else {
                         hasMore = false;
                     }
 
-                    ((Activity)context).runOnUiThread(new Runnable() {
+                    ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
 //                            normalAdapter = new VerticalAdapter(context, tweets);
@@ -259,20 +282,20 @@ public class TheLatestFragment extends MainFragment {
                             RecyclerViewDataAdapter horizontalAdapter = new RecyclerViewDataAdapter(context, listOfSectionDataModels);
                             recyclerViewHori.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
                             recyclerViewHori.setAdapter(horizontalAdapter);
-                            Log.d("ben!",  "gotten tweets: " + horizontalAdapter.getItemCount());
+                            Log.d("ben!", "gotten sections: " + horizontalAdapter.getItemCount());
                             recyclerViewHori.setVisibility(View.VISIBLE);
 
-                           // spinner.setVisibility(View.GONE);
+                            // spinner.setVisibility(View.GONE);
                             canRefresh = true;
 
                         }
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
-                    ((Activity)context).runOnUiThread(new Runnable() {
+                    ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                           // spinner.setVisibility(View.GONE);
+                            // spinner.setVisibility(View.GONE);
                             canRefresh = false;
                         }
                     });
@@ -297,25 +320,24 @@ public class TheLatestFragment extends MainFragment {
                     ResponseList<Status> result = twitter.getFavorites(screenName, paging);
 
                     for (twitter4j.Status status : result) {
-                      //  tweets.add(status);
+                        //  tweets.add(status);
                     }
 
                     if (result.size() > 17) {
-                       // hasMore = true;
+                        // hasMore = true;
                     } else {
                         hasMore = false;
                     }
 
-                    ((Activity)context).runOnUiThread(new Runnable() {
+                    ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                           // normalAdapter.notifyDataSetChanged();
-                         //   canRefresh = true;
+                            //   canRefresh = true;
                         }
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
-                    ((Activity)context).runOnUiThread(new Runnable() {
+                    ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             canRefresh = false;
@@ -328,12 +350,6 @@ public class TheLatestFragment extends MainFragment {
             }
         }).start();
     }
-
-
-
-
-
-
 
 
     public View getLayout(LayoutInflater inflater) {
@@ -355,7 +371,6 @@ public class TheLatestFragment extends MainFragment {
     }
 
 
-
     @Override
     public void setUpListScroll() {
 
@@ -363,13 +378,13 @@ public class TheLatestFragment extends MainFragment {
 
     public Twitter getTwitter() throws TwitterException {
 
-         twitter = Utils.getTwitter(context, DrawerActivity.settings);
-         String myScreenname = twitter.getScreenName();
-         Log.d("ben!",  "screenname test: " +  myScreenname);
-         return twitter;
+        twitter = Utils.getTwitter(context, DrawerActivity.settings);
+        String myScreenname = twitter.getScreenName();
+        Log.d("ben!", "screenname test: " + myScreenname);
+        return twitter;
     }
 
-//    @Override
+    //    @Override
     public void onRefreshStarted() {
 //        new AsyncTask<Void, Void, Cursor>() {
 //
@@ -449,7 +464,8 @@ public class TheLatestFragment extends MainFragment {
 //            }
 //        }.execute();
     }
-//
+
+    //
     public ActivityCursorAdapter setAdapter(Cursor c) {
         return new ActivityCursorAdapter(context, c);
     }
@@ -468,13 +484,10 @@ public class TheLatestFragment extends MainFragment {
 
 
         list = new ArrayList<>();
-        for (int i =0; i <15; i++) {
+        for (int i = 0; i < 15; i++) {
             list.add("This is cool.");
         }
-//        recyclerView = (RecyclerView) layout.findViewById(R.id.latest_recycler_view);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         theLatestAdapter = new TheLatestAdapter(getActivity(), list);
-       // recyclerView.setAdapter(theLatestAdapter);
 
 
         if (sharedPrefs.getBoolean("refresh_me_activity", false)) {
@@ -485,7 +498,7 @@ public class TheLatestFragment extends MainFragment {
                 public void run() {
                     sharedPrefs.edit().putBoolean("refresh_me_activity", false).commit();
                 }
-            },1000);
+            }, 1000);
         }
 
         IntentFilter filter = new IntentFilter();
@@ -498,7 +511,8 @@ public class TheLatestFragment extends MainFragment {
     public void onStart() {
         super.onStart();
     }
-//
+
+    //
     public void getCursorAdapter(boolean showSpinner) {
 //        if (showSpinner) {
 //            try {
@@ -563,9 +577,15 @@ public class TheLatestFragment extends MainFragment {
 //        }).start();
     }
 
-//    @Override
+    //    @Override
     public void onPause() {
         context.unregisterReceiver(refreshActivity);
         super.onPause();
+    }
+
+    public class LatestTweetModel {
+        Status status = null;
+        Long tweetID = null;
+        String topic = null;
     }
 }

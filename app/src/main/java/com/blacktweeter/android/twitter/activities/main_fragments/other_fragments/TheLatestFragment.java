@@ -281,7 +281,7 @@ public class TheLatestFragment extends MainFragment {
                         System.out.println("ben! list of all tweets this section sections " + dm.getAllItemsInSection());
 
                         dm.setHeaderTitle(key);
-                        System.out.println("ben! headertitle " + dm.getAllItemsInSection());
+                        System.out.println("ben! headertitle " + dm.getHeaderTitle());
                         listOfSectionDataModels.add(dm);
                     }
 

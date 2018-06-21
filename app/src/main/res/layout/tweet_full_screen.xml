@@ -33,76 +33,79 @@
         android:background="?fullScreenTweet" >
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layoutDirection="ltr">
+            android:layoutDirection="ltr"
+            android:orientation="horizontal">
 
             <!-- The tweeters picture -->
             <com.blacktweeter.android.twitter.views.NetworkedCacheableImageView
+                android:id="@+id/profile_pic"
                 android:layout_width="@dimen/pro_pic_size"
                 android:layout_height="@dimen/pro_pic_size"
-                android:id="@+id/profile_pic"
-                android:contentDescription="Profile Picture"
-                android:src="?circleBorder"
-                android:minHeight="@dimen/pro_pic_size" android:minWidth="@dimen/pro_pic_size"
-                android:scaleType="centerCrop" android:adjustViewBounds="true"
-                android:maxWidth="@dimen/pro_pic_size" android:maxHeight="@dimen/pro_pic_size"
+                android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_marginLeft="2dp"/>
+                android:adjustViewBounds="true"
+                android:contentDescription="Profile Picture"
+                android:maxHeight="@dimen/pro_pic_size"
+                android:maxWidth="@dimen/pro_pic_size"
+                android:minHeight="@dimen/pro_pic_size"
+                android:minWidth="@dimen/pro_pic_size"
+                android:scaleType="centerCrop"
+                android:src="?circleBorder" />
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="13dp"
                 android:layout_marginStart="13dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <com.blacktweeter.android.twitter.views.HoloTextView
                     android:id="@+id/name"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textColor="?textColor"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:gravity="center_vertical" />
+                    android:textColor="?textColor"
+                    android:textStyle="bold" />
 
                 <com.blacktweeter.android.twitter.views.HoloTextView
                     android:id="@+id/screenname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="?dateColor"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:gravity="center_vertical" />
+                    android:textColor="?dateColor" />
 
             </LinearLayout>
 
             <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginRight="6dp"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginBottom="3dp">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:orientation="vertical">
 
                 <com.blacktweeter.android.twitter.views.HoloTextView
-                        android:id="@+id/time"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:textColor="?dateColor" />
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?dateColor" />
 
                 <ImageView
-                        android:id="@+id/is_a_conversation"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="?directMessageItem"
-                        android:scaleType="fitCenter"
-                        android:visibility="gone" />
+                    android:id="@+id/is_a_conversation"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="?directMessageItem"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

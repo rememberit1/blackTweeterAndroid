@@ -74,6 +74,8 @@ import uk.co.senab.bitmapcache.CacheableBitmapDrawable;
 
 public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.VerticalViewHolder>{
 
+    private static final String TAG = "VerticalAdapter.java";
+
     Context context;
     public ArrayList<Status> statuses;
     public LayoutInflater inflater;
@@ -516,9 +518,12 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
                         public void onClick(View view) {
                             if (holder.picUrl.contains(" ")) {
                                 context.startActivity(new Intent(context, ViewPictures.class).putExtra("pictures", holder.picUrl));
+                                Log.d(TAG, "multiple pics?");
                             } else {
                                 context.startActivity(new Intent(context, PhotoViewerActivity.class).putExtra("url", holder.picUrl));
+                                Log.d(TAG, "one pic?");
                             }
+
                         }
                     });
                 }
@@ -1777,12 +1782,20 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
                    // holder.image.setImageDrawable(result);
                     Log.d("ben!", "pic url 1773: " + result.getUrl());
                     holder.image.setVisibility(View.VISIBLE);
-                    Picasso.with(context).load(result.getUrl()).into(holder.image);
+                     ColorDrawable myTransparent = new ColorDrawable(context.getResources().getColor(R.color.pressed_app_color));
+                    if (result.getUrl().contains(" ")){
+                        Log.d(TAG, "onPostExecute: multiple images");
 
-                    Animation fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in_fast);
+                      // holder.image.setImageDrawable();
+                        holder.image.setImageResource(android.R.drawable.presence_offline);
+                    } else {
+                        Picasso.with(context).load(result.getUrl()).into(holder.image);
 
-                    if (holder.tweetId == id) {
-                        holder.image.startAnimation(fadeInAnimation);
+                        Animation fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in_fast);
+
+                        if (holder.tweetId == id) {
+                            holder.image.startAnimation(fadeInAnimation);
+                        }
                     }
                 }
 

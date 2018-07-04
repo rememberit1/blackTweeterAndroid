@@ -29,6 +29,7 @@ android {
         applicationId "com.blacktweeter.android.twitter"
         minSdkVersion Integer.parseInt(project.MIN_SDK)
         targetSdkVersion Integer.parseInt(project.TARGET_SDK)
+        multiDexEnabled true
         versionCode code
         versionName project.VERSION_NAME
 

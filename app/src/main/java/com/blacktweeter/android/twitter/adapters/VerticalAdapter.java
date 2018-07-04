@@ -107,6 +107,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
     public static final int NORMAL = 0;
     public static final int RETWEET = 1;
     public static final int FAVORITE = 2;
+    private static final String TAG = "VerticalAdapter";
 
     public VerticalAdapter(Context context, ArrayList<Status> statuses) {
        // super(context, R.layout.tweet);
@@ -1774,15 +1775,24 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
 
             try {
                 if (result != null && holder.tweetId == id) {
-                   // holder.image.setImageDrawable(result);
+                    // holder.image.setImageDrawable(result);
                     Log.d("ben!", "pic url 1773: " + result.getUrl());
                     holder.image.setVisibility(View.VISIBLE);
-                    Picasso.with(context).load(result.getUrl()).into(holder.image);
+                    ColorDrawable myTransparent = new ColorDrawable(context.getResources().getColor(R.color.pressed_app_color));
+                    if (result.getUrl().contains(" ")){
+                        Log.d(TAG, "onPostExecute: multiple images");
 
-                    Animation fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in_fast);
+                        // holder.image.setImageDrawable();
+                        //holder.image.setImageResource(android.R.drawable.presence_offline);
+                        holder.image.setImageResource(R.drawable.view_more2);
+                    } else {
+                        Picasso.with(context).load(result.getUrl()).into(holder.image);
 
-                    if (holder.tweetId == id) {
-                        holder.image.startAnimation(fadeInAnimation);
+                        Animation fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in_fast);
+
+                        if (holder.tweetId == id) {
+                            holder.image.startAnimation(fadeInAnimation);
+                        }
                     }
                 }
 

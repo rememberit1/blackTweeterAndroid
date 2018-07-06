@@ -23,10 +23,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -70,6 +72,7 @@ public class MainActivity extends DrawerActivity {
     public static boolean showIsRunning = false;
     public static boolean hideIsRunning = false;
     public static Handler sendHandler;
+    public static int screenWidth;
     public static Runnable showSend = new Runnable() {
         @Override
         public void run() {
@@ -132,6 +135,11 @@ public class MainActivity extends DrawerActivity {
         UpdateUtils.checkUpdate(this);
 
         MainActivity.sendHandler = new Handler();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        screenWidth = size.x;
 
         context = this;
         sContext = this;

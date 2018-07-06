@@ -141,18 +141,39 @@
                     android:textColor="?dateColor"
                     android:text="@string/placeholder"
                     android:visibility="gone" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:id="@+id/multipic_holder"
+                android:layout_below="@id/retweeter">
 
-            <com.blacktweeter.android.twitter.views.NetworkedCacheableImageView
-                       android:id="@+id/image"
-                       android:layout_below="@id/retweeter"
-                       android:layout_height="124dp"
-                       android:layout_width="match_parent"
-                       android:scaleType="centerCrop"
-                       android:layout_marginLeft="8dp"
-                       android:layout_marginRight="8dp"
-                       android:layout_marginBottom="8dp"
-                       android:visibility="gone"
-                       />
+                <ImageView
+                    android:layout_height="124dp"
+                    android:layout_width="match_parent"
+                    android:scaleType="centerCrop"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:alpha=".5"
+                    android:visibility="visible"/>
+
+                <com.blacktweeter.android.twitter.views.NetworkedCacheableImageView
+                    android:id="@+id/image"
+                    android:layout_height="124dp"
+                    android:layout_width="match_parent"
+                    android:scaleType="centerCrop"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:alpha=".5"
+                    android:visibility="visible"
+
+                    />
+
+            </RelativeLayout>
+
+
 
             <com.blacktweeter.android.twitter.views.NetworkedCacheableImageView
                 android:id="@+id/play_button"

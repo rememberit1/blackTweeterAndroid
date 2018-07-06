@@ -312,8 +312,10 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/pic_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
 
             <com.blacktweeter.android.twitter.views.NetworkedCacheableImageView
                 android:id="@+id/image"
@@ -321,8 +323,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="275dp"
                 android:scaleType="centerCrop"
-                android:visibility="gone"
+                android:visibility="visible"
                 />
+
+
+            <ImageView
+                android:id="@+id/view_more_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/image"
+                android:src="@drawable/ic_action_accept_light"
+                android:textColor="@color/action_bar_black"
+                android:visibility="visible"/>
+
 
             <com.blacktweeter.android.twitter.views.NetworkedCacheableImageView
                 android:id="@+id/play_button"

@@ -148,7 +148,7 @@ public class TweetFragment extends Fragment {
 
             if (!text.contains("http")) { // no links, normal tweet
                 try {
-                    charRemaining.setText(140 - reply.getText().length() - (attachedUri.equals("") ? 0 : 23) + "");
+                    charRemaining.setText(280 - reply.getText().length() - (attachedUri.equals("") ? 0 : 23) + "");
                 } catch (Exception e) {
                     charRemaining.setText("0");
                 }
@@ -165,7 +165,7 @@ public class TweetFragment extends Fragment {
                     count += 23;
                 }
 
-                charRemaining.setText(140 - count + "");
+                charRemaining.setText(280 - count + "");
             }
         }
     };
@@ -941,7 +941,7 @@ public class TweetFragment extends Fragment {
         }
 
         if (charRemaining != null) {
-            charRemaining.setText(140 - reply.getText().length() + "");
+            charRemaining.setText(280 - reply.getText().length() + "");
         }
 
         if (reply != null) {

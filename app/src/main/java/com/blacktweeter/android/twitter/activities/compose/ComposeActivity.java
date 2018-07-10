@@ -597,7 +597,7 @@ public class ComposeActivity extends Compose {
             sendStatus(status, Integer.parseInt(charRemaining.getText().toString()));
             return true;
         } else {
-            if (editText.getText().length() + (attachedUri.equals("") ? 0 : 22) <= 140) {
+            if (editText.getText().length() + (attachedUri.equals("") ? 0 : 22) <= 280) {
                 // EditText is empty
                 Toast.makeText(context, context.getResources().getString(R.string.error_sending_tweet), Toast.LENGTH_SHORT).show();
             } else {

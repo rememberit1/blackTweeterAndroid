@@ -119,7 +119,7 @@ public class DirectMessageConversation extends Activity {
 
             if (!Patterns.WEB_URL.matcher(text).find()) { // no links, normal tweet
                 try {
-                    charRemaining.setText(140 - composeBar.getText().length() - (attachedUri.equals("") ? 0 : 23) + "");
+                    charRemaining.setText(280 - composeBar.getText().length() - (attachedUri.equals("") ? 0 : 23) + "");
                 } catch (Exception e) {
                     charRemaining.setText("0");
                 }
@@ -136,7 +136,7 @@ public class DirectMessageConversation extends Activity {
                     count += 23;
                 }
 
-                charRemaining.setText(140 - count + "");
+                charRemaining.setText(280 - count + "");
             }
         }
     };
@@ -232,7 +232,7 @@ public class DirectMessageConversation extends Activity {
 
         new GetList().execute();
 
-        charRemaining.setText(140 - composeBar.getText().length() + "");
+        charRemaining.setText(280 - composeBar.getText().length() + "");
         composeBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {

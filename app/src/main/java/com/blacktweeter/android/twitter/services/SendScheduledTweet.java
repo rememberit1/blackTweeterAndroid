@@ -90,12 +90,12 @@ public class SendScheduledTweet extends IntentService {
 
             Log.v("talon_queued", "sending: " + message);
 
-            if (size > 140 && settings.twitlonger) {
+            if (size > 280 && settings.twitlonger) {
                 // twitlonger goes here
                 TwitLongerHelper helper = new TwitLongerHelper(message, twitter);
 
                 return helper.createPost() != 0;
-            } else if (size <= 140) {
+            } else if (size <= 280) {
                 twitter4j.StatusUpdate reply = new twitter4j.StatusUpdate(message);
                 twitter.updateStatus(reply);
             } else {

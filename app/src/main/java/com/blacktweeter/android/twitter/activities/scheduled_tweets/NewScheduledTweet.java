@@ -113,7 +113,7 @@ public class NewScheduledTweet extends Activity {
 
             if (!Patterns.WEB_URL.matcher(text).find()) { // no links, normal tweet
                 try {
-                    counter.setText(140 - mEditText.getText().length() + "");
+                    counter.setText(280 - mEditText.getText().length() + "");
                 } catch (Exception e) {
                     counter.setText("0");
                 }
@@ -126,7 +126,7 @@ public class NewScheduledTweet extends Activity {
                     count += 23; // add 23 for the shortened url
                 }
 
-                counter.setText(140 - count + "");
+                counter.setText(280 - count + "");
             }
         }
     };

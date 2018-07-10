@@ -150,6 +150,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
             }
         }
 
+        //THIS IS NOT WERE WE INFLATE THE TWEET CELL, WE GO TO the_latest_tweet
         switch (talonLayout) {
             case AppSettings.LAYOUT_TALON:
                 layout = R.layout.tweet;
@@ -530,6 +531,16 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
 
                         }
                     });
+
+
+                    holder.viewMoreText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            context.startActivity(new Intent(context, ViewPictures.class).putExtra("pictures", holder.picUrl));
+                        }
+                    });
+
+
                 }
 
                 if (holder.image.getVisibility() == View.GONE) {
@@ -568,8 +579,8 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
                 if (picUrl.contains(" ")) {
                     String picUrlArray[] = picUrl.split(" ");
                     String firstPicUrl = picUrlArray[0];
-                    int myInt = (int) (MainActivity.screenWidth * 0.5);
-                    holder.image.getLayoutParams().width = myInt;
+                   // int myInt = (int) (MainActivity.screenWidth * 0.5);
+                   // holder.image.getLayoutParams().width = myInt;
 
                     Picasso.with(context).load(firstPicUrl).into(holder.image);
                     holder.viewMoreText.setVisibility(View.VISIBLE);
@@ -684,6 +695,10 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
 
     }
 
+    public void viewMoreClicked(){
+
+    }
+
     @Override
     public int getItemCount() {
         return statuses.size();
@@ -706,7 +721,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
         public LinearLayout expandArea;
         public ImageButton replyButton;
         public ImageView image;
-        public ImageView viewMoreText;
+        public TextView viewMoreText;
         public LinearLayout background;
         public ImageView playButton;
         public TextView screenTV;
@@ -741,7 +756,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
             expandArea = (LinearLayout) itemView.findViewById(R.id.expansion);
             replyButton = (ImageButton) itemView.findViewById(R.id.reply_button);
             image = (ImageView) itemView.findViewById(R.id.image);
-            viewMoreText = (ImageView) itemView.findViewById(R.id.view_more_text);
+            viewMoreText = (TextView) itemView.findViewById(R.id.view_more_text);
             retweeter = (TextView) itemView.findViewById(R.id.retweeter);
             background = (LinearLayout) itemView.findViewById(R.id.background);
             playButton = (NetworkedCacheableImageView) itemView.findViewById(R.id.play_button);
@@ -1806,9 +1821,9 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
                         String picUrlArray[] = result.getUrl().split(" ");
                         String firstPicUrl = picUrlArray[0];
 
-                        int myInt = (int) (MainActivity.screenWidth * 0.5);
-                        Log.d("ben!", "image width  " + myInt);
-                        holder.image.getLayoutParams().width = myInt;
+                      //  int myInt = (int) (MainActivity.screenWidth * 0.5);
+                       // Log.d("ben!", "image width  " + myInt);
+                      //  holder.image.getLayoutParams().width = myInt;
 
                         Picasso.with(context).load(firstPicUrl).into(holder.image);
                         holder.viewMoreText.setVisibility(View.VISIBLE);

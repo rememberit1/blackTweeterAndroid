@@ -33,14 +33,14 @@
             android:id="@+id/swipeText"
             android:background="#6ebfb3"
             android:layout_marginTop="70dp"
-            android:textSize="19dp"
+            android:textSize="35dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:textColor="@color/black_background"
             android:gravity="center"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:textStyle="bold"
-            android:text="Swipe this Area to go to Timeline"/>
+            android:text="← ←     → →"/>
 
 
         <android.support.v7.widget.RecyclerView
@@ -51,6 +51,7 @@
             android:layout_width="match_parent"
             android:visibility="visible"
             android:orientation="horizontal"
+            android:layout_marginBottom="20dp"
             android:layout_height="match_parent"/>
 
 

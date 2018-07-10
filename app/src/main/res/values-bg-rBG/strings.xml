@@ -15,7 +15,7 @@
   limitations under the License.
   -->
 <resources>
-    <string name="app_name_full">Talon for Twitter</string>
+    <string name="app_name_full">BlackTweeter</string>
     <string name="extension_description">Показвай броя на непрочетените туийтове, споменавания и директни съобщения, в момента в който се актуализират.</string>
     <!-- Action Bar -->
     <string name="menu_compose">Нов Туийт</string>

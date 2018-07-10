@@ -15,8 +15,8 @@
   limitations under the License.
   -->
 <resources>
-    <string name="app_name">Talon</string>
-    <string name="app_name_full">Talon for Twitter</string>
+    <string name="app_name">BlackTweeter</string>
+    <string name="app_name_full">BlackTweeter</string>
     <string name="extension_description">未読ツイートやメンション、メッセージの数を更新時に表示します</string>
     <!-- Action Bar -->
     <string name="menu_refresh">タイムラインを更新</string>

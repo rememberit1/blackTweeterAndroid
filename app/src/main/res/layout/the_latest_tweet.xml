@@ -352,7 +352,7 @@
                 android:textStyle="bold"
                 android:textColor="#497f77"
                 android:textSize="20dp"
-                android:visibility="visible" />
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout

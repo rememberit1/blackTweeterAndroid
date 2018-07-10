@@ -15,8 +15,8 @@
   limitations under the License.
   -->
 <resources>
-    <string name="app_name">Talon</string>
-    <string name="app_name_full">Talon for Twitter</string>
+    <string name="app_name">BlackTweeter</string>
+    <string name="app_name_full">BlackTweeter</string>
     <string name="extension_description">当推文，提及和私信更新时显示未读条目的数量</string>
     <!-- Action Bar -->
     <string name="menu_refresh">刷新时间线</string>

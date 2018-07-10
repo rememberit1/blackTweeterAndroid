@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Talon</string>
+    <string name="app_name">BlackTweeter</string>
     <string name="app_name_full">Talon untuk Twitter</string>
     <!-- Action Bar -->
     <string name="menu_compose">Kicauan Baru</string>

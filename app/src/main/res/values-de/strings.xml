@@ -15,8 +15,8 @@
   limitations under the License.
   -->
 <resources>
-    <string name="app_name">Talon</string>
-    <string name="app_name_full">Talon für Twitter</string>
+    <string name="app_name">BlackTweeter</string>
+    <string name="app_name_full">BlackTweeter</string>
     <string name="extension_description">Anzahl ungelesener Tweets, Erwähnungen und Direktnachrichten anzeigen, während diese aktualisiert werden.</string>
     <!-- Action Bar -->
     <string name="menu_refresh">Timeline aktualisieren</string>

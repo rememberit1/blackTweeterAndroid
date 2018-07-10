@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name_full">Talon para Twitter</string>
+    <string name="app_name_full">BlackTweeter</string>
     <string name="extension_description">Quando atualizados mostra o número de tweet não lidos, menções e DM\'S</string>
     <!-- Action Bar -->
     <string name="menu_refresh">Atualizar Timiline</string>

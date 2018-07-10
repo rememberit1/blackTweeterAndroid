@@ -15,8 +15,8 @@
   limitations under the License.
   -->
 <resources>
-    <string name="app_name">Talon</string>
-    <string name="app_name_full">Talon per Twitter</string>
+    <string name="app_name">BlackTweeter</string>
+    <string name="app_name_full">BlackTweeter</string>
     <string name="extension_description">Mostra el número de tweets sense llegir, mencions i missatges directes conforme s\'actualitzen.</string>
     <!-- Action Bar -->
     <string name="menu_refresh">Actualitza la pàgina principal</string>

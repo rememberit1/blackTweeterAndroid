@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Talon</string>
-    <string name="app_name_full">Talon pour Twitter</string>
+    <string name="app_name">BlackTweeter</string>
+    <string name="app_name_full">BlackTweeter</string>
     <string name="extension_description">Affiche le nombre de tweets non lus, mentions et messages directs quand ils sont mis à jour.</string>
     <!-- Action Bar -->
     <string name="menu_refresh">Rafraîchir la Timeline</string>

@@ -15,8 +15,8 @@
   limitations under the License.
   -->
 <resources>
-    <string name="app_name">Talon</string>
-    <string name="app_name_full">Twitter için Talon</string>
+    <string name="app_name">BlackTweeter</string>
+    <string name="app_name_full">BlackTweeter</string>
     <string name="extension_description">"Güncellendiğinde okunmamış tweet, bahsedenler ve direkt mesaj sayısını gösterir. "</string>
     <!-- Action Bar -->
     <string name="menu_refresh">Ana Sayfayı Yenile</string>

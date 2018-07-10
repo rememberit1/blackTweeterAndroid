@@ -1174,7 +1174,7 @@
         <text>Refresh changes</text>
         <text>Changelog added</text>
         <text>number of tweets, followers, and following on profile</text>
-        <text>length counter on tweets (can't go over 140)</text>
+        <text>length counter on tweets (can't go over 280)</text>
         <text>Shadows on the drawers</text>
         <text>tons of other bug fixes</text>
     </version>

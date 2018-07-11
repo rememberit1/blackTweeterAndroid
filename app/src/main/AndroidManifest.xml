@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+
     <!-- http://android-developers.blogspot.com/2016/05/bring-your-android-app-to-chromebooks.html -->
     <!-- http://www.chromium.org/chromium-os/android-apps -->
     <!-- https://commonsware.com/blog/2016/05/25/getting-ready-for-chromeos.html -->
@@ -604,6 +605,19 @@ S
                   android:launchMode="singleTop"
                   android:theme="@style/Theme.TalonLight">
         </activity>
+
+
+        <service android:name="com.blacktweeter.android.twitter.services.BTMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service android:name="com.blacktweeter.android.twitter.services.BTFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
 
         <service android:name="com.blacktweeter.android.twitter.services.TalonPullNotificationService">
         </service>

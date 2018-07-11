@@ -356,6 +356,8 @@ public class MainActivity extends DrawerActivity {
             String title = "" + mSectionsPagerAdapter.getPageTitle(page);
             actionBar.setTitle(title);
             mViewPager.setCurrentItem(page);
+            Log.d("ben! page", "onresume current page is: " + page);
+
         }
 
         if (sharedPrefs.getBoolean("open_interactions", false)) {

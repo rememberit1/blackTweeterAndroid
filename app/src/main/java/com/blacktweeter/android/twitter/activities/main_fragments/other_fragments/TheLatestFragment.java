@@ -32,6 +32,7 @@ import com.blacktweeter.android.twitter.activities.main_fragments.MainFragment;
 import com.blacktweeter.android.twitter.data.SectionDataModel;
 import com.blacktweeter.android.twitter.settings.AppSettings;
 import com.blacktweeter.android.twitter.utils.Utils;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,6 +64,7 @@ public class TheLatestFragment extends MainFragment {
     public int unread = 0;
 
     private DatabaseReference firebaseRef;
+    public static boolean latestIsVisible = false;
 
     public View layout;
     public AppSettings settings;
@@ -130,6 +132,23 @@ public class TheLatestFragment extends MainFragment {
         // doSearch();
 
         return layout;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (!latestIsVisible) {//this happens when we load the app for the first time or it has been killed
+
+                Log.d("ben!the", "IS visible in setUserVisibleHint");
+                Log.d("ben!the", "will reload now");
+                latestIsVisible = true;
+            }
+
+        } else {//this happens only when we swipe away but stay in the same app
+            latestIsVisible = false;
+            Log.d("ben!the", "is NOT visible");
+        }
     }
 
 
@@ -304,7 +323,7 @@ public class TheLatestFragment extends MainFragment {
                     mGroupOfListOfStatuses.add(result2);
 
                     //this/the replacement sets the list of statuses for a section and the section title. because we are using a map, this can be done quicly/in one heap
-                   // arrangeDummyData(mGroupOfListOfStatuses);//this is how we get all the tweets (through mGroupOfListOfStatuses)
+                    // arrangeDummyData(mGroupOfListOfStatuses);//this is how we get all the tweets (through mGroupOfListOfStatuses)
 
 
                     if (result.size() > 17) {
@@ -524,6 +543,14 @@ public class TheLatestFragment extends MainFragment {
 
         super.onResume();
 
+        if (latestIsVisible) {//this happens when we come in the app the first time but the setUserVisibleHint function has already made the bool true
+            //do nothing
+        } else {
+            Log.d("ben!the", "IS visible in onresume");
+            Log.d("ben!the", "reloading in onresume");
+            latestIsVisible = true;
+        }
+
 
         list = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
@@ -619,10 +646,18 @@ public class TheLatestFragment extends MainFragment {
 //        }).start();
     }
 
-    //    @Override
+    @Override
     public void onPause() {
         context.unregisterReceiver(refreshActivity);
         super.onPause();
+        latestIsVisible = false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //this is probably unnecessary
+        latestIsVisible = false;
     }
 
     public class LatestTweetModel {

@@ -124,6 +124,7 @@ dependencies {
     compile files('lib/picasso-2.5.2.jar')
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.google.firebase:firebase-database:11.8.0'
+    compile 'com.google.firebase:firebase-messaging:11.8.0'
     compile 'org.apache.commons:commons-lang3:3.5'
 
 

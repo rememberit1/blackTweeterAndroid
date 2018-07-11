@@ -70,6 +70,7 @@ public class HomeFragment extends MainFragment { // implements LoaderManager.Loa
 
     public boolean initial = true;
     public boolean newTweets = false;
+    public boolean homeIsVisible = false;
 
     @Override
     public void setHome() {
@@ -1047,6 +1048,8 @@ public class HomeFragment extends MainFragment { // implements LoaderManager.Loa
         context.unregisterReceiver(tweetmarkerReceiver);
 
         super.onPause();
+        homeIsVisible = false;
+        Log.d("ben!", "is NOT visible in onPause: " + homeIsVisible);
     }
 
     @Override
@@ -1076,10 +1079,39 @@ public class HomeFragment extends MainFragment { // implements LoaderManager.Loa
         super.onStop();
     }
 
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (!homeIsVisible) {//this happens when we load the app for the first time or it has been killed
+
+                Log.d("ben!home", "IS visible in setUserVisibleHint");
+                Log.d("ben!home", "will reload now");
+                onRefreshStarted();
+                homeIsVisible = true;
+            }
+
+        } else {//this happens only when we swipe away but stay in the same app
+            homeIsVisible = false;
+            Log.d("ben!home", "is NOT visible");
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
+        if (homeIsVisible) {//this happens when we come in the app the first time but the setUserVisibleHint function has already made the bool true
+            //do nothing
+        } else {
+            Log.d("ben!home", "IS visible in onresume");
+            Log.d("ben!home", "reloading in onresume");
+            onRefreshStarted();
+            homeIsVisible = true;
+        }
+
+        Log.d("ben!", "entered the home fragment soon refreshing");
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.klinker.android.twitter.NEW_TWEET");

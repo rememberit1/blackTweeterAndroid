@@ -71,6 +71,7 @@ public class HomeFragment extends MainFragment { // implements LoaderManager.Loa
     public boolean initial = true;
     public boolean newTweets = false;
     public boolean homeIsVisible = false;
+    private int shouldReloadCounter = 0;
 
     @Override
     public void setHome() {
@@ -1085,10 +1086,15 @@ public class HomeFragment extends MainFragment { // implements LoaderManager.Loa
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (!homeIsVisible) {//this happens when we load the app for the first time or it has been killed
-
                 Log.d("ben!home", "IS visible in setUserVisibleHint");
-                Log.d("ben!home", "will reload now");
-                onRefreshStarted();
+                if (shouldReloadCounter < 1 || shouldReloadCounter % 4 == 0 ) {
+                    Log.d("ben!home", "should reaload counter = " + shouldReloadCounter + " will reload now");
+                    onRefreshStarted();
+                    shouldReloadCounter = shouldReloadCounter +1;
+                } else{
+                    Log.d("ben!home", "won't  reload because conter is: " + shouldReloadCounter);
+                    shouldReloadCounter = shouldReloadCounter + 1;
+                }
                 homeIsVisible = true;
             }
 
@@ -1105,9 +1111,15 @@ public class HomeFragment extends MainFragment { // implements LoaderManager.Loa
         if (homeIsVisible) {//this happens when we come in the app the first time but the setUserVisibleHint function has already made the bool true
             //do nothing
         } else {
-            Log.d("ben!home", "IS visible in onresume");
-            Log.d("ben!home", "reloading in onresume");
-            onRefreshStarted();
+            Log.d("ben!home", "IS visible in onResume");
+            if (shouldReloadCounter < 2 || shouldReloadCounter % 4 == 0 ) {
+                Log.d("ben!home", "should reaload counter = " + shouldReloadCounter + " will reload now");
+                onRefreshStarted();
+                shouldReloadCounter = shouldReloadCounter + 1;
+            } else{
+                Log.d("ben!home", "won't  reload because conter is: " + shouldReloadCounter);
+                shouldReloadCounter = shouldReloadCounter + 1;
+            }
             homeIsVisible = true;
         }
 

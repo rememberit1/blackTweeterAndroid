@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.blacktweeter.android.twitter.adapters.ArrayListLoader;
@@ -32,6 +33,7 @@ import com.blacktweeter.android.twitter.activities.main_fragments.MainFragment;
 import com.blacktweeter.android.twitter.data.SectionDataModel;
 import com.blacktweeter.android.twitter.settings.AppSettings;
 import com.blacktweeter.android.twitter.utils.Utils;
+import com.bumptech.glide.Glide;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -50,6 +52,8 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import uk.co.senab.bitmapcache.BitmapLruCache;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +71,7 @@ public class TheLatestFragment extends MainFragment {
     public static boolean latestIsVisible = false;
 
     public View layout;
+    ImageView loadingGifIV;
     public AppSettings settings;
     public SharedPreferences sharedPrefs;
     public RecyclerView recyclerViewHori;
@@ -105,6 +110,9 @@ public class TheLatestFragment extends MainFragment {
         firebaseRef = FirebaseDatabase.getInstance().getReference();
 
 
+
+
+
         settings = AppSettings.getInstance(context);
         sharedPrefs = context.getSharedPreferences("com.klinker.android.twitter_world_preferences",
                 0);
@@ -117,6 +125,16 @@ public class TheLatestFragment extends MainFragment {
 
         layout = inflater.inflate(R.layout.the_latest_fragment, null);
         recyclerViewHori = (RecyclerView) layout.findViewById(R.id.latest_recycler_horizon);
+
+
+        //Glide.with(this).asGif().load("").placeholder
+
+        loadingGifIV = (ImageView) layout.findViewById(R.id.loading_gif);
+        loadingGifIV.setAlpha((float) 0.7);
+
+
+
+
 
 
         // spinner = (LinearLayout) layout.findViewById(R.id.spinner);
@@ -153,10 +171,12 @@ public class TheLatestFragment extends MainFragment {
 
 
     private void childEventListener() {
+        Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
 
         allLatestTweetModels.clear();//Maybe unnecessary or cause a bug. Watch out.
 
         firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {//were doing this to wait for all firebase data BEFORE we go to twitter. https://stackoverflow.com/questions/34530566
+            //this happens second (look at the website in the comments)
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("ben! We're done loading the initial " + dataSnapshot.getChildrenCount() + " item");
                 doSearch();
@@ -166,6 +186,7 @@ public class TheLatestFragment extends MainFragment {
             }
         });
 
+        //this happens first
         firebaseRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -253,6 +274,7 @@ public class TheLatestFragment extends MainFragment {
 
     public void doSearch() {
         // spinner.setVisibility(View.VISIBLE);
+      //  Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
 
         new Thread(new Runnable() {
             @Override
@@ -346,6 +368,7 @@ public class TheLatestFragment extends MainFragment {
                             Log.d("ben!", "gotten sections: " + horizontalAdapter.getItemCount());
                             recyclerViewHori.setVisibility(View.VISIBLE);
 
+                            loadingGifIV.setVisibility(View.GONE);
                             // spinner.setVisibility(View.GONE);
                             canRefresh = true;
 
@@ -356,6 +379,7 @@ public class TheLatestFragment extends MainFragment {
                     ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            loadingGifIV.setVisibility(View.GONE);
                             // spinner.setVisibility(View.GONE);
                             canRefresh = false;
                         }

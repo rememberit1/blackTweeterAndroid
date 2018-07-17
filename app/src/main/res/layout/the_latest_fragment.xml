@@ -3,6 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <com.blacktweeter.android.twitter.views.swipe_refresh_layout.FullScreenSwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_below="@id/no_content"
@@ -33,14 +35,14 @@
             android:id="@+id/swipeText"
             android:background="#6ebfb3"
             android:layout_marginTop="70dp"
-            android:textSize="35dp"
+            android:textSize="20dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:textColor="@color/black_background"
             android:gravity="center"
             android:layout_gravity="center"
             android:textStyle="bold"
-            android:text="← ←     → →"/>
+            android:text="←    BlackTweeter ✊🏾  →"/>
 
 
         <android.support.v7.widget.RecyclerView
@@ -142,6 +144,13 @@
 
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/loading_gif"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
 
 
 </RelativeLayout>

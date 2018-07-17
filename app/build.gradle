@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         def code = System.getenv("BUILD_NUMBER") as Integer ?: Integer.parseInt(project.VERSION_CODE)
-        code += 250
+        code += 263
         
         applicationId "com.blacktweeter.android.twitter"
         minSdkVersion Integer.parseInt(project.MIN_SDK)
@@ -122,6 +122,7 @@ dependencies {
     compile project(':shared_assets')
     // compile project(path: ':wear')
     compile files('lib/picasso-2.5.2.jar')
+    compile 'com.github.bumptech.glide:glide:4.0.0'
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.google.firebase:firebase-database:11.8.0'
     compile 'com.google.firebase:firebase-messaging:11.8.0'

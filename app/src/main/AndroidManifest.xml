@@ -4,6 +4,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
+            android:versionCode="491"
           package="com.blacktweeter.android.twitter">
 
     <uses-sdk tools:overrideLibrary="android.support.customtabs"/>

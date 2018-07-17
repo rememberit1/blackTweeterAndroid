@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         def code = System.getenv("BUILD_NUMBER") as Integer ?: Integer.parseInt(project.VERSION_CODE)
-        code += 263
+        code += 264
         
         applicationId "com.blacktweeter.android.twitter"
         minSdkVersion Integer.parseInt(project.MIN_SDK)

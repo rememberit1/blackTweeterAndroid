@@ -218,7 +218,7 @@ public abstract class DrawerActivity extends Activity {
 
                     try {
                         if (oldInteractions.getText().toString().equals(getResources().getString(R.string.new_interactions))) {
-                            oldInteractions.setText(getResources().getString(R.string.old_interactions));
+                            oldInteractions.setText("");
                             readButton.setImageResource(openMailResource);
                             notificationList.enableSwipeToDismiss();
                             notificationAdapter = new InteractionsCursorAdapter(context, InteractionsDataSource.getInstance(context).getUnreadCursor(DrawerActivity.settings.currentAccount));
@@ -240,7 +240,8 @@ public abstract class DrawerActivity extends Activity {
                                 InteractionsDataSource.getInstance(context).getUnreadCursor(settings.currentAccount));
                         notificationList.setAdapter(notificationAdapter);
                         notificationList.enableSwipeToDismiss();
-                        oldInteractions.setText(getResources().getString(R.string.old_interactions));
+                      //  oldInteractions.setText(getResources().getString(R.string.old_interactions));
+                        oldInteractions.setText("");
                         readButton.setImageResource(openMailResource);
                         sharedPrefs.edit().putBoolean("new_notification", false).commit();
                     } catch (Exception e) {
@@ -707,7 +708,8 @@ public abstract class DrawerActivity extends Activity {
                 public void onClick(View view) {
 
                     if (oldInteractions.getText().toString().equals(getResources().getString(R.string.old_interactions))) {
-                        oldInteractions.setText(getResources().getString(R.string.new_interactions));
+                      //  oldInteractions.setText(getResources().getString(R.string.new_interactions));
+                        oldInteractions.setText("");
                         readButton.setImageResource(closedMailResource);
 
                         notificationList.disableSwipeToDismiss();
@@ -715,7 +717,8 @@ public abstract class DrawerActivity extends Activity {
                         notificationAdapter = new InteractionsCursorAdapter(context,
                                 InteractionsDataSource.getInstance(context).getCursor(DrawerActivity.settings.currentAccount));
                     } else {
-                        oldInteractions.setText(getResources().getString(R.string.old_interactions));
+                      //  oldInteractions.setText(getResources().getString(R.string.old_interactions));
+                        oldInteractions.setText("");
                         readButton.setImageResource(openMailResource);
 
                         notificationList.enableSwipeToDismiss();
@@ -743,13 +746,14 @@ public abstract class DrawerActivity extends Activity {
             notificationList.setDismissCallback(new EnhancedListView.OnDismissCallback() {
                 @Override
                 public EnhancedListView.Undoable onDismiss(EnhancedListView listView, int position) {
-                    Log.v("talon_interactions_delete", "position to delete: " + position);
+                    Log.v("talon_interactions_del", "position to delete: " + position);
                     InteractionsDataSource data = InteractionsDataSource.getInstance(context);
                     data.markRead(settings.currentAccount, position);
                     notificationAdapter = new InteractionsCursorAdapter(context, data.getUnreadCursor(DrawerActivity.settings.currentAccount));
                     notificationList.setAdapter(notificationAdapter);
 
-                    oldInteractions.setText(getResources().getString(R.string.old_interactions));
+                  //  oldInteractions.setText(getResources().getString(R.string.old_interactions));
+                    oldInteractions.setText("");
                     readButton.setImageResource(openMailResource);
 
                     if (notificationAdapter.getCount() == 0) {

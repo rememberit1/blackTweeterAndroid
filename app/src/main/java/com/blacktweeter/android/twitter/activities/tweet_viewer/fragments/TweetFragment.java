@@ -491,7 +491,7 @@ public class TweetFragment extends Fragment {
                             text = "\"@" + screenName + ": " + text + "\" ";
                             break;
                         case AppSettings.QUOTE_STYLE_RT:
-                            text = " RT @" + screenName + ": " + text;
+                            text = " RT @" + screenName + ": " + text + "  \n- RT'd using #BlackTweeterApp -";
                             break;
                     }
 

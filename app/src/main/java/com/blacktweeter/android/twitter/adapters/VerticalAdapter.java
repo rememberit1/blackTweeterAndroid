@@ -1028,7 +1028,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
                             text = "\"@" + name + ": " + text + "\" ";
                             break;
                         case AppSettings.QUOTE_STYLE_RT:
-                            text = " RT @" + name + ": " + text;
+                            text =  " RT @" + name + ": " + text + "  \n- RT'd using #BlackTweeterApp -";
                             break;
                     }
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
@@ -1149,7 +1149,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
                             text = "\"@" + name + ": " + text + "\" ";
                             break;
                         case AppSettings.QUOTE_STYLE_RT:
-                            text = " RT @" + name + ": " + text;
+                            text = text = " RT @" + name + ": " + text + " \n- RT'd using #BlackTweeterApp -";
                             break;
                     }
                     intent.putExtra("user", text);

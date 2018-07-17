@@ -1098,9 +1098,11 @@ public class NotificationUtils {
 
         // set title
         if (newFavorites + newRetweets + newFollowers > 1) {
-            title = context.getResources().getString(R.string.new_interactions);
+           // title = context.getResources().getString(R.string.new_interactions);
+            title = "";
         } else {
-            title = context.getResources().getString(R.string.new_interaction_upper);
+            //title = context.getResources().getString(R.string.new_interaction_upper);
+            title = "";
         }
 
         // set text

@@ -206,7 +206,7 @@ public class TimelineSearchFragment extends Fragment {
                     where += " AND " + HomeSQLiteHelper.COLUMN_RETWEETER + " = '' OR " + HomeSQLiteHelper.COLUMN_RETWEETER + " is NULL";
                 }
 
-                Log.v("talon_timeline_search", where);
+                Log.v("blackTweeter_timeline_search", where);
 
                 final Cursor cursor;
                 try {

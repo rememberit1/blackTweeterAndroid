@@ -493,7 +493,7 @@ public class DirectMessageConversation extends Activity {
 
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent imageReturnedIntent) {
-        Log.v("talon_image_attach", "got the result, code: " + requestCode);
+        Log.v("bt_image_attach", "got the result, code: " + requestCode);
         switch (requestCode) {
             case UCrop.REQUEST_CROP:
                 if (resultCode == RESULT_OK) {
@@ -501,7 +501,7 @@ public class DirectMessageConversation extends Activity {
                         Uri selectedImage = UCrop.getOutput(imageReturnedIntent);
 
                         String filePath = IOUtils.getPath(selectedImage, context);
-                        Log.v("talon_compose_pic", "path to gif on sd card: " + filePath);
+                        Log.v("bt_compose_pic", "path to gif on sd card: " + filePath);
 
                         try {
                             attachImage.setImageBitmap(getThumbnail(selectedImage));
@@ -528,7 +528,7 @@ public class DirectMessageConversation extends Activity {
                 break;
             case CAPTURE_IMAGE:
                 if (resultCode == RESULT_OK) {
-                    Uri selectedImage = Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/Talon/", "photoToTweet.jpg"));
+                    Uri selectedImage = Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/blacktweeter/", "photoToTweet.jpg"));
                     startUcrop(selectedImage);
                 }
 
@@ -541,7 +541,7 @@ public class DirectMessageConversation extends Activity {
 
                         String filePath = IOUtils.getPath(selectedImage, context);
 
-                        Log.v("talon_compose_pic", "path to gif on sd card: " + filePath);
+                        Log.v("bt_compose_pic", "path to gif on sd card: " + filePath);
 
                         attachImage.setImageBitmap(getThumbnail(selectedImage));
                         attachImage.setVisibility(View.VISIBLE);
@@ -580,7 +580,7 @@ public class DirectMessageConversation extends Activity {
             public void onClick(DialogInterface dialog, int item) {
                 if(item == 0) { // take picture
                     Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(Environment.getExternalStorageDirectory() + "/Talon/", "photoToTweet.jpg");
+                    File f = new File(Environment.getExternalStorageDirectory() + "/blacktweeter/", "photoToTweet.jpg");
 
                     if (!f.exists()) {
                         try {
@@ -602,7 +602,7 @@ public class DirectMessageConversation extends Activity {
                         startActivityForResult(captureIntent, CAPTURE_IMAGE);
                     } catch (Exception e) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            Toast.makeText(DirectMessageConversation.this, "Have you given Talon the storage permission?", Toast.LENGTH_LONG).show();
+                            Toast.makeText(DirectMessageConversation.this, "Have you given blacktweeter the storage permission?", Toast.LENGTH_LONG).show();
                         }
                     }
 

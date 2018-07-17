@@ -631,7 +631,7 @@ public class TweetPager extends YouTubeBaseActivity {
                         text = "\"@" + screenName + ": " + text + "\" ";
                         break;
                     case AppSettings.QUOTE_STYLE_RT:
-                        text = " RT @" + screenName + ": " + text;
+                        text = " RT @" + screenName + ": " + text + "  \n- RT'd using #BlackTweeterApp -";
                         break;
                 }
 

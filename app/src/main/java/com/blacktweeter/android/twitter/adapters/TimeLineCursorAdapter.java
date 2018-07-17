@@ -1472,7 +1472,7 @@ public class TimeLineCursorAdapter extends CursorAdapter {
                             text = "\"@" + name + ": " + text + "\" ";
                             break;
                         case AppSettings.QUOTE_STYLE_RT:
-                            text = " RT @" + name + ": " + text;
+                            text = " RT @" + name + ": " + text + "  \n- RT'd using #BlackTweeterApp -";
                             break;
                     }
 

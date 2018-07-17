@@ -179,7 +179,7 @@ public class TimelineRefreshService extends IntentService {
             getContentResolver().notifyChange(HomeContentProvider.CONTENT_URI, null);
 
 
-            TimelineRefreshService.isRunning = false;
+            TimelineRefreshService.isRunning = false; 
         }
     }
 }

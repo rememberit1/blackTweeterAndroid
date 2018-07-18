@@ -97,6 +97,8 @@ public class LoginActivity extends Activity {
     private ProgressBar progressBar;
     private WebView mWebView;
     private LinearLayout main;
+    private static final String OAUTH_CALLBACK = "http://talonfortwitter.com";
+
 
     private AppSettings settings;
 
@@ -200,7 +202,8 @@ public class LoginActivity extends Activity {
             public boolean shouldOverrideUrlLoading(WebView webView, String url)
             {
                 Log.v("talon_login", "url: " + url);
-                if (url != null && url.startsWith("oauth:///talonforandroid")) {
+                //if (url != null && url.startsWith("oauth:///talonforandroid")) {
+                if (url != null && url.startsWith(OAUTH_CALLBACK)) {
                     handleTwitterCallback(url);
                 } else if (url.equals("https://twitter.com/")) {
                     webView.loadUrl(requestUrl);
@@ -389,7 +392,9 @@ public class LoginActivity extends Activity {
 
         private void loginToTwitter() {
             try {
-                requestToken = twitter.getOAuthRequestToken("oauth:///talonforandroid");
+                // requestToken = twitter.getOAuthRequestToken("oauth:///talonforandroid");
+                requestToken = twitter.getOAuthRequestToken(OAUTH_CALLBACK);
+
             } catch (TwitterException ex) {
                 ex.printStackTrace();
                 try {

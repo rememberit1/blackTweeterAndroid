@@ -1087,7 +1087,7 @@ public class HomeFragment extends MainFragment { // implements LoaderManager.Loa
         if (isVisibleToUser) {
             if (!homeIsVisible) {//this happens when we load the app for the first time or it has been killed
                 Log.d("ben!home", "IS visible in setUserVisibleHint");
-                if (shouldReloadCounter < 1 || shouldReloadCounter % 5 == 0 ) {
+                if (shouldReloadCounter < 1 || shouldReloadCounter % 10 == 0 ) {
                     Log.d("ben!home", "should reaload counter = " + shouldReloadCounter + " will reload now");
                     onRefreshStarted();
                     shouldReloadCounter = shouldReloadCounter +1;
@@ -1112,7 +1112,7 @@ public class HomeFragment extends MainFragment { // implements LoaderManager.Loa
             //do nothing
         } else {
             Log.d("ben!home", "IS visible in onResume");
-            if (shouldReloadCounter < 2 || shouldReloadCounter % 5 == 0 ) {
+            if (shouldReloadCounter < 2 || shouldReloadCounter % 10 == 0 ) {
                 Log.d("ben!home", "should reaload counter = " + shouldReloadCounter + " will reload now");
                 onRefreshStarted();
                 shouldReloadCounter = shouldReloadCounter + 1;

@@ -54,6 +54,8 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import uk.co.senab.bitmapcache.BitmapLruCache;
 
+import android.net.Uri;
+
 /**
  * Created by benakinlosotuwork on 8/1/18.
  */
@@ -74,17 +76,15 @@ public class TheLatestFragmentTwo extends MainFragment {
 
 
     //******************************************************************************************************************************///
-    Map<String, FBCategory> firebaseCategories = new HashMap<>();
+    Map<String, FBCategory> mFirebaseCategories = new HashMap<>();
     Map<String, ArrayList<Status>> twitterDictionary = new HashMap<>();
     String firstFirebaseCategory;
     int changingFirebaseCount = 5;
 
-     ArrayList <Status> changeableTweetsArray = new ArrayList<>();
-
+    ArrayList<Status> changeableTweetsArray = new ArrayList<>();
 
 
     //******************************************************************************************************************************///
-
 
 
     ArrayList<TheLatestFragmentTwo.LatestTweetModel> allLatestTweetModels = new ArrayList<>();
@@ -141,7 +141,7 @@ public class TheLatestFragmentTwo extends MainFragment {
         BitmapLruCache cache = App.getInstance(context).getBitmapCache();
         ArrayListLoader loader = new ArrayListLoader(cache, context);
 
-        childEventListener();
+        childEventListener2();
 
         return layout;
     }
@@ -167,13 +167,13 @@ public class TheLatestFragmentTwo extends MainFragment {
     private void childEventListener() {
         Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
 
-        firebaseCategories.clear();//Maybe unnecessary or cause a bug. Watch out.
+        mFirebaseCategories.clear();//Maybe unnecessary or cause a bug. Watch out.
 
         firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {//were doing this to wait for all firebase data BEFORE we go to twitter. https://stackoverflow.com/questions/34530566
             //this happens second (look at the website in the comments)
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("ben! We're done loading the initial " + dataSnapshot.getChildrenCount() + " item");
-                doSearch();
+                doSearch2();
             }
 
             public void onCancelled(DatabaseError firebaseError) {
@@ -249,18 +249,16 @@ public class TheLatestFragmentTwo extends MainFragment {
     }
 
 
-
-
     private void childEventListener2() {
         Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
 
-        firebaseCategories.clear();//Maybe unnecessary or cause a bug. Watch out.
+        mFirebaseCategories.clear();//Maybe unnecessary or cause a bug. Watch out.
 
         firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {//were doing this to wait for all firebase data BEFORE we go to twitter. https://stackoverflow.com/questions/34530566
             //this happens second (look at the website in the comments)
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("ben! We're done loading the initial " + dataSnapshot.getChildrenCount() + " item");
-                doSearch();
+                doSearch2();
             }
 
             public void onCancelled(DatabaseError firebaseError) {
@@ -288,7 +286,7 @@ public class TheLatestFragmentTwo extends MainFragment {
 
 
                     for (DataSnapshot topicMetaData : topic.getChildren()) {//for every meta data of this category (picture, order, tweet...)
-                        if(topicMetaData.getKey().startsWith("tweet")) {
+                        if (topicMetaData.getKey().startsWith("tweet")) {
 
 //                        TheLatestFragmentTwo.LatestTweetModel latestTweetModel = new TheLatestFragmentTwo.LatestTweetModel();
 //                        latestTweetModel.topic = topic.getKey();
@@ -296,22 +294,26 @@ public class TheLatestFragmentTwo extends MainFragment {
 
                             //latestTweetModel.tweetID = (Long) tweet.getValue();
                             FBTweet fbTweet = new FBTweet();
-                            for (DataSnapshot tweetMetaData: topicMetaData.getChildren()){
-                                if (tweetMetaData.getKey().startsWith("url")){
-                                    if(tweetMetaData.getValue().getClass().getName().equals("java.lang.Long")){//this may cause problems, test this with a long ass twitterID number on ios too
-                                        fbTweet.setTweetId((String) tweetMetaData.getValue());
-                                    }else if (tweetMetaData.getValue().getClass().getName().equals("java.lang.String")){//this could be wrong again. check it out
-                                        fbTweet.setTweetId(tweetMetaData.getValue().toString());
+                            for (DataSnapshot tweetMetaData : topicMetaData.getChildren()) {
+                                if (tweetMetaData.getKey().startsWith("url")) {
+                                    if (tweetMetaData.getValue().getClass().getName().equals("java.lang.Long")) {//this may cause problems, test this with a long ass twitterID number on ios too
+                                        fbTweet.setTweetId((Long) tweetMetaData.getValue());
+                                    } else if (tweetMetaData.getValue().getClass().getName().equals("java.lang.String")) {//this could be wrong again. check it out
+
+                                        Uri uri = Uri.parse(tweetMetaData.getValue().toString());
+                                        String tweetIdString = uri.getLastPathSegment();
+                                        fbTweet.setTweetId(Long.valueOf(tweetIdString));
 
                                     }
-                                } if (tweetMetaData.getKey().startsWith("tweet_order")){
-                                    fbTweet.setOrder((int)tweetMetaData.getValue());
+                                }
+                                if (tweetMetaData.getKey().startsWith("tweet_order")) {
+                                    fbTweet.setOrder((int) tweetMetaData.getValue());
                                 }
                             }
                             fbTweetList.add(fbTweet);
-                        } else if(topicMetaData.getKey().startsWith("picture")){
+                        } else if (topicMetaData.getKey().startsWith("picture")) {
                             fbCategory.setPictureUrl((String) topicMetaData.getValue());
-                        } else if(topicMetaData.getKey().startsWith("topic_order")) {
+                        } else if (topicMetaData.getKey().startsWith("topic_order")) {
                             fbCategory.setOrderNumber((int) topicMetaData.getValue());
                         }
                         fbCategory.setTweetArray(fbTweetList);
@@ -337,7 +339,8 @@ public class TheLatestFragmentTwo extends MainFragment {
 
                 //we need a map with a key of the name of the topic (probably going to use this below)
 
-              //  mEachTheseSection = eachTheseSection;
+                //  mEachTheseSection = eachTheseSection;
+                mFirebaseCategories = firebaseCategories;
             }
 
             @Override
@@ -361,13 +364,6 @@ public class TheLatestFragmentTwo extends MainFragment {
             }
         });
     }
-
-
-
-
-
-
-
 
 
     public void arrangeDummyData(List<List<Status>> listOfListOfStatuses) {
@@ -406,7 +402,7 @@ public class TheLatestFragmentTwo extends MainFragment {
 
                     ResponseList<Status> result;
                     try {
-                        tweets.clear();
+                        //  tweets.clear();
 
 
                         allTweetIDsLong.clear();
@@ -424,7 +420,7 @@ public class TheLatestFragmentTwo extends MainFragment {
                         return;
                     }
 
-                    tweets.clear();
+                    //tweets.clear();
 
                     //iterate through this and then compare the LatestTweetModel.tweetId to result.get(5).getId();
                     for (String key : mEachTheseSection.keySet()) {
@@ -446,8 +442,6 @@ public class TheLatestFragmentTwo extends MainFragment {
                         System.out.println("ben! headertitle " + dm.getHeaderTitle());
                         listOfSectionDataModels.add(dm);
                     }
-
-
 
 
                     List<Status> result1 = new ArrayList<>();
@@ -511,6 +505,115 @@ public class TheLatestFragmentTwo extends MainFragment {
         }).start();
     }
 
+
+    public void doSearch2() {
+        // spinner.setVisibility(View.VISIBLE);
+        //  Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Twitter twitter = Utils.getTwitter(context, settings);
+                    ResponseList<Status> result;
+                    try {
+                        //  tweets.clear();
+
+
+                        allTweetIDsLong.clear();
+                        for (Map.Entry<String, FBCategory> categoryEntry : mFirebaseCategories.entrySet()) {
+                            for (FBTweet fbTweet : categoryEntry.getValue().getTweetArray()) {
+                                allTweetIDsLong.add(fbTweet.getTweetId());
+                            }
+                        }
+//                        for (LatestTweetModel oneTweetModel : allLatestTweetModels) {
+//                            allTweetIDsLong.add(oneTweetModel.tweetID);
+//                        }
+
+                        // result = twitter.lookup(20L, 964658962892169216L, 964734223688110080L, 965098414089342976L, 963823438304604160L, Long.valueOf("965001815568912390"));
+                        Long[] idsNonPrimitive = allTweetIDsLong.toArray(new Long[allTweetIDsLong.size()]);
+                        long[] ids = ArrayUtils.toPrimitive(idsNonPrimitive);
+
+                        result = twitter.lookup(ids);
+
+                    } catch (OutOfMemoryError e) {
+                        return;
+                    }
+
+                    for (Map.Entry<String, FBCategory> categoryEntry : mFirebaseCategories.entrySet()) {
+                        for (FBTweet fbTweet : categoryEntry.getValue().getTweetArray()) {
+                            for (Status status : result) {
+                                if (status.getId() == fbTweet.getTweetId()) {
+                                    fbTweet.setStatus(status);
+                                }
+                            }
+                        }
+                    }
+
+
+
+//                    List<Status> result1 = new ArrayList<>();
+//                    List<Status> result2 = new ArrayList<>();
+//                    result1.add(result.get(0));
+//                    result1.add(result.get(1));
+//                    result1.add(result.get(2));
+//                    result2.add(result.get(3));
+//                    result2.add(result.get(4));
+//                    result2.add(result.get(5));
+//                    result.get(5).getId();
+//                    mGroupOfListOfStatuses.add(result1);
+//                    mGroupOfListOfStatuses.add(result2);
+
+                    //this/the replacement sets the list of statuses for a section and the section title. because we are using a map, this can be done quicly/in one heap
+                    // arrangeDummyData(mGroupOfListOfStatuses);//this is how we get all the tweets (through mGroupOfListOfStatuses)
+
+
+                    if (result.size() > 17) {
+                        //  hasMore = true;
+                    } else {
+                        hasMore = false;
+                    }
+
+                    ((Activity) context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            //  RecyclerViewDataAdapter horizontalAdapter = new RecyclerViewDataAdapter(context, listOfSectionDataModels); //we need to have vertical adapter only.
+                            recyclerRealVert.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                            recyclerRealVert.setAdapter(horizontalAdapter);
+                            Log.d("ben!", "gotten sections: " + horizontalAdapter.getItemCount());
+                            recyclerRealVertWasHori.setVisibility(View.VISIBLE);
+
+                            //WHAT WE SHOULD ACTUALLY HAVE.
+                            VerticalAdapter verticalAdapter = new VerticalAdapter(mContext, singleSectionOfTweets);
+                            // itemColumnHolder.recycler_view_list.setHasFixedSize(false);
+                            itemColumnHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                            itemColumnHolder.recycler_view_list.setAdapter(verticalAdapter);
+
+                            loadingGifIV.setVisibility(View.GONE);
+                            // spinner.setVisibility(View.GONE);
+                            canRefresh = true;
+
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ((Activity) context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingGifIV.setVisibility(View.GONE);
+                            // spinner.setVisibility(View.GONE);
+                            canRefresh = false;
+                        }
+                    });
+
+                }
+
+            }
+        }).start();
+    }
+
+
     public void getMore() {
         canRefresh = false;
 
@@ -562,7 +665,6 @@ public class TheLatestFragmentTwo extends MainFragment {
     }
 
 
-
     @Override
     public void setUpListScroll() {
 
@@ -575,7 +677,6 @@ public class TheLatestFragmentTwo extends MainFragment {
         Log.d("ben!", "screenname test: " + myScreenname);
         return twitter;
     }
-
 
 
     //

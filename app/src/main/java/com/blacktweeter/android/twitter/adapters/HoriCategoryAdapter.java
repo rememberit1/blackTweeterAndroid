@@ -15,6 +15,7 @@ import com.blacktweeter.android.twitter.utils.AdapterCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by benakinlosotuwork on 7/31/18.
@@ -26,7 +27,7 @@ public class HoriCategoryAdapter extends RecyclerView.Adapter<HoriCategoryAdapte
     private Context context;
     private AdapterCallback mAdapterCallback;
 
-    public HoriCategoryAdapter(ArrayList<FBCategory> categoryList, Context context, AdapterCallback callback) {
+    public HoriCategoryAdapter(Context context,ArrayList<FBCategory> categoryList, AdapterCallback callback) {
         this.fbCategoryArrayList = categoryList;
         this.context = context;
         this.mAdapterCallback = callback;

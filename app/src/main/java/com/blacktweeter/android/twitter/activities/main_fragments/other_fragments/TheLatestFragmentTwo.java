@@ -23,6 +23,7 @@ import com.blacktweeter.android.twitter.activities.drawer_activities.DrawerActiv
 import com.blacktweeter.android.twitter.activities.main_fragments.MainFragment;
 import com.blacktweeter.android.twitter.adapters.ActivityCursorAdapter;
 import com.blacktweeter.android.twitter.adapters.ArrayListLoader;
+import com.blacktweeter.android.twitter.adapters.HoriCategoryAdapter;
 import com.blacktweeter.android.twitter.adapters.TheLatestAdapter;
 import com.blacktweeter.android.twitter.adapters.VerticalAdapter;
 import com.blacktweeter.android.twitter.data.App;
@@ -30,6 +31,7 @@ import com.blacktweeter.android.twitter.data.FBCategory;
 import com.blacktweeter.android.twitter.data.FBTweet;
 import com.blacktweeter.android.twitter.data.SectionDataModel;
 import com.blacktweeter.android.twitter.settings.AppSettings;
+import com.blacktweeter.android.twitter.utils.AdapterCallback;
 import com.blacktweeter.android.twitter.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.ChildEventListener;
@@ -42,10 +44,13 @@ import com.google.firebase.database.ValueEventListener;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import twitter4j.Paging;
 import twitter4j.ResponseList;
@@ -60,7 +65,7 @@ import android.net.Uri;
  * Created by benakinlosotuwork on 8/1/18.
  */
 
-public class TheLatestFragmentTwo extends MainFragment {
+public class TheLatestFragmentTwo extends MainFragment implements AdapterCallback {
     public static final int ACTIVITY_REFRESH_ID = 131;
 
     public int unread = 0;
@@ -72,16 +77,22 @@ public class TheLatestFragmentTwo extends MainFragment {
     ImageView loadingGifIV;
     public AppSettings settings;
     public SharedPreferences sharedPrefs;
-    public RecyclerView recyclerRealVert;
+    public RecyclerView realVertRecycler;
+
+
+    private HoriCategoryAdapter horizontalAdapter;
+    private LinearLayoutManager horizontalLayoutManager;
+    public RecyclerView realHoriRecycler;
 
 
     //******************************************************************************************************************************///
     Map<String, FBCategory> mFirebaseCategories = new HashMap<>();
+    String firstFBTopicKey;
     Map<String, ArrayList<Status>> twitterDictionary = new HashMap<>();
-    String firstFirebaseCategory;
     int changingFirebaseCount = 5;
 
-    ArrayList<Status> changeableTweetsArray = new ArrayList<>();
+    FBCategory changeableFBCategory;
+    String changeableTopicKey;
 
 
     //******************************************************************************************************************************///
@@ -112,9 +123,6 @@ public class TheLatestFragmentTwo extends MainFragment {
     };
 
 
-    /**
-     * to get a colletion of specific tweets (black tweets) use twitter.lookup
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -130,7 +138,8 @@ public class TheLatestFragmentTwo extends MainFragment {
 
 
         layout = inflater.inflate(R.layout.the_latest_fragment, null);
-        recyclerRealVert = (RecyclerView) layout.findViewById(R.id.latest_real_recycler_vert);
+        realHoriRecycler = (RecyclerView) layout.findViewById(R.id.horizontalCatgoryView);
+        realVertRecycler = (RecyclerView) layout.findViewById(R.id.latest_real_recycler_vert);
 
 
         //Glide.with(this).asGif().load("").placeholder
@@ -164,89 +173,90 @@ public class TheLatestFragmentTwo extends MainFragment {
     }
 
 
-    private void childEventListener() {
-        Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
-
-        mFirebaseCategories.clear();//Maybe unnecessary or cause a bug. Watch out.
-
-        firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {//were doing this to wait for all firebase data BEFORE we go to twitter. https://stackoverflow.com/questions/34530566
-            //this happens second (look at the website in the comments)
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("ben! We're done loading the initial " + dataSnapshot.getChildrenCount() + " item");
-                doSearch2();
-            }
-
-            public void onCancelled(DatabaseError firebaseError) {
-            }
-        });
-
-        //this happens first
-        firebaseRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Map<String, Object> eachTopic = new HashMap<>();
-
-                numberOfTopics = (int) dataSnapshot.getChildrenCount();
-
-                Map<String, ArrayList<TheLatestFragmentTwo.LatestTweetModel>> eachTheseSection = new HashMap<>();//everytime the data "changes" we clear it
-                Map<String, FBCategory> firebaseCategories = new HashMap<>();
-
-                for (DataSnapshot topic : dataSnapshot.getChildren()) {
-
-                    ArrayList<TheLatestFragmentTwo.LatestTweetModel> listOfTheseTweets = new ArrayList<>();
-                    FBCategory fbCategory = new FBCategory();
-
-                    Map<String, String> tweetIDs = (Map<String, String>) topic.getValue();//this are hashmaps
-                    // Log.d("ben!", "tweet as shown in db: " + topic);//looks like: DataSnapshot { key = Engineering, value = {id1=https://twitter.com/ycschools_us/status/938164182058496001,
-                    for (DataSnapshot tweet : topic.getChildren()) {
-                        TheLatestFragmentTwo.LatestTweetModel latestTweetModel = new TheLatestFragmentTwo.LatestTweetModel();
-                        latestTweetModel.topic = topic.getKey();
-                        if (tweet.getValue().getClass().getName().equals("java.lang.Long")) {
-                            latestTweetModel.tweetID = (Long) tweet.getValue();
-                        } else {
-                            if (tweet.getValue().toString().length() > 21) {
-                                String tweetWithID = tweet.getValue().toString();
-                                tweetWithID = tweetWithID.substring(tweetWithID.lastIndexOf('/') + 1);
-                                latestTweetModel.tweetID = Long.valueOf(tweetWithID);
-                            } else {
-                                latestTweetModel.tweetID = Long.valueOf(tweet.getValue().toString());
-                            }
-                        }
-                        allLatestTweetModels.add(latestTweetModel);//this where all of them are stored
-                        Log.d("ben!", "tweet key: " + latestTweetModel.topic + " and value: " + latestTweetModel.tweetID);
-                        listOfTheseTweets.add(latestTweetModel);
-                    }
-                    //{Scholarships={id4=https://twitter.com/blackenterprise/status/956756340831019009, id1=https://twitter.com/Becauseofthem/status/955622587165442048}, Engineering={id1=https://twi
-                    eachTopic.put(topic.getKey(), tweetIDs);
-                    eachTheseSection.put(topic.getKey(), listOfTheseTweets);
-                }
-
-                //we need a map with a key of the name of the topic (probably going to use this below)
-
-                mEachTheseSection = eachTheseSection;
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
+//    private void childEventListener() {
+//        Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
+//
+//        mFirebaseCategories.clear();//Maybe unnecessary or cause a bug. Watch out.
+//
+//        firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {//were doing this to wait for all firebase data BEFORE we go to twitter. https://stackoverflow.com/questions/34530566
+//            //this happens second (look at the website in the comments)
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                System.out.println("ben! We're done loading the initial " + dataSnapshot.getChildrenCount() + " item");
+//                doSearch2();
+//            }
+//
+//            public void onCancelled(DatabaseError firebaseError) {
+//            }
+//        });
+//
+//        //this happens first
+//        firebaseRef.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                Map<String, Object> eachTopic = new HashMap<>();
+//
+//                numberOfTopics = (int) dataSnapshot.getChildrenCount();
+//
+//                Map<String, ArrayList<TheLatestFragmentTwo.LatestTweetModel>> eachTheseSection = new HashMap<>();//everytime the data "changes" we clear it
+//                Map<String, FBCategory> firebaseCategories = new HashMap<>();
+//
+//                for (DataSnapshot topic : dataSnapshot.getChildren()) {
+//
+//                    ArrayList<TheLatestFragmentTwo.LatestTweetModel> listOfTheseTweets = new ArrayList<>();
+//                    FBCategory fbCategory = new FBCategory();
+//
+//                    Map<String, String> tweetIDs = (Map<String, String>) topic.getValue();//this are hashmaps
+//                    // Log.d("ben!", "tweet as shown in db: " + topic);//looks like: DataSnapshot { key = Engineering, value = {id1=https://twitter.com/ycschools_us/status/938164182058496001,
+//                    for (DataSnapshot tweet : topic.getChildren()) {
+//                        TheLatestFragmentTwo.LatestTweetModel latestTweetModel = new TheLatestFragmentTwo.LatestTweetModel();
+//                        latestTweetModel.topic = topic.getKey();
+//                        if (tweet.getValue().getClass().getName().equals("java.lang.Long")) {
+//                            latestTweetModel.tweetID = (Long) tweet.getValue();
+//                        } else {
+//                            if (tweet.getValue().toString().length() > 21) {
+//                                String tweetWithID = tweet.getValue().toString();
+//                                tweetWithID = tweetWithID.substring(tweetWithID.lastIndexOf('/') + 1);
+//                                latestTweetModel.tweetID = Long.valueOf(tweetWithID);
+//                            } else {
+//                                latestTweetModel.tweetID = Long.valueOf(tweet.getValue().toString());
+//                            }
+//                        }
+//                        allLatestTweetModels.add(latestTweetModel);//this where all of them are stored
+//                        Log.d("ben!", "tweet key: " + latestTweetModel.topic + " and value: " + latestTweetModel.tweetID);
+//                        listOfTheseTweets.add(latestTweetModel);
+//                    }
+//                    //{Scholarships={id4=https://twitter.com/blackenterprise/status/956756340831019009, id1=https://twitter.com/Becauseofthem/status/955622587165442048}, Engineering={id1=https://twi
+//                    eachTopic.put(topic.getKey(), tweetIDs);
+//                    eachTheseSection.put(topic.getKey(), listOfTheseTweets);
+//                }
+//
+//                //we need a map with a key of the name of the topic (probably going to use this below)
+//
+//                mEachTheseSection = eachTheseSection;
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
 
     private void childEventListener2() {
@@ -258,7 +268,7 @@ public class TheLatestFragmentTwo extends MainFragment {
             //this happens second (look at the website in the comments)
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("ben! We're done loading the initial " + dataSnapshot.getChildrenCount() + " item");
-                doSearch2();
+                //doSearch2();
             }
 
             public void onCancelled(DatabaseError firebaseError) {
@@ -276,6 +286,19 @@ public class TheLatestFragmentTwo extends MainFragment {
                 Map<String, ArrayList<TheLatestFragmentTwo.LatestTweetModel>> eachTheseSection = new HashMap<>();//everytime the data "changes" we clear it
                 Map<String, FBCategory> firebaseCategories = new HashMap<>();
 
+                Iterator<DataSnapshot> it  =dataSnapshot.getChildren().iterator();
+                //get the first topic (this may need to change)
+//                if (it.hasNext()) {
+//                   // String string = it.next();
+//                    DataSnapshot firstTopic = it.next();
+//                    firstFBTopicKey = firstTopic.getKey();
+//                    Log.d("ben!", "first topic: " + firstFBTopicKey);
+//                    //first behaviour
+//                    while (it.hasNext()) {
+//                        Log.d("ben!", "do nothing");
+//                    }
+//                }
+
                 for (DataSnapshot topic : dataSnapshot.getChildren()) {
 
                     ArrayList<TheLatestFragmentTwo.LatestTweetModel> listOfTheseTweets = new ArrayList<>();
@@ -284,8 +307,10 @@ public class TheLatestFragmentTwo extends MainFragment {
 
                     Map<String, String> tweetIDs = (Map<String, String>) topic.getValue();//this are hashmaps
 
-
+                    fbCategory.setName(topic.getKey());
                     for (DataSnapshot topicMetaData : topic.getChildren()) {//for every meta data of this category (picture, order, tweet...)
+                        Log.d("ben!", " topics: " + topicMetaData);
+
                         if (topicMetaData.getKey().startsWith("tweet")) {
 
 //                        TheLatestFragmentTwo.LatestTweetModel latestTweetModel = new TheLatestFragmentTwo.LatestTweetModel();
@@ -307,14 +332,14 @@ public class TheLatestFragmentTwo extends MainFragment {
                                     }
                                 }
                                 if (tweetMetaData.getKey().startsWith("tweet_order")) {
-                                    fbTweet.setOrder((int) tweetMetaData.getValue());
+                                    fbTweet.setOrder((Long) tweetMetaData.getValue());
                                 }
                             }
                             fbTweetList.add(fbTweet);
                         } else if (topicMetaData.getKey().startsWith("picture")) {
                             fbCategory.setPictureUrl((String) topicMetaData.getValue());
                         } else if (topicMetaData.getKey().startsWith("topic_order")) {
-                            fbCategory.setOrderNumber((int) topicMetaData.getValue());
+                            fbCategory.setOrderNumber((Long) topicMetaData.getValue());
                         }
                         fbCategory.setTweetArray(fbTweetList);
 //                        else {
@@ -341,6 +366,7 @@ public class TheLatestFragmentTwo extends MainFragment {
 
                 //  mEachTheseSection = eachTheseSection;
                 mFirebaseCategories = firebaseCategories;
+                Collection<FBCategory> kalndfk =  mFirebaseCategories.values();
             }
 
             @Override
@@ -389,121 +415,122 @@ public class TheLatestFragmentTwo extends MainFragment {
 
     }
 
-    public void doSearch() {
-        // spinner.setVisibility(View.VISIBLE);
-        //  Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Twitter twitter = Utils.getTwitter(context, settings);
-
-
-                    ResponseList<Status> result;
-                    try {
-                        //  tweets.clear();
-
-
-                        allTweetIDsLong.clear();
-                        for (TheLatestFragmentTwo.LatestTweetModel oneTweetModel : allLatestTweetModels) {
-                            allTweetIDsLong.add(oneTweetModel.tweetID);
-                        }
-
-                        // result = twitter.lookup(20L, 964658962892169216L, 964734223688110080L, 965098414089342976L, 963823438304604160L, Long.valueOf("965001815568912390"));
-                        Long[] idsNonPrimitive = allTweetIDsLong.toArray(new Long[allTweetIDsLong.size()]);
-                        long[] ids = ArrayUtils.toPrimitive(idsNonPrimitive);
-
-                        result = twitter.lookup(ids);
-
-                    } catch (OutOfMemoryError e) {
-                        return;
-                    }
-
-                    //tweets.clear();
-
-                    //iterate through this and then compare the LatestTweetModel.tweetId to result.get(5).getId();
-                    for (String key : mEachTheseSection.keySet()) {
-                        SectionDataModel dm = new SectionDataModel();
-                        ArrayList<Status> statuses = new ArrayList<>();
-                        ArrayList<TheLatestFragmentTwo.LatestTweetModel> listOfTweetModels = mEachTheseSection.get(key);
-                        for (TheLatestFragmentTwo.LatestTweetModel tweetModel : listOfTweetModels) {
-                            Long tweetId = tweetModel.tweetID;
-                            for (Status status : result) {
-                                if (tweetId == status.getId()) {
-                                    statuses.add(status);
-                                }
-                            }
-                        }
-                        dm.setAllItemsInSection(statuses);
-                        System.out.println("ben! list of all tweets this section sections " + dm.getAllItemsInSection());
-
-                        dm.setHeaderTitle(key);
-                        System.out.println("ben! headertitle " + dm.getHeaderTitle());
-                        listOfSectionDataModels.add(dm);
-                    }
-
-
-                    List<Status> result1 = new ArrayList<>();
-                    List<Status> result2 = new ArrayList<>();
-                    result1.add(result.get(0));
-                    result1.add(result.get(1));
-                    result1.add(result.get(2));
-                    result2.add(result.get(3));
-                    result2.add(result.get(4));
-                    result2.add(result.get(5));
-                    result.get(5).getId();
-                    mGroupOfListOfStatuses.add(result1);
-                    mGroupOfListOfStatuses.add(result2);
-
-                    //this/the replacement sets the list of statuses for a section and the section title. because we are using a map, this can be done quicly/in one heap
-                    // arrangeDummyData(mGroupOfListOfStatuses);//this is how we get all the tweets (through mGroupOfListOfStatuses)
-
-
-                    if (result.size() > 17) {
-                        //  hasMore = true;
-                    } else {
-                        hasMore = false;
-                    }
-
-                    ((Activity) context).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            //  RecyclerViewDataAdapter horizontalAdapter = new RecyclerViewDataAdapter(context, listOfSectionDataModels); //we need to have vertical adapter only.
-                            recyclerRealVert.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                            recyclerRealVert.setAdapter(horizontalAdapter);
-                            Log.d("ben!", "gotten sections: " + horizontalAdapter.getItemCount());
-                            recyclerRealVertWasHori.setVisibility(View.VISIBLE);
-
-                            //WHAT WE SHOULD ACTUALLY HAVE.
-                            VerticalAdapter verticalAdapter = new VerticalAdapter(mContext, singleSectionOfTweets);
-                            // itemColumnHolder.recycler_view_list.setHasFixedSize(false);
-                            itemColumnHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-                            itemColumnHolder.recycler_view_list.setAdapter(verticalAdapter);
-
-                            loadingGifIV.setVisibility(View.GONE);
-                            // spinner.setVisibility(View.GONE);
-                            canRefresh = true;
-
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ((Activity) context).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingGifIV.setVisibility(View.GONE);
-                            // spinner.setVisibility(View.GONE);
-                            canRefresh = false;
-                        }
-                    });
-
-                }
-
-            }
-        }).start();
-    }
+//    public void doSearch() {
+//        // spinner.setVisibility(View.VISIBLE);
+//        //  Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
+//
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Twitter twitter = Utils.getTwitter(context, settings);
+//
+//
+//                    ResponseList<Status> result;
+//                    try {
+//                        //  tweets.clear();
+//
+//
+//                        allTweetIDsLong.clear();
+//                        for (TheLatestFragmentTwo.LatestTweetModel oneTweetModel : allLatestTweetModels) {
+//                            allTweetIDsLong.add(oneTweetModel.tweetID);
+//                        }
+//
+//                        // result = twitter.lookup(20L, 964658962892169216L, 964734223688110080L, 965098414089342976L, 963823438304604160L, Long.valueOf("965001815568912390"));
+//                        Long[] idsNonPrimitive = allTweetIDsLong.toArray(new Long[allTweetIDsLong.size()]);
+//                        long[] ids = ArrayUtils.toPrimitive(idsNonPrimitive);
+//
+//                        result = twitter.lookup(ids);
+//
+//                    } catch (OutOfMemoryError e) {
+//                        return;
+//                    }
+//
+//                    //tweets.clear();
+//
+//                    //iterate through this and then compare the LatestTweetModel.tweetId to result.get(5).getId();
+//                    for (String key : mEachTheseSection.keySet()) {
+//                        SectionDataModel dm = new SectionDataModel();
+//                        ArrayList<Status> statuses = new ArrayList<>();
+//                        ArrayList<TheLatestFragmentTwo.LatestTweetModel> listOfTweetModels = mEachTheseSection.get(key);
+//                        for (TheLatestFragmentTwo.LatestTweetModel tweetModel : listOfTweetModels) {
+//                            Long tweetId = tweetModel.tweetID;
+//                            for (Status status : result) {
+//                                if (tweetId == status.getId()) {
+//                                    statuses.add(status);
+//                                }
+//                            }
+//                        }
+//                        dm.setAllItemsInSection(statuses);
+//                        System.out.println("ben! list of all tweets this section sections " + dm.getAllItemsInSection());
+//
+//                        dm.setHeaderTitle(key);
+//                        System.out.println("ben! headertitle " + dm.getHeaderTitle());
+//                        listOfSectionDataModels.add(dm);
+//                    }
+//
+//
+//                    List<Status> result1 = new ArrayList<>();
+//                    List<Status> result2 = new ArrayList<>();
+//                    result1.add(result.get(0));
+//                    result1.add(result.get(1));
+//                    result1.add(result.get(2));
+//                    result2.add(result.get(3));
+//                    result2.add(result.get(4));
+//                    result2.add(result.get(5));
+//                    result.get(5).getId();
+//                    mGroupOfListOfStatuses.add(result1);
+//                    mGroupOfListOfStatuses.add(result2);
+//
+//                    //this/the replacement sets the list of statuses for a section and the section title. because we are using a map, this can be done quicly/in one heap
+//                    // arrangeDummyData(mGroupOfListOfStatuses);//this is how we get all the tweets (through mGroupOfListOfStatuses)
+//
+//
+//                    if (result.size() > 17) {
+//                        //  hasMore = true;
+//                    } else {
+//                        hasMore = false;
+//                    }
+//
+//                    ((Activity) context).runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                            //  RecyclerViewDataAdapter horizontalAdapter = new RecyclerViewDataAdapter(context, listOfSectionDataModels); //we need to have vertical adapter only.
+//                            horizontalAdapter = new HoriCategoryAdapter(context, )
+//                            realVertRecycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+//                            realVertRecycler.setAdapter(horizontalAdapter);
+//                            Log.d("ben!", "gotten sections: " + horizontalAdapter.getItemCount());
+//                            recyclerRealVertWasHori.setVisibility(View.VISIBLE);
+//
+//                            //WHAT WE SHOULD ACTUALLY HAVE.
+//                            VerticalAdapter verticalAdapter = new VerticalAdapter(mContext, singleSectionOfTweets);
+//                            // itemColumnHolder.recycler_view_list.setHasFixedSize(false);
+//                            itemColumnHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+//                            itemColumnHolder.recycler_view_list.setAdapter(verticalAdapter);
+//
+//                            loadingGifIV.setVisibility(View.GONE);
+//                            // spinner.setVisibility(View.GONE);
+//                            canRefresh = true;
+//
+//                        }
+//                    });
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    ((Activity) context).runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            loadingGifIV.setVisibility(View.GONE);
+//                            // spinner.setVisibility(View.GONE);
+//                            canRefresh = false;
+//                        }
+//                    });
+//
+//                }
+//
+//            }
+//        }).start();
+//    }
 
 
     public void doSearch2() {
@@ -578,17 +605,29 @@ public class TheLatestFragmentTwo extends MainFragment {
                         @Override
                         public void run() {
 
-                            //  RecyclerViewDataAdapter horizontalAdapter = new RecyclerViewDataAdapter(context, listOfSectionDataModels); //we need to have vertical adapter only.
-                            recyclerRealVert.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                            recyclerRealVert.setAdapter(horizontalAdapter);
-                            Log.d("ben!", "gotten sections: " + horizontalAdapter.getItemCount());
-                            recyclerRealVertWasHori.setVisibility(View.VISIBLE);
 
-                            //WHAT WE SHOULD ACTUALLY HAVE.
-                            VerticalAdapter verticalAdapter = new VerticalAdapter(mContext, singleSectionOfTweets);
-                            // itemColumnHolder.recycler_view_list.setHasFixedSize(false);
-                            itemColumnHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-                            itemColumnHolder.recycler_view_list.setAdapter(verticalAdapter);
+                            //We're only commenting out so that we can log everything
+//                            horizontalAdapter = new HoriCategoryAdapter(context, (ArrayList<FBCategory>) mFirebaseCategories.values(), TheLatestFragmentTwo.this);
+//                            horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+//                            realHoriRecycler.setLayoutManager(horizontalLayoutManager);
+//                            realHoriRecycler.setAdapter(horizontalAdapter);
+//
+//                            changeableFBCategory = mFirebaseCategories.get(changeableTopicKey);
+//                            VerticalAdapter clickedAdapter = new VerticalAdapter(context, mFirebaseCategories.get("Wimminz In Yellow"), "");
+//                            realVertRecycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+//                            realVertRecycler.setAdapter(clickedAdapter);
+//                            realVertRecycler.setVisibility(View.VISIBLE);
+
+//                            //WHAT WE SHOULD ACTUALLY HAVE.
+//                            VerticalAdapter verticalAdapter = new VerticalAdapter(mContext, singleSectionOfTweets);
+//                            // itemColumnHolder.recycler_view_list.setHasFixedSize(false);
+//                            itemColumnHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+//                            itemColumnHolder.recycler_view_list.setAdapter(verticalAdapter);
+
+
+                            //================================================================================================================================================//
+                            //================================================================================================================================================//
+
 
                             loadingGifIV.setVisibility(View.GONE);
                             // spinner.setVisibility(View.GONE);
@@ -751,6 +790,11 @@ public class TheLatestFragmentTwo extends MainFragment {
         super.onDestroy();
         //this is probably unnecessary
         latestIsVisible = false;
+    }
+
+    @Override
+    public void onMethodCallback(String clickedString) {
+        Log.d("ben!", "changing topic");
     }
 
     private class LatestTweetModel {

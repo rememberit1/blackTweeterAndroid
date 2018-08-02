@@ -139,7 +139,7 @@ public class TimelinePagerAdapter extends FragmentPagerAdapter {
                     //frags.add(new ActivityFragment());//benchange
                     // names.add(context.getString(R.string.activity));
                     names.add(("The Latest"));
-                    frags.add( new TheLatestFragment());
+                    frags.add( new TheLatestFragmentTwo());
 
                     mentionIndex = i;
                     break;

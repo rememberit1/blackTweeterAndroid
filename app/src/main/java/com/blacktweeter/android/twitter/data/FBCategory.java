@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class FBCategory {
     String name;
     String pictureUrl;
-    int orderNumber;
+    long orderNumber;
     ArrayList<FBTweet> tweetArray = new ArrayList<>();
 
     public FBCategory(){
@@ -31,7 +31,7 @@ public class FBCategory {
         this.pictureUrl = pictureUrl;
     }
 
-    public void setOrderNumber(int orderNumber) {
+    public void setOrderNumber(long orderNumber) {
         this.orderNumber = orderNumber;
     }
 
@@ -50,7 +50,7 @@ public class FBCategory {
         return pictureUrl;
     }
 
-    public int getOrderNumber() {
+    public long getOrderNumber() {
         return orderNumber;
     }
 

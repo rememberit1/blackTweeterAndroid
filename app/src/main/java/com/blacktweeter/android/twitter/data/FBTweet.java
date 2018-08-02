@@ -8,7 +8,7 @@ import twitter4j.Status;
 
 public class FBTweet {
     String name;
-    int order;
+    Long order;
     Long tweetId;
     Status status;
 
@@ -16,7 +16,7 @@ public class FBTweet {
 
     }
 
-    public FBTweet(String name, int order, Long tweetId, Status status) {
+    public FBTweet(String name, Long order, Long tweetId, Status status) {
         this.name = name;
         this.order = order;
         this.tweetId = tweetId;
@@ -28,7 +28,7 @@ public class FBTweet {
         this.name = name;
     }
 
-    public void setOrder(int order) {
+    public void setOrder(Long order) {
         this.order = order;
     }
 
@@ -45,7 +45,7 @@ public class FBTweet {
         return name;
     }
 
-    public int getOrder() {
+    public Long getOrder() {
         return order;
     }
 

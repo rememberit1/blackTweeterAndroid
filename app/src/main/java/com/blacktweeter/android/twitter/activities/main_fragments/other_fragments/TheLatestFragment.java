@@ -349,17 +349,17 @@ public class TheLatestFragment extends MainFragment {
                         @Override
                         public void run() {
 
-                          //  RecyclerViewDataAdapter horizontalAdapter = new RecyclerViewDataAdapter(context, listOfSectionDataModels); //we need to have vertical adapter only.
-                            recyclerRealVertWasHori.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                            recyclerRealVertWasHori.setAdapter(horizontalAdapter);
-                            Log.d("ben!", "gotten sections: " + horizontalAdapter.getItemCount());
-                            recyclerRealVertWasHori.setVisibility(View.VISIBLE);
-
-                            //WHAT WE SHOULD ACTUALLY HAVE.
-                            VerticalAdapter verticalAdapter = new VerticalAdapter(mContext, singleSectionOfTweets);
-                            // itemColumnHolder.recycler_view_list.setHasFixedSize(false);
-                            itemColumnHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-                            itemColumnHolder.recycler_view_list.setAdapter(verticalAdapter);
+//                          //  RecyclerViewDataAdapter horizontalAdapter = new RecyclerViewDataAdapter(context, listOfSectionDataModels); //we need to have vertical adapter only.
+//                            recyclerRealVertWasHori.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+//                            recyclerRealVertWasHori.setAdapter(horizontalAdapter);
+//                            Log.d("ben!", "gotten sections: " + horizontalAdapter.getItemCount());
+//                            recyclerRealVertWasHori.setVisibility(View.VISIBLE);
+//
+//                            //WHAT WE SHOULD ACTUALLY HAVE.
+//                            VerticalAdapter verticalAdapter = new VerticalAdapter(mContext, singleSectionOfTweets);
+//                            // itemColumnHolder.recycler_view_list.setHasFixedSize(false);
+//                            itemColumnHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+//                            itemColumnHolder.recycler_view_list.setAdapter(verticalAdapter);
 
                             loadingGifIV.setVisibility(View.GONE);
                             // spinner.setVisibility(View.GONE);

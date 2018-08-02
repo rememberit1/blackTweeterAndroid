@@ -38,6 +38,8 @@ import android.widget.Toast;
 import com.blacktweeter.android.twitter.activities.MainActivity;
 import com.blacktweeter.android.twitter.activities.compose.ComposeActivity;
 import com.blacktweeter.android.twitter.activities.tweet_viewer.ViewPictures;
+import com.blacktweeter.android.twitter.data.FBCategory;
+import com.blacktweeter.android.twitter.data.FBTweet;
 import com.blacktweeter.android.twitter.settings.AppSettings;
 import com.blacktweeter.android.twitter.utils.EmojiUtils;
 import com.blacktweeter.android.twitter.utils.ImageUtils;
@@ -114,6 +116,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
     DisplayMetrics metrics = new DisplayMetrics();
 
     public VerticalAdapter(Context context, ArrayList<Status> statuses) {
+
        // super(context, R.layout.tweet);
         this.statuses = statuses;
         this.context = context;
@@ -128,6 +131,28 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
 
         setUpLayout();
     }
+
+    public VerticalAdapter(Context context, FBCategory category, String nullString) {
+        // super(context, R.layout.tweet);
+        ArrayList<Status> cStatuses = new ArrayList<>();
+            for (FBTweet fbTweet : category.getTweetArray() ){
+                cStatuses.add(fbTweet.getStatus());
+            }
+        this.statuses = cStatuses;
+        this.context = context;
+        this.settings = AppSettings.getInstance(context);
+
+        this.inflater = LayoutInflater.from(context);
+
+
+        this.type = NORMAL;
+
+        this.username = "";
+
+        setUpLayout();
+    }
+
+
 
     @SuppressLint("ResourceAsColor")
     public void setUpLayout() {

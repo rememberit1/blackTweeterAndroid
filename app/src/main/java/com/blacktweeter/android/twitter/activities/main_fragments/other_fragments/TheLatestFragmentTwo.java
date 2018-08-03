@@ -268,7 +268,7 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
             //this happens second (look at the website in the comments)
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("ben! We're done loading the initial " + dataSnapshot.getChildrenCount() + " item");
-                //doSearch2();
+                doSearch2();
             }
 
             public void onCancelled(DatabaseError firebaseError) {
@@ -308,8 +308,9 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
                     Map<String, String> tweetIDs = (Map<String, String>) topic.getValue();//this are hashmaps
 
                     fbCategory.setName(topic.getKey());
+                    Log.d("ben!", "topics: " + topic);
                     for (DataSnapshot topicMetaData : topic.getChildren()) {//for every meta data of this category (picture, order, tweet...)
-                        Log.d("ben!", " topics: " + topicMetaData);
+
 
                         if (topicMetaData.getKey().startsWith("tweet")) {
 
@@ -357,16 +358,16 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
 //                        listOfTheseTweets.add(latestTweetModel);
                     }
                     firebaseCategories.put(topic.getKey(), fbCategory);
+                    // mFirebaseCategories.put(topic.getKey(), fbCategory);
+
                     //{Scholarships={id4=https://twitter.com/blackenterprise/status/956756340831019009, id1=https://twitter.com/Becauseofthem/status/955622587165442048}, Engineering={id1=https://twi
 //                    eachTopic.put(topic.getKey(), tweetIDs);
 //                    eachTheseSection.put(topic.getKey(), listOfTheseTweets);
                 }
 
-                //we need a map with a key of the name of the topic (probably going to use this below)
 
-                //  mEachTheseSection = eachTheseSection;
                 mFirebaseCategories = firebaseCategories;
-                Collection<FBCategory> kalndfk =  mFirebaseCategories.values();
+                Log.d("ben!", "firebasecategories: " +mFirebaseCategories.toString());
             }
 
             @Override
@@ -607,16 +608,16 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
 
 
                             //We're only commenting out so that we can log everything
-//                            horizontalAdapter = new HoriCategoryAdapter(context, (ArrayList<FBCategory>) mFirebaseCategories.values(), TheLatestFragmentTwo.this);
-//                            horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-//                            realHoriRecycler.setLayoutManager(horizontalLayoutManager);
-//                            realHoriRecycler.setAdapter(horizontalAdapter);
-//
-//                            changeableFBCategory = mFirebaseCategories.get(changeableTopicKey);
-//                            VerticalAdapter clickedAdapter = new VerticalAdapter(context, mFirebaseCategories.get("Wimminz In Yellow"), "");
-//                            realVertRecycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-//                            realVertRecycler.setAdapter(clickedAdapter);
-//                            realVertRecycler.setVisibility(View.VISIBLE);
+                            horizontalAdapter = new HoriCategoryAdapter(context, mFirebaseCategories, TheLatestFragmentTwo.this);
+                            horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+                            realHoriRecycler.setLayoutManager(horizontalLayoutManager);
+                            realHoriRecycler.setAdapter(horizontalAdapter);
+
+                            changeableFBCategory = mFirebaseCategories.get(changeableTopicKey);
+                            VerticalAdapter clickedAdapter = new VerticalAdapter(context, mFirebaseCategories.get("Wimminz in Yellow"), "");
+                            realVertRecycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+                            realVertRecycler.setAdapter(clickedAdapter);
+                            realVertRecycler.setVisibility(View.VISIBLE);
 
 //                            //WHAT WE SHOULD ACTUALLY HAVE.
 //                            VerticalAdapter verticalAdapter = new VerticalAdapter(mContext, singleSectionOfTweets);
@@ -803,3 +804,4 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
         String topic = null;
     }
 }
+

@@ -11,10 +11,13 @@ import android.widget.Toast;
 
 import com.blacktweeter.android.twitter.R;
 import com.blacktweeter.android.twitter.data.FBCategory;
+import com.blacktweeter.android.twitter.data.FBTweet;
 import com.blacktweeter.android.twitter.utils.AdapterCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -23,12 +26,15 @@ import java.util.Set;
 
 public class HoriCategoryAdapter extends RecyclerView.Adapter<HoriCategoryAdapter.FBCategoryViewHolder> {
 
-    private ArrayList<FBCategory> fbCategoryArrayList = new ArrayList<>();
+    private ArrayList<FBCategory>fbCategoryArrayList = new ArrayList<>();
     private Context context;
     private AdapterCallback mAdapterCallback;
 
-    public HoriCategoryAdapter(Context context,ArrayList<FBCategory> categoryList, AdapterCallback callback) {
-        this.fbCategoryArrayList = categoryList;
+    public HoriCategoryAdapter(Context context, Map<String, FBCategory> categoryMap, AdapterCallback callback) {
+
+        for (Map.Entry<String, FBCategory> categoryEntry : categoryMap.entrySet()) {
+            this.fbCategoryArrayList.add(categoryEntry.getValue());
+        }
         this.context = context;
         this.mAdapterCallback = callback;
     }
@@ -85,3 +91,4 @@ public class HoriCategoryAdapter extends RecyclerView.Adapter<HoriCategoryAdapte
 
 
 }
+

@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-include ':app', ':wear', ':shared_assets'
+include ':app', ':wear', ':shared_assets', ':cardview-v7-25.1.1-sources'

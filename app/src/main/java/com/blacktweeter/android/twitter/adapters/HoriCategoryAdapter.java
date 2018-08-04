@@ -2,6 +2,7 @@ package com.blacktweeter.android.twitter.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,14 +28,20 @@ import java.util.Set;
 public class HoriCategoryAdapter extends RecyclerView.Adapter<HoriCategoryAdapter.FBCategoryViewHolder> {
 
     private ArrayList<FBCategory>fbCategoryArrayList = new ArrayList<>();
+    private ArrayList<String>stringArrayList = new ArrayList<>();
     private Context context;
     private AdapterCallback mAdapterCallback;
+    private CardView cardView;
+
+
 
     public HoriCategoryAdapter(Context context, Map<String, FBCategory> categoryMap, AdapterCallback callback) {
+
 
         for (Map.Entry<String, FBCategory> categoryEntry : categoryMap.entrySet()) {
             this.fbCategoryArrayList.add(categoryEntry.getValue());
         }
+
         this.context = context;
         this.mAdapterCallback = callback;
     }
@@ -63,15 +70,6 @@ public class HoriCategoryAdapter extends RecyclerView.Adapter<HoriCategoryAdapte
 
         Picasso.with(context).load(fbCategory.getPictureUrl()).into(fbCategoryViewHolder.imageView);
         fbCategoryViewHolder.categoryText.setText(fbCategory.getName());
-
-        fbCategoryViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, fbCategoryViewHolder.categoryText.getText() +" - "+position, Toast.LENGTH_SHORT).show();
-                mAdapterCallback.onMethodCallback((String) fbCategoryViewHolder.categoryText.getText());
-            }
-        });
-
     }
 
     public class FBCategoryViewHolder extends RecyclerView.ViewHolder {
@@ -81,7 +79,6 @@ public class HoriCategoryAdapter extends RecyclerView.Adapter<HoriCategoryAdapte
 
         public FBCategoryViewHolder(View itemView) {
             super(itemView);
-            // itemView.setOnClickListener(this);
             imageView = (ImageView) itemView.findViewById(R.id.category_Imageview);
             categoryText = (TextView) itemView.findViewById(R.id.category_text);
         }

@@ -27,7 +27,8 @@ android {
         code += 264
         
         applicationId "com.blacktweeter.android.twitter"
-        minSdkVersion Integer.parseInt(project.MIN_SDK)
+       // minSdkVersion Integer.parseInt(project.MIN_SDK)
+        minSdkVersion 21
         targetSdkVersion Integer.parseInt(project.TARGET_SDK)
         multiDexEnabled true
         versionCode code
@@ -93,6 +94,7 @@ android {
 
 dependencies {
     // wearApp project(':wear')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     provided 'org.projectlombok:lombok:1.14.8'
     compile "com.android.support:appcompat-v7:${project.ANDROID_SUPPORT_VERSION}"
     compile "com.android.support:customtabs:${project.ANDROID_SUPPORT_VERSION}"
@@ -127,9 +129,11 @@ dependencies {
     compile 'com.google.firebase:firebase-database:11.8.0'
     compile 'com.google.firebase:firebase-messaging:11.8.0'
 
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:21.0.+'
+    compile 'com.android.support:cardview-v7:+'
+    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:support-v4:21.0.0'
+
     compile 'org.apache.commons:commons-lang3:3.5'
 
 

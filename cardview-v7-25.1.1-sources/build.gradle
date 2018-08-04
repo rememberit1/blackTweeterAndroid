@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('cardview-v7-25.1.1-sources.jar'))

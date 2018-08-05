@@ -138,7 +138,7 @@ public class TimelinePagerAdapter extends FragmentPagerAdapter {
                 case AppSettings.PAGE_TYPE_ACTIVITY:
                     //frags.add(new ActivityFragment());//benchange
                     // names.add(context.getString(R.string.activity));
-                    names.add(("The Latest"));
+                    names.add(("What's Happening"));
                     frags.add( new TheLatestFragmentTwo());
 
                     mentionIndex = i;

@@ -136,7 +136,10 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
         // super(context, R.layout.tweet);
         ArrayList<Status> cStatuses = new ArrayList<>();
             for (FBTweet fbTweet : category.getTweetArray() ){
-                cStatuses.add(fbTweet.getStatus());
+                if (fbTweet.getStatus() != null) {
+                    Log.d("ben!", "beat: " + fbTweet.getStatus().getText());
+                    cStatuses.add(fbTweet.getStatus());
+                }
             }
         this.statuses = cStatuses;
         this.context = context;
@@ -228,7 +231,13 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
         Status thisStatus;
 
         String retweeter;
-        final long time = statuses.get(position).getCreatedAt().getTime();
+        final long time;
+        if (statuses.get(position) == null) {
+            time = 0;
+
+        } else {
+            time = statuses.get(position).getCreatedAt().getTime();
+        }
         long originalTime = 0;
 
         if (statuses.get(position).isRetweet()) {

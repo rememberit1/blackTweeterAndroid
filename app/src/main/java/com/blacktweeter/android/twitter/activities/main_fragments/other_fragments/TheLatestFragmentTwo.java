@@ -1,18 +1,14 @@
 package com.blacktweeter.android.twitter.activities.main_fragments.other_fragments;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -48,13 +44,11 @@ import com.google.firebase.database.ValueEventListener;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import twitter4j.Paging;
 import twitter4j.ResponseList;
@@ -92,7 +86,7 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
 
 
     //******************************************************************************************************************************///
-    Map<String, FBCategory> mFirebaseCategories = new HashMap<>();
+    Map<String, FBCategory> mFirebaseDictionary = new HashMap<>();
     String firstFBTopicKey;
     Map<String, ArrayList<Status>> twitterDictionary = new HashMap<>();
     int changingFirebaseCount = 5;
@@ -185,12 +179,18 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
 
 
 
+    private void pureReload() {
+        //because of the clearing, no need to do notifiy dataset change.
+        mFirebaseDictionary.clear();
+        twitterDictionary.clear();
+        childEventListener2();
+    }
 
 
     private void childEventListener2() {
         Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
 
-        mFirebaseCategories.clear();//Maybe unnecessary or cause a bug. Watch out.
+        mFirebaseDictionary.clear();//Maybe unnecessary or cause a bug. Watch out.
 
         firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {//were doing this to wait for all firebase data BEFORE we go to twitter. https://stackoverflow.com/questions/34530566
             //this happens second (look at the website in the comments)
@@ -203,35 +203,36 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
             }
         });
 
-        //this happens first
+        //this happens FIRST and completes BEFORE moving on to api.twitter.com
         firebaseRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                 if (dataSnapshot.getKey().equals("TheLatest")){
 
-                Map<String, Object> eachTopic = new HashMap<>();
+             //   Map<String, Object> eachTopic = new HashMap<>();
 
                 numberOfTopics = (int) dataSnapshot.getChildrenCount();
 
-                Map<String, ArrayList<TheLatestFragmentTwo.LatestTweetModel>> eachTheseSection = new HashMap<>();//everytime the data "changes" we clear it
+              //  Map<String, ArrayList<TheLatestFragmentTwo.LatestTweetModel>> eachTheseSection = new HashMap<>();//everytime the data "changes" we clear it
                 Map<String, FBCategory> firebaseCategories = new HashMap<>();
 
                 Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
 
 
-                for (DataSnapshot topic : dataSnapshot.getChildren()) {
+                for (DataSnapshot category : dataSnapshot.getChildren()) {
                     if (dataSnapshot.getKey().equals("TheLatest")) {
 
-                        ArrayList<TheLatestFragmentTwo.LatestTweetModel> listOfTheseTweets = new ArrayList<>();
+                       // ArrayList<TheLatestFragmentTwo.LatestTweetModel> listOfTheseTweets = new ArrayList<>();
                         FBCategory fbCategory = new FBCategory();
+
                         ArrayList<FBTweet> fbTweetList = new ArrayList<>();
 
-                        Map<String, String> tweetIDs = (Map<String, String>) topic.getValue();//this are hashmaps
+                        Map<String, String> tweetIDs = (Map<String, String>) category.getValue();//this are hashmaps
 
-                        fbCategory.setName(topic.getKey());
-                        Log.d("ben!", "topics: " + topic);
-                        for (DataSnapshot topicMetaData : topic.getChildren()) {//for every meta data of this category (picture, order, tweet...)
+                        fbCategory.setName(category.getKey());
+                        Log.d("ben!", "topics: " + category);
+                        for (DataSnapshot topicMetaData : category.getChildren()) {//for every meta data of this category (picture, order, tweet...)
 
 
                             if (topicMetaData.getKey().startsWith("tweet")) {
@@ -267,8 +268,8 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
                             fbCategory.setTweetArray(fbTweetList);
 
                         }
-                        firebaseCategories.put(topic.getKey(), fbCategory);
-                        // mFirebaseCategories.put(topic.getKey(), fbCategory);
+                        firebaseCategories.put(category.getKey(), fbCategory);
+                        // mFirebaseDictionary.put(topic.getKey(), fbCategory);
 
                         //{Scholarships={id4=https://twitter.com/blackenterprise/status/956756340831019009, id1=https://twitter.com/Becauseofthem/status/955622587165442048}, Engineering={id1=https://twi
 //                    eachTopic.put(topic.getKey(), tweetIDs);
@@ -276,8 +277,8 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
                     }
 
 
-                    mFirebaseCategories = firebaseCategories;
-                    Log.d("ben!", "firebasecategories: " + mFirebaseCategories.toString());
+                    mFirebaseDictionary = firebaseCategories;
+                    Log.d("ben!", "firebasecategories: " + mFirebaseDictionary.toString());
                 }
             }
 //            else {
@@ -353,7 +354,7 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
 
 
                         allTweetIDsLong.clear();
-                        for (Map.Entry<String, FBCategory> categoryEntry : mFirebaseCategories.entrySet()) {
+                        for (Map.Entry<String, FBCategory> categoryEntry : mFirebaseDictionary.entrySet()) {
                             for (FBTweet fbTweet : categoryEntry.getValue().getTweetArray()) {
                                 allTweetIDsLong.add(fbTweet.getTweetId());
                             }
@@ -368,7 +369,7 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
                         return;
                     }
 
-                    for (Map.Entry<String, FBCategory> categoryEntry : mFirebaseCategories.entrySet()) {
+                    for (Map.Entry<String, FBCategory> categoryEntry : mFirebaseDictionary.entrySet()) {
                         for (FBTweet fbTweet : categoryEntry.getValue().getTweetArray()) {
                             for (Status status : result) {
                                 if (status.getId() == fbTweet.getTweetId()) {
@@ -408,13 +409,15 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
 
 
                             //We're only commenting out so that we can log everything
-                            horizontalAdapter = new HoriCategoryAdapter(context, mFirebaseCategories, TheLatestFragmentTwo.this);
+                            horizontalAdapter = new HoriCategoryAdapter(context, mFirebaseDictionary, TheLatestFragmentTwo.this);
                             horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
                             realHoriRecycler.setLayoutManager(horizontalLayoutManager);
                             realHoriRecycler.setAdapter(horizontalAdapter);
 
-                            changeableFBCategory = mFirebaseCategories.get(changeableTopicKey);
-                            VerticalAdapter clickedAdapter = new VerticalAdapter(context, mFirebaseCategories.get("I Still Beat"), "");
+                            changeableFBCategory = mFirebaseDictionary.get(changeableTopicKey);
+                            Log.d("ben!", "beat "+ mFirebaseDictionary.get("I Still Beat").getTweetArray());
+                           // VerticalAdapter clickedAdapter = new VerticalAdapter(context, changeableFBCategory, "");
+                            VerticalAdapter clickedAdapter = new VerticalAdapter(context, mFirebaseDictionary.get("I Still Beat"), "");
                             realVertRecycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             realVertRecycler.setAdapter(clickedAdapter);
                             realVertRecycler.setVisibility(View.VISIBLE);

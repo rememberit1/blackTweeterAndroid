@@ -64,7 +64,8 @@ import twitter4j.TwitterException;
 public class HomeFragment extends MainFragment { // implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final int HOME_REFRESH_ID = 121;
-    public static final String RATE_LIMIT_URL = "https://plus.google.com/117432358268488452276/posts/J5yY3K3fyME";
+    //public static final String RATE_LIMIT_URL = "https://plus.google.com/117432358268488452276/posts/J5yY3K3fyME";
+    public static final String RATE_LIMIT_URL = "https://benyemi.wixsite.com/btratelimiting";
 
     public int unread;
 

@@ -42,6 +42,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +59,7 @@ import twitter4j.TwitterException;
 import uk.co.senab.bitmapcache.BitmapLruCache;
 
 import android.net.Uri;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -77,9 +79,11 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
     public AppSettings settings;
     public SharedPreferences sharedPrefs;
     public RecyclerView realVertRecycler;
+    public TextView catgoryHeaderText;
     Long versionNumber = 1L;
 
 
+    VerticalAdapter mClickedAdapter;
     private HoriCategoryAdapter horizontalAdapter;
     private LinearLayoutManager horizontalLayoutManager;
     public RecyclerView realHoriRecycler;
@@ -138,8 +142,9 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
 
 
         layout = inflater.inflate(R.layout.the_latest_fragment, null);
-        realHoriRecycler = (RecyclerView) layout.findViewById(R.id.horizontalCatgoryView);
-        realVertRecycler = (RecyclerView) layout.findViewById(R.id.latest_real_recycler_vert);
+        realHoriRecycler =  layout.findViewById(R.id.horizontalCatgoryView);
+        realVertRecycler =  layout.findViewById(R.id.latest_real_recycler_vert);
+        catgoryHeaderText = layout.findViewById(R.id.catHeaderText);
 
 
         //Glide.with(this).asGif().load("").placeholder
@@ -410,26 +415,39 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
 
                             //We're only commenting out so that we can log everything
                            // horizontalAdapter = new HoriCategoryAdapter(context, mFirebaseDictionary, TheLatestFragmentTwo.this);
-                            horizontalAdapter = new HoriCategoryAdapter(context, mFirebaseDictionary, new AdapterCallback() {
+                            AdapterCallback myAdaptercallback = new AdapterCallback() {
+                                @Override
+                                public void onItemClick(View v, int position) {
+                                    List<FBCategory> firebaseList = new ArrayList<>(mFirebaseDictionary.values());
+                                    changeableTopicKey = firebaseList.get(position).getName();
+                                }
+                            };
 
+                            horizontalAdapter = new HoriCategoryAdapter(context, mFirebaseDictionary, new AdapterCallback() {
                                 @Override
                                 public void onItemClick(View v, int position) {
                                     List<FBCategory> firebaseList = new ArrayList<>(mFirebaseDictionary.values());
                                     Log.d("ben!", "clicked position: " +  firebaseList.get(position).getName());
-
-
+                                    changeableTopicKey = firebaseList.get(position).getName();
+                                    catgoryHeaderText.setText(changeableTopicKey);
+                                    mClickedAdapter = new VerticalAdapter(context, mFirebaseDictionary.get(changeableTopicKey), "");
+                                    realVertRecycler.setAdapter(mClickedAdapter);
+                                    mClickedAdapter.notifyDataSetChanged();
                                 }
                             });
                             horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
                             realHoriRecycler.setLayoutManager(horizontalLayoutManager);
                             realHoriRecycler.setAdapter(horizontalAdapter);
 
+                            if(changeableTopicKey == null){
+                                changeableTopicKey = new ArrayList<>(mFirebaseDictionary.values()).get(0).getName();
+                                catgoryHeaderText.setText(changeableTopicKey);
+                            }
                             changeableFBCategory = mFirebaseDictionary.get(changeableTopicKey);
-                            Log.d("ben!", "beat "+ mFirebaseDictionary.get("I Still Beat").getTweetArray());
-                            VerticalAdapter clickedAdapter = new VerticalAdapter(context, changeableFBCategory, "");
-                            //VerticalAdapter clickedAdapter = new VerticalAdapter(context, mFirebaseDictionary.get("I Still Beat"), "");
+                          //  Log.d("ben!", "beat "+ mFirebaseDictionary.get("I Still Beat").getTweetArray());
+                            mClickedAdapter = new VerticalAdapter(context, changeableFBCategory, "");
                             realVertRecycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-                            realVertRecycler.setAdapter(clickedAdapter);
+                            realVertRecycler.setAdapter(mClickedAdapter);
                             realVertRecycler.setVisibility(View.VISIBLE);
 
 //                            //WHAT WE SHOULD ACTUALLY HAVE.

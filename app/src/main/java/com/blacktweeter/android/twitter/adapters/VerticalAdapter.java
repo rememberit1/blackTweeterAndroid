@@ -138,7 +138,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
         if (category != null) {
             for (FBTweet fbTweet : category.getTweetArray()) {
                 if (fbTweet.getStatus() != null) {
-                    Log.d("ben!", "beat: " + fbTweet.getStatus().getText());
+                   // Log.d("ben!", "beat: " + fbTweet.getStatus().getText());
                     cStatuses.add(fbTweet.getStatus());
                 }
             }

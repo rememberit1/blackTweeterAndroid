@@ -153,10 +153,50 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
         loadingGifIV.setAlpha((float) 0.7);
 
         BitmapLruCache cache = App.getInstance(context).getBitmapCache();
-        ArrayListLoader loader = new ArrayListLoader(cache, context);
+       // ArrayListLoader loader = new ArrayListLoader(cache, context);
 
         //firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
         //firebaseRef.addChildEventListener(new ChildEventListener() {
+
+
+
+        firebaseRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getKey().equals("Version")){
+                    Long myLong = (Long)dataSnapshot.getValue();
+                    // if (myLong < 2){
+                    Log.d("ben!", "The Version is: " + dataSnapshot.getValue());
+                    if (myLong == versionNumber){
+                        childEventListener2();
+                    }else {
+                        Toast.makeText(context, "Dang, You don't have the latest version, Get It from the Play Store", Toast.LENGTH_LONG ).show();
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
 
@@ -283,7 +323,6 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
 
 
                     mFirebaseDictionary = firebaseCategories;
-                    Log.d("ben!", "firebasecategories: " + mFirebaseDictionary.toString());
                 }
             }
 //            else {
@@ -558,45 +597,8 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
     @Override
     public void onResume() {
 
+        Log.d("ben!", "onResume is called");
 
-        firebaseRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.getKey().equals("Version")){
-                    Long myLong = (Long)dataSnapshot.getValue();
-                    // if (myLong < 2){
-                    Log.d("ben!", "The Version is: " + dataSnapshot.getValue());
-                    if (myLong == versionNumber){
-                        Log.d("ben!", "My Long is: " + 1);
-                        childEventListener2();
-                    }else {
-                        Toast.makeText(context, "Dang, You don't have the latest version, Get It from the Play Store", Toast.LENGTH_LONG ).show();
-
-                    }
-
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
 
@@ -611,11 +613,11 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
         }
 
 
-        list = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            list.add("This is cool.");
-        }
-        theLatestAdapter = new TheLatestAdapter(getActivity(), list);
+//        list = new ArrayList<>();
+//        for (int i = 0; i < 15; i++) {
+//            list.add("This is cool.");
+//        }
+//        theLatestAdapter = new TheLatestAdapter(getActivity(), list);
 
 
         if (sharedPrefs.getBoolean("refresh_me_activity", false)) {

@@ -135,12 +135,14 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
     public VerticalAdapter(Context context, FBCategory category, String nullString) {
         // super(context, R.layout.tweet);
         ArrayList<Status> cStatuses = new ArrayList<>();
-            for (FBTweet fbTweet : category.getTweetArray() ){
+        if (category != null) {
+            for (FBTweet fbTweet : category.getTweetArray()) {
                 if (fbTweet.getStatus() != null) {
                     Log.d("ben!", "beat: " + fbTweet.getStatus().getText());
                     cStatuses.add(fbTweet.getStatus());
                 }
             }
+        }
         this.statuses = cStatuses;
         this.context = context;
         this.settings = AppSettings.getInstance(context);

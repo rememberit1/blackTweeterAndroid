@@ -3,6 +3,7 @@ package com.blacktweeter.android.twitter.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +47,28 @@ public class HoriCategoryAdapter extends RecyclerView.Adapter<HoriCategoryAdapte
         this.mAdapterCallback = callback;
     }
 
+//    @Override
+//    public void onClick(View v) {
+//       // Log.d("App", mApps.get(getAdapterPosition()).getName());
+//    }
+
     @Override
     public FBCategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new FBCategoryViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.hori_category_adapter, parent, false));
+
+        View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.hori_category_adapter, parent, false);
+        final FBCategoryViewHolder mViewHolder = new FBCategoryViewHolder(mView);
+
+        mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAdapterCallback.onItemClick(view, mViewHolder.getAdapterPosition());
+                //mAdapterCallback.onItemClick(view, mViewHolder.getLayoutPosition());
+            }
+        });
+
+        return mViewHolder;
+        //return new FBCategoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.hori_category_adapter, parent, false));
     }
 
     @Override
@@ -63,6 +81,8 @@ public class HoriCategoryAdapter extends RecyclerView.Adapter<HoriCategoryAdapte
         return  super.getItemViewType(position);
     }
 
+
+
     @Override
     public void onBindViewHolder(final FBCategoryViewHolder holder, final int position) {
         FBCategory fbCategory = fbCategoryArrayList.get(position);//This must be created first (this may cause problems later)
@@ -70,9 +90,10 @@ public class HoriCategoryAdapter extends RecyclerView.Adapter<HoriCategoryAdapte
 
         Picasso.with(context).load(fbCategory.getPictureUrl()).into(fbCategoryViewHolder.imageView);
         fbCategoryViewHolder.categoryText.setText(fbCategory.getName());
+
     }
 
-    public class FBCategoryViewHolder extends RecyclerView.ViewHolder {
+    public class FBCategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView imageView;
         public TextView categoryText;
@@ -84,7 +105,15 @@ public class HoriCategoryAdapter extends RecyclerView.Adapter<HoriCategoryAdapte
         }
 
 
+        @Override
+        public void onClick(View view) {
+            view = itemView;
+            Log.d("ben!", "shit is clicked");
+
+        }
     }
+
+
 
 
 }

@@ -64,7 +64,7 @@ import android.widget.Toast;
  * Created by benakinlosotuwork on 8/1/18.
  */
 
-public class TheLatestFragmentTwo extends MainFragment implements AdapterCallback {
+public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCallback {
     public static final int ACTIVITY_REFRESH_ID = 131;
 
     public int unread = 0;
@@ -409,15 +409,25 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
 
 
                             //We're only commenting out so that we can log everything
-                            horizontalAdapter = new HoriCategoryAdapter(context, mFirebaseDictionary, TheLatestFragmentTwo.this);
+                           // horizontalAdapter = new HoriCategoryAdapter(context, mFirebaseDictionary, TheLatestFragmentTwo.this);
+                            horizontalAdapter = new HoriCategoryAdapter(context, mFirebaseDictionary, new AdapterCallback() {
+
+                                @Override
+                                public void onItemClick(View v, int position) {
+                                    List<FBCategory> firebaseList = new ArrayList<>(mFirebaseDictionary.values());
+                                    Log.d("ben!", "clicked position: " +  firebaseList.get(position).getName());
+
+
+                                }
+                            });
                             horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
                             realHoriRecycler.setLayoutManager(horizontalLayoutManager);
                             realHoriRecycler.setAdapter(horizontalAdapter);
 
                             changeableFBCategory = mFirebaseDictionary.get(changeableTopicKey);
                             Log.d("ben!", "beat "+ mFirebaseDictionary.get("I Still Beat").getTweetArray());
-                           // VerticalAdapter clickedAdapter = new VerticalAdapter(context, changeableFBCategory, "");
-                            VerticalAdapter clickedAdapter = new VerticalAdapter(context, mFirebaseDictionary.get("I Still Beat"), "");
+                            VerticalAdapter clickedAdapter = new VerticalAdapter(context, changeableFBCategory, "");
+                            //VerticalAdapter clickedAdapter = new VerticalAdapter(context, mFirebaseDictionary.get("I Still Beat"), "");
                             realVertRecycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             realVertRecycler.setAdapter(clickedAdapter);
                             realVertRecycler.setVisibility(View.VISIBLE);
@@ -629,12 +639,13 @@ public class TheLatestFragmentTwo extends MainFragment implements AdapterCallbac
         super.onDestroy();
         //this is probably unnecessary
         latestIsVisible = false;
+
     }
 
-    @Override
-    public void onMethodCallback(String clickedString) {
-        Log.d("ben!", "changing topic");
-    }
+//    @Override
+//    public void onMethodCallback(String clickedString) {
+//        Log.d("ben!", "changing topic");
+//    }
 
     private class LatestTweetModel {
         Status status = null;

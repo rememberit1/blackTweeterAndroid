@@ -1,9 +1,12 @@
 package com.blacktweeter.android.twitter.utils;
 
+import android.view.View;
+
 /**
  * Created by benakinlosotuwork on 7/31/18.
  */
 
 public interface AdapterCallback {
-    void onMethodCallback(String clickedString);
+   // void onMethodCallback(String clickedString);
+    public void onItemClick(View v, int position);
 }

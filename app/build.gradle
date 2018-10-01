@@ -135,6 +135,7 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.0'
 
     compile 'org.apache.commons:commons-lang3:3.5'
+   // implementation 'com.github.rubensousa:gravitysnaphelper:1.5'
 
 
 }

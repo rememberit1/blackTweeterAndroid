@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import com.blacktweeter.android.twitter.R;
 import com.blacktweeter.android.twitter.activities.drawer_activities.DrawerActivity;
 import com.blacktweeter.android.twitter.activities.main_fragments.MainFragment;
+import com.blacktweeter.android.twitter.activities.main_fragments.home_fragments.HomeFragment;
 import com.blacktweeter.android.twitter.adapters.ActivityCursorAdapter;
 import com.blacktweeter.android.twitter.adapters.ArrayListLoader;
 import com.blacktweeter.android.twitter.adapters.HoriCategoryAdapter;
@@ -75,11 +76,14 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
     public static boolean latestIsVisible = false;
 
     public View layout;
-    ImageView loadingGifIV;
+    private ImageView loadingGifIV;
     public AppSettings settings;
     public SharedPreferences sharedPrefs;
     public RecyclerView realVertRecycler;
-    public TextView catgoryHeaderText;
+    private TextView catgoryHeaderText;
+    private TextView refreshText;
+    private boolean refreshJustClicked = false;
+
     Long versionNumber = 1L;
 
 
@@ -145,6 +149,16 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
         realHoriRecycler =  layout.findViewById(R.id.horizontalCatgoryView);
         realVertRecycler =  layout.findViewById(R.id.latest_real_recycler_vert);
         catgoryHeaderText = layout.findViewById(R.id.catHeaderText);
+        refreshText = layout.findViewById(R.id.refreshText);
+
+        refreshText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "Refreshing...", Toast.LENGTH_LONG).show();
+                refreshJustClicked = true;
+                pureReload();
+            }
+        });
 
 
         //Glide.with(this).asGif().load("").placeholder
@@ -235,7 +249,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
     private void childEventListener2() {
         Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
 
-        mFirebaseDictionary.clear();//Maybe unnecessary or cause a bug. Watch out.
+       // mFirebaseDictionary.clear();//Maybe unnecessary or cause a bug. Watch out.
 
         firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {//were doing this to wait for all firebase data BEFORE we go to twitter. https://stackoverflow.com/questions/34530566
             //this happens second (look at the website in the comments)
@@ -357,30 +371,6 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
     }
 
 
-    public void arrangeDummyData(List<List<Status>> listOfListOfStatuses) {
-        Random random = new Random();
-        for (List<Status> listOfStatuses : listOfListOfStatuses) {
-
-            SectionDataModel dm = new SectionDataModel();
-
-            int n = random.nextInt(100) + 1;
-
-
-            dm.setHeaderTitle("Section " + n);
-
-//            for (Status status : listOfStatuses) {
-//                //  tweets.add(status);
-//            }
-            dm.setAllItemsInSection((ArrayList<Status>) listOfStatuses);
-            listOfSectionDataModels.add(dm);
-        }
-    }
-
-    private void myFunction(Long... longs) {
-
-    }
-
-
 
 
     public void doSearch2() {
@@ -408,6 +398,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
                         long[] ids = ArrayUtils.toPrimitive(idsNonPrimitive);
 
                         result = twitter.lookup(ids);
+                        Log.d("ben!", "looking up tweets from twitter.com");
 
                     } catch (OutOfMemoryError e) {
                         return;
@@ -422,23 +413,6 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
                             }
                         }
                     }
-
-
-
-//                    List<Status> result1 = new ArrayList<>();
-//                    List<Status> result2 = new ArrayList<>();
-//                    result1.add(result.get(0));
-//                    result1.add(result.get(1));
-//                    result1.add(result.get(2));
-//                    result2.add(result.get(3));
-//                    result2.add(result.get(4));
-//                    result2.add(result.get(5));
-//                    result.get(5).getId();
-//                    mGroupOfListOfStatuses.add(result1);
-//                    mGroupOfListOfStatuses.add(result2);
-
-                    //this/the replacement sets the list of statuses for a section and the section title. because we are using a map, this can be done quicly/in one heap
-                    // arrangeDummyData(mGroupOfListOfStatuses);//this is how we get all the tweets (through mGroupOfListOfStatuses)
 
 
                     if (result.size() > 17) {
@@ -478,9 +452,10 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
                             realHoriRecycler.setLayoutManager(horizontalLayoutManager);
                             realHoriRecycler.setAdapter(horizontalAdapter);
 
-                            if(changeableTopicKey == null){
+                            if(changeableTopicKey == null || refreshJustClicked){
                                 changeableTopicKey = new ArrayList<>(mFirebaseDictionary.values()).get(0).getName();
                                 catgoryHeaderText.setText(changeableTopicKey);
+                                refreshJustClicked = false;
                             }
                             changeableFBCategory = mFirebaseDictionary.get(changeableTopicKey);
                           //  Log.d("ben!", "beat "+ mFirebaseDictionary.get("I Still Beat").getTweetArray());
@@ -597,10 +572,12 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
     @Override
     public void onResume() {
 
+        Log.d("ben!", "refresh? " + HomeFragment.shouldRefreshNow);
         Log.d("ben!", "onResume is called");
-
-
-
+        if (HomeFragment.shouldRefreshNow){
+            //do reload
+            HomeFragment.shouldRefreshNow = false;
+        }
 
         super.onResume();
 

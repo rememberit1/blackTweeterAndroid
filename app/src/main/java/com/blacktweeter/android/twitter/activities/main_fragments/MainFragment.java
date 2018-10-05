@@ -260,7 +260,7 @@ public abstract class MainFragment extends Fragment {
         listView = (AsyncListView) layout.findViewById(R.id.listView);
 
 
-        swipeText = (TextView) layout.findViewById(R.id.swipeText);
+       // swipeText = (TextView) layout.findViewById(R.id.swipeText);
 
         refreshLayout = (FullScreenSwipeRefreshLayout) layout.findViewById(R.id.swipe_refresh_layout);
         refreshLayout.setFullScreen(true);

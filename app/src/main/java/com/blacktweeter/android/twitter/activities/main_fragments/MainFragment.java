@@ -183,7 +183,8 @@ public abstract class MainFragment extends Fragment {
         setHome();
         getCache();
 
-        landscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        //landscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        landscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 
         currentAccount = getCurrentAccount();
 

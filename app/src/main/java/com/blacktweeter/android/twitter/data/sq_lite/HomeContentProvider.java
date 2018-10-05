@@ -215,7 +215,7 @@ public class HomeContentProvider extends ContentProvider {
         } else {
             long id = Long.parseLong(selectionArgs[1]);
             int account = Integer.parseInt(selectionArgs[0]);
-            Log.v("talon_launcher_stuff", "id: " + id);
+            Log.v("blacktweeter_launcher", "id: " + id);
 
             HomeDataSource dataSource = HomeDataSource.getInstance(context);
             SQLiteDatabase db = dataSource.getDatabase();

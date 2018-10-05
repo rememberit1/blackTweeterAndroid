@@ -100,7 +100,7 @@
     <string name="popup">弹出</string>
     <string name="fav_user_tweets">收藏用户有新推文</string>
     <string name="sec_acc">第二帐号</string>
-    <string name="blacktweeter_pull">Talon Pull</string>
+    <string name="blacktweeter_pull">BlackTweeter Pull</string>
     <string name="blacktweeter_pull_summary">警告：在 Lollipop 系统上启用该选项可能会导致耗电严重</string>
     <string name="listening">正在侦听</string>
     <string name="listening_for_mentions">正在侦听互动信息</string>

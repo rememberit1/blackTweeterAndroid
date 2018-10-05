@@ -206,7 +206,7 @@ public class ComposeActivity extends Compose {
         attachButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                attachImage();
+               // attachImage();
             }
         });
 

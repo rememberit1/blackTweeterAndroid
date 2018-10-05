@@ -1158,13 +1158,13 @@ public abstract class DrawerActivity extends Activity {
                 return super.onOptionsItemSelected(item);
 
             case R.id.menu_settings:
-                context.sendBroadcast(new Intent("com.klinker.android.twitter.MARK_POSITION"));
-                Intent settings = new Intent(context, SettingsActivity.class);
-                finish();
-                sharedPrefs.edit().putBoolean("should_refresh", false).commit();
-                overridePendingTransition(R.anim.slide_in_left, R.anim.activity_zoom_exit);
-                startActivity(settings);
-                return super.onOptionsItemSelected(item);
+//                context.sendBroadcast(new Intent("com.klinker.android.twitter.MARK_POSITION"));
+//                Intent settings = new Intent(context, SettingsActivity.class);
+                //finish();
+               // sharedPrefs.edit().putBoolean("should_refresh", false).commit();
+               // overridePendingTransition(R.anim.slide_in_left, R.anim.activity_zoom_exit);
+                //startActivity(settings);
+               //return super.onOptionsItemSelected(item);
 
             case R.id.menu_dismiss:
                 InteractionsDataSource data = InteractionsDataSource.getInstance(context);

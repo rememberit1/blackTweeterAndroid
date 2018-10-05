@@ -18,54 +18,64 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menu_dismiss"
+    <item
+        android:id="@+id/menu_dismiss"
+        android:icon="?cancelButton"
         android:orderInCategory="1"
-        android:title="@string/dismiss_all"
         android:showAsAction="always"
-        android:icon="?cancelButton"/>
+        android:title="@string/dismiss_all" />
 
-    <item android:id="@+id/menu_search"
-        android:orderInCategory="2"
-        android:title="@string/search"
-        android:showAsAction="always"
+    <item
+        android:id="@+id/menu_search"
+        android:actionViewClass="android.widget.SearchView"
         android:icon="?attr/search_icon"
-        android:actionViewClass="android.widget.SearchView" />
-
-    <item android:id="@+id/menu_compose"
-          android:orderInCategory="3"
-          android:title="@string/menu_compose"
-          android:showAsAction="always"
-          android:icon="?sendButton" />
-
-    <item android:id="@+id/menu_notifications"
-        android:orderInCategory="4"
-        android:title="@string/notifications"
+        android:orderInCategory="2"
         android:showAsAction="always"
-        android:icon="?notification_button_empty" />
+        android:title="@string/search" />
 
-    <item android:id="@+id/menu_direct_message"
-          android:orderInCategory="5"
-          android:title="@string/menu_direct_message"
-          android:showAsAction="never" />
+    <item
+        android:id="@+id/menu_compose"
+        android:icon="?sendButton"
+        android:orderInCategory="3"
+        android:showAsAction="always"
+        android:title="@string/menu_compose" />
 
-    <item android:id="@+id/menu_settings"
-          android:orderInCategory="6"
-          android:title="@string/menu_settings"
-          android:showAsAction="never" />
+    <item
+        android:id="@+id/menu_notifications"
+        android:icon="?notification_button_empty"
+        android:orderInCategory="4"
+        android:showAsAction="always"
+        android:title="@string/notifications" />
 
-    <item android:id="@+id/menu_to_first"
+    <item
+        android:id="@+id/menu_direct_message"
+        android:orderInCategory="5"
+        android:showAsAction="never"
+        android:title="@string/menu_direct_message" />
+
+    <item
+        android:id="@+id/menu_settings"
+        android:orderInCategory="6"
+        android:showAsAction="never"
+        android:title="" />
+
+    <item
+        android:id="@+id/menu_to_first"
         android:orderInCategory="7"
-        android:title="@string/jump_to_top"
-        android:showAsAction="never" />
+        android:showAsAction="never"
+        android:title="@string/jump_to_top" />
 
-    <item android:id="@+id/menu_tweetmarker"
-          android:orderInCategory="8"
-          android:title="@string/fetch_tweetmarker"
-          android:showAsAction="never" />
+    <item
+        android:id="@+id/menu_tweetmarker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orderInCategory="8"
+        android:showAsAction="never"
+        android:title="@string/fetch_tweetmarker" />
 
     <!--<item android:id="@+id/menu_get_help"-->
-          <!--android:orderInCategory="15"-->
-          <!--android:title="@string/help_and_feedback"-->
-          <!--android:showAsAction="never" />-->
+    <!--android:orderInCategory="15"-->
+    <!--android:title="@string/help_and_feedback"-->
+    <!--android:showAsAction="never" />-->
 
 </menu>

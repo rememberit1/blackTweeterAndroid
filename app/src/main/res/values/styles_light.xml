@@ -64,7 +64,7 @@
         <item name="cancelButton">@drawable/ic_cancel_light</item>
         <item name="sendButton">@drawable/ic_send_light</item>
         <item name="attachButton">@drawable/ic_attach_light</item>
-        <item name="drawerIcon">@drawable/ic_drawer</item>
+        <item name="drawerIcon">@drawable/ic_drawer_dark</item>
         <item name="newIcon">@drawable/ic_action_new_light</item>
         <item name="drawerDrawable">@drawable/drawer_background_light</item>
         <item name="acceptButton">@drawable/ic_action_accept_light</item>
@@ -121,7 +121,7 @@
     </style>
 
     <style name="Theme.TalonLight.Settings" parent="@style/Theme.TalonLight">
-        <item name="android:homeAsUpIndicator">@drawable/ic_drawer</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_drawer_dark</item>
     </style>
 
     <style name="Theme.TalonLight.Popup" parent="@style/Theme.TalonLight">

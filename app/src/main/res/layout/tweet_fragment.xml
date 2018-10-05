@@ -148,6 +148,7 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:src="@drawable/ic_attach_light"
+                    android:visibility="gone"
                     android:background="@drawable/pressed_button" />
 
                 <ImageButton

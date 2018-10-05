@@ -35,10 +35,10 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        File cacheDir = new File(getCacheDir(), "talon");
+        File cacheDir = new File(getCacheDir(), "blacktweeter");
         cacheDir.mkdirs();
 
-        File proCacheDir = new File(getCacheDir(), "talon-profile");
+        File proCacheDir = new File(getCacheDir(), "blacktweeter-profile");
         proCacheDir.mkdirs();
 
         BitmapLruCache.Builder builder = new BitmapLruCache.Builder();

@@ -130,7 +130,7 @@ public class BootReceiver extends BroadcastReceiver {
         for (ScheduledTweet s : tweets) {
             Intent serviceIntent = new Intent(context.getApplicationContext(), SendScheduledTweet.class);
 
-            Log.v("talon_scheduled_tweets", "in boot text: " + s.text);
+            Log.v("bt_scheduled_twt", "in boot text: " + s.text);
 
             serviceIntent.putExtra(ViewScheduledTweets.EXTRA_TEXT, s.text);
             serviceIntent.putExtra("account", s.account);

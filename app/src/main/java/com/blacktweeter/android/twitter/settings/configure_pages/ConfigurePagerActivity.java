@@ -85,7 +85,7 @@ public class ConfigurePagerActivity extends Activity {
         if (sharedPrefs.getBoolean("show_performance_tip", true)) {
             new AlertDialog.Builder(context)
                     .setTitle("Timeline Tip")
-                    .setMessage("With this version of Talon, you can completely customize your swipable timelines." +
+                    .setMessage("With this version of BlackTweeter, you can completely customize your swipable timelines." +
                             "\n\n" +
                             "You can place up to 6 swipeable pages on the main screen of Talon, including lists, mentions, direct messages, your 'home' timeline, and some filtered timelines.")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {

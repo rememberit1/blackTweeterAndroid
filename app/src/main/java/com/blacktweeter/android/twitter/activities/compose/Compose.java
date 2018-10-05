@@ -236,7 +236,7 @@ public abstract class Compose extends Activity implements
         }
 
         if (getIntent().getBooleanExtra("start_attach", false)) {
-            attachButton.performClick();
+           // attachButton.performClick();
             //overflow.performClick();
         }
 

@@ -254,7 +254,7 @@ public class TweetFragment extends Fragment {
         TextView nametv;
         TextView screennametv;
         TextView tweettv;
-        ImageButton attachButton;
+        ImageButton attachButton = null;
         ImageButton at;
         ImageButton quote = null;
         ImageButton viewRetweeters = null;
@@ -283,7 +283,8 @@ public class TweetFragment extends Fragment {
             retweetCount = (TextView) layout.findViewById(R.id.retweet_count);
             reply = (EditText) layout.findViewById(R.id.reply);
             replyButton = (ImageButton) layout.findViewById(R.id.reply_button);
-            attachButton = (ImageButton) layout.findViewById(R.id.attach_button);
+
+          //  attachButton = (ImageButton) layout.findViewById(R.id.attach_button);
             overflow = (ImageButton) layout.findViewById(R.id.overflow_button);
             buttons = (LinearLayout) layout.findViewById(R.id.buttons);
             charRemaining = (TextView) layout.findViewById(R.id.char_remaining);
@@ -315,7 +316,7 @@ public class TweetFragment extends Fragment {
             retweetCount = (TextView) layout.findViewById(res.getIdentifier("retweet_count", "id", settings.addonThemePackage));
             reply = (EditText) layout.findViewById(res.getIdentifier("reply", "id", settings.addonThemePackage));
             replyButton = (ImageButton) layout.findViewById(res.getIdentifier("reply_button", "id", settings.addonThemePackage));
-            attachButton = (ImageButton) layout.findViewById(res.getIdentifier("attach_button", "id", settings.addonThemePackage));
+          //  attachButton = (ImageButton) layout.findViewById(res.getIdentifier("attach_button", "id", settings.addonThemePackage));
             overflow = (ImageButton) layout.findViewById(res.getIdentifier("overflow_button", "id", settings.addonThemePackage));
             buttons = (LinearLayout) layout.findViewById(res.getIdentifier("buttons", "id", settings.addonThemePackage));
             charRemaining = (TextView) layout.findViewById(res.getIdentifier("char_remaining", "id", settings.addonThemePackage));
@@ -920,9 +921,9 @@ public class TweetFragment extends Fragment {
             attachButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    attachClick();
+                    //attachClick();
 
-                    overflow.performClick();
+                   // overflow.performClick();
                 }
             });
         }

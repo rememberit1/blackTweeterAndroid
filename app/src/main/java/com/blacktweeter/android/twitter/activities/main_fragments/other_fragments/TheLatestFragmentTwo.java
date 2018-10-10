@@ -46,6 +46,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -97,6 +98,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
     Map<String, FBCategory> mFirebaseDictionary = new HashMap<>();
     String firstFBTopicKey;
     Map<String, ArrayList<Status>> twitterDictionary = new HashMap<>();
+    ArrayList<FBCategory> mFirebaseList;
     int changingFirebaseCount = 5;
 
     FBCategory changeableFBCategory;
@@ -235,9 +237,6 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
         }
     }
 
-
-
-
     private void pureReload() {
         //because of the clearing, no need to do notifiy dataset change.
         mFirebaseDictionary.clear();
@@ -296,11 +295,6 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
 
                             if (topicMetaData.getKey().startsWith("tweet")) {
 
-//                        TheLatestFragmentTwo.LatestTweetModel latestTweetModel = new TheLatestFragmentTwo.LatestTweetModel();
-//                        latestTweetModel.topic = topic.getKey();
-//                        if (tweet.getValue().getClass().getName().equals("java.lang.Long")) {
-
-                                //latestTweetModel.tweetID = (Long) tweet.getValue();
                                 FBTweet fbTweet = new FBTweet();
                                 for (DataSnapshot tweetMetaData : topicMetaData.getChildren()) {
                                     if (tweetMetaData.getKey().startsWith("url")) {
@@ -328,24 +322,14 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
 
                         }
                         firebaseCategories.put(category.getKey(), fbCategory);
-                        // mFirebaseDictionary.put(topic.getKey(), fbCategory);
 
-                        //{Scholarships={id4=https://twitter.com/blackenterprise/status/956756340831019009, id1=https://twitter.com/Becauseofthem/status/955622587165442048}, Engineering={id1=https://twi
-//                    eachTopic.put(topic.getKey(), tweetIDs);
-//                    eachTheseSection.put(topic.getKey(), listOfTheseTweets);
                     }
 
 
                     mFirebaseDictionary = firebaseCategories;
                 }
             }
-//            else {
-//                        Long myLong = (Long)dataSnapshot.getValue();
-//                    if (myLong < 2){
-//                        Log.d("ben!", "The Version is: " + dataSnapshot.getValue());
-//                        //Do something
-//                    }
-//                }
+
             }
 
             @Override
@@ -374,8 +358,6 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
 
 
     public void doSearch2() {
-        // spinner.setVisibility(View.VISIBLE);
-        //  Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
 
         new Thread(new Runnable() {
             @Override
@@ -426,22 +408,26 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
                         public void run() {
 
 
-                            //We're only commenting out so that we can log everything
-                           // horizontalAdapter = new HoriCategoryAdapter(context, mFirebaseDictionary, TheLatestFragmentTwo.this);
-                            AdapterCallback myAdaptercallback = new AdapterCallback() {
-                                @Override
-                                public void onItemClick(View v, int position) {
-                                    List<FBCategory> firebaseList = new ArrayList<>(mFirebaseDictionary.values());
-                                    changeableTopicKey = firebaseList.get(position).getName();
-                                }
-                            };
 
-                            horizontalAdapter = new HoriCategoryAdapter(context, mFirebaseDictionary, new AdapterCallback() {
+//                            AdapterCallback myAdaptercallback = new AdapterCallback() {
+//                                @Override
+//                                public void onItemClick(View v, int position) {
+//                                    List<FBCategory> firebaseList = new ArrayList<>(mFirebaseDictionary.values());
+//                                    changeableTopicKey = firebaseList.get(position).getName();
+//                                }
+//                            };
+
+                            //WE NEED TO MAKE FIREBASE LIST A MEMBER VARIABLE, AND ARRANGE IT FIRST then attach it to horizontal adapter
+
+                            mFirebaseList = new ArrayList<>(mFirebaseDictionary.values());
+                            Collections.sort(mFirebaseList);
+
+                            horizontalAdapter = new HoriCategoryAdapter(context, mFirebaseList, new AdapterCallback() {
                                 @Override
                                 public void onItemClick(View v, int position) {
-                                    List<FBCategory> firebaseList = new ArrayList<>(mFirebaseDictionary.values());
-                                    Log.d("ben!", "clicked position: " +  firebaseList.get(position).getName());
-                                    changeableTopicKey = firebaseList.get(position).getName();
+                                   // List<FBCategory> firebaseList = new ArrayList<>(mFirebaseDictionary.values());
+                                    Log.d("ben!", "clicked position: " +  mFirebaseList.get(position).getName());
+                                    changeableTopicKey = mFirebaseList.get(position).getName();
                                     catgoryHeaderText.setText(changeableTopicKey);
                                     mClickedAdapter = new VerticalAdapter(context, mFirebaseDictionary.get(changeableTopicKey), "");
                                     realVertRecycler.setAdapter(mClickedAdapter);
@@ -453,7 +439,8 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
                             realHoriRecycler.setAdapter(horizontalAdapter);
 
                             if(changeableTopicKey == null || refreshJustClicked){
-                                changeableTopicKey = new ArrayList<>(mFirebaseDictionary.values()).get(0).getName();
+                                //changeableTopicKey = new ArrayList<>(mFirebaseDictionary.values()).get(0).getName();
+                                changeableTopicKey = mFirebaseList.get(0).getName();
                                 catgoryHeaderText.setText(changeableTopicKey);
                                 refreshJustClicked = false;
                             }
@@ -463,17 +450,6 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
                             realVertRecycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             realVertRecycler.setAdapter(mClickedAdapter);
                             realVertRecycler.setVisibility(View.VISIBLE);
-
-//                            //WHAT WE SHOULD ACTUALLY HAVE.
-//                            VerticalAdapter verticalAdapter = new VerticalAdapter(mContext, singleSectionOfTweets);
-//                            // itemColumnHolder.recycler_view_list.setHasFixedSize(false);
-//                            itemColumnHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-//                            itemColumnHolder.recycler_view_list.setAdapter(verticalAdapter);
-
-
-                            //================================================================================================================================================//
-                            //================================================================================================================================================//
-
 
                             loadingGifIV.setVisibility(View.GONE);
                             // spinner.setVisibility(View.GONE);
@@ -638,11 +614,6 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
         latestIsVisible = false;
 
     }
-
-//    @Override
-//    public void onMethodCallback(String clickedString) {
-//        Log.d("ben!", "changing topic");
-//    }
 
     private class LatestTweetModel {
         Status status = null;

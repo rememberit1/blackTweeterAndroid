@@ -339,8 +339,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp">
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp">
 
             <TextView
                 android:id="@+id/view_more_text"
@@ -349,9 +349,8 @@
                 android:layout_alignParentTop="true"
                 android:text="View More Images"
                 android:textAlignment="center"
-                android:textStyle="bold"
                 android:textColor="#497f77"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:visibility="gone" />
         </LinearLayout>
 

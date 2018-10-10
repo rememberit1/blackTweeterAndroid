@@ -1,12 +1,14 @@
 package com.blacktweeter.android.twitter.data;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 
 /**
  * Created by benakinlosotuwork on 7/31/18.
  */
 
-public class FBCategory {
+public class FBCategory implements Comparable<FBCategory>{
     String name;
     String pictureUrl;
     long orderNumber;
@@ -56,5 +58,16 @@ public class FBCategory {
 
     public ArrayList<FBTweet> getTweetArray() {
         return tweetArray;
+    }
+
+    @Override
+    public int compareTo(@NonNull FBCategory fbCategory) {
+        if (this.orderNumber < fbCategory.orderNumber) {
+            return -1;
+        } else if (this.orderNumber > fbCategory.orderNumber) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

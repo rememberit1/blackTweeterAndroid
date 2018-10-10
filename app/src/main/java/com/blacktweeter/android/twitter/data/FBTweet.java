@@ -1,12 +1,14 @@
 package com.blacktweeter.android.twitter.data;
 
+import android.support.annotation.NonNull;
+
 import twitter4j.Status;
 
 /**
  * Created by benakinlosotuwork on 7/31/18.
  */
 
-public class FBTweet {
+public class FBTweet implements Comparable<FBTweet>{
     String name;
     Long order;
     Long tweetId;
@@ -57,4 +59,14 @@ public class FBTweet {
         return status;
     }
 
+    @Override
+    public int compareTo(@NonNull FBTweet fbTweet) {
+        if (this.order < fbTweet.order) {
+            return -1;
+        } else if (this.order < fbTweet.order) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

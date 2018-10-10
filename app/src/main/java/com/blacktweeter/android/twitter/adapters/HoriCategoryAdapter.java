@@ -36,12 +36,11 @@ public class HoriCategoryAdapter extends RecyclerView.Adapter<HoriCategoryAdapte
 
 
 
-    public HoriCategoryAdapter(Context context, Map<String, FBCategory> categoryMap, AdapterCallback callback) {
-
-
-        for (Map.Entry<String, FBCategory> categoryEntry : categoryMap.entrySet()) {
-            this.fbCategoryArrayList.add(categoryEntry.getValue());
-        }
+    public HoriCategoryAdapter(Context context, ArrayList<FBCategory> fbCategoryArrayList, AdapterCallback callback) {
+//        for (Map.Entry<String, FBCategory> categoryEntry : categoryMap.entrySet()) {
+//            this.fbCategoryArrayList.add(categoryEntry.getValue());
+//        }
+        this.fbCategoryArrayList = fbCategoryArrayList;
 
         this.context = context;
         this.mAdapterCallback = callback;

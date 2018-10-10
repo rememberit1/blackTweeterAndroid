@@ -64,6 +64,7 @@ import java.net.Proxy;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Pattern;
@@ -132,10 +133,13 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
         setUpLayout();
     }
 
+    //arrange the order of tweets here
     public VerticalAdapter(Context context, FBCategory category, String nullString) {
         // super(context, R.layout.tweet);
         ArrayList<Status> cStatuses = new ArrayList<>();
         if (category != null) {
+            Collections.sort(category.getTweetArray());
+            //category.
             for (FBTweet fbTweet : category.getTweetArray()) {
                 if (fbTweet.getStatus() != null) {
                    // Log.d("ben!", "beat: " + fbTweet.getStatus().getText());

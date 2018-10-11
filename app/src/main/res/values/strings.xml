@@ -126,7 +126,7 @@
     <string name="third_welcome">That\'s it - enjoy!</string>
     <string name="back_to_timeline">Take me to my timeline!</string>
     <string name="initial_sync">Sync Now!</string>
-    <string name="first_info">Before we get started, let\'s get you logged in and synced with Twitter.</string>
+    <string name="first_info">What\'s up, log in to your Twitter account for me and let\'s get going.</string>
     <string name="second_info">Great! We are now talking to Twitter to sync your account.</string>
     <string name="third_info">Hope you enjoy BlackTweeter!</string>
     <string name="syncing_timeline">Syncing timeline...</string>
@@ -251,10 +251,10 @@
     <string name="choose_list">Choose List</string>
     <string name="added_to_list">Added to list</string>
     <!-- Tutorial Activity -->
-    <string name="part_1_tablet">\nAccess features\nby tapping items\nin the\nnavigation\ndrawer!</string>
-    <string name="part_1_phone">\nPull open the\nnavigation drawer\nwith a left\nside swipe!</string>
-    <string name="part_2">\nPage between\ntimelines with\na swipe either\nway from the middle\nof the screen!</string>
-    <string name="part_3">That\'s it!\n\nTouch the\nscreen to\nstart!</string>
+    <string name="part_1_tablet">This is the\n \'Whats Happening\'\nsection. Select a\ntopic like \'Wimminz in Yellow\'\nto see interesting Black\ncontent show up below.</string>
+    <string name="part_1_phone">This is the\n \'Whats Happening\'\nsection. Select a\ntopic like \'Wimminz in Yellow\'\nto see interesting Black\ncontent show up below.</string>
+    <string name="part_2">Page between\nregular timelines with\na swipe either\nway from the middle\nof the screen</string>
+    <string name="part_3">You\'re also gonna\nreceive notifications whenver\nthere\'s new content.\nSo touch the screen and\nlet\'s get it moving!</string>asc
     <!-- Settings Menu -->
     <string name="theme_settings">Theme Settings</string>
     <string name="theme_options">Theme Options</string>

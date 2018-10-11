@@ -236,21 +236,21 @@ public class LoginActivity extends Activity {
                         btnLoginTwitter.setEnabled(false);
 
                         new AlertDialog.Builder(context)
-                                .setMessage("Twitter may display that Talon cannot authenticate any more users. " +
+                                .setMessage("WARNING: If you have any problems, you may need to reinstall this app, Twitter may display that BlackTweeter cannot authenticate any more users." +
                                         "\n\n" +
-                                        "If so, and you have logged into Talon in the past, simply hit the 'Sign In' button in the top right and it will allow you to log in as normal. " +
+                                        "If so, and you have logged into BlackTweeter in the past, simply hit the 'Sign In' button in the top right and it will allow you to log in as normal. " +
                                         "\n\n" +
-                                        "If you have never logged into Talon, then you will have to wait to login. Twitter seems to allow more users access every few hours.")
+                                        "If you have never logged into BlackTweeter, then you will have to wait to login. Twitter seems to allow more users access every few hours.")
                                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
                                     }
                                 })
-                                .setNegativeButton("More Info", new DialogInterface.OnClickListener() {
+                                .setNegativeButton("", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://plus.google.com/117432358268488452276/posts/KG4AcH3YA2U")));
+                                        //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://plus.google.com/117432358268488452276/posts/KG4AcH3YA2U")));
                                     }
                                 })
                                 .show();
@@ -648,8 +648,8 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(String file_url) {
 
             String text = getResources().getString(R.string.follow_me_description);
-            text = text.replace("@TalonAndroid", "<font color='#FF8800'>@TalonAndroid</font>");
-            text = text.replace("@lukeklinker", "<font color='#FF8800'>@lukeklinker</font>");
+            text = text.replace("@BlackTweeterApp", "<font color='#FF8800'>@BlackTweeterApp</font>");
+            text = text.replace("@BlackTweeterApp", "<font color='#FF8800'>@BlackTweeterApp</font>");
 
             btnLoginTwitter.setEnabled(true);
             btnLoginTwitter.setText(getResources().getString(R.string.no_thanks));

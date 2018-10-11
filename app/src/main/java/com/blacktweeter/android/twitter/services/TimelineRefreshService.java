@@ -175,11 +175,14 @@ public class TimelineRefreshService extends IntentService {
                 sendBroadcast(new Intent("com.klinker.android.twitter.TIMELINE_REFRESHED").putExtra("number_new", inserted));
             }
 
-            sendBroadcast(new Intent("com.klinker.android.talon.UPDATE_WIDGET"));
-            getContentResolver().notifyChange(HomeContentProvider.CONTENT_URI, null);
-
-
-            TimelineRefreshService.isRunning = false; 
+            if (HomeContentProvider.CONTENT_URI != null) {
+                Log.d("ben!", "home content is NOT null");
+                sendBroadcast(new Intent("com.klinker.android.talon.UPDATE_WIDGET"));
+              //  getContentResolver().notifyChange(HomeContentProvider.CONTENT_URI, null);
+                TimelineRefreshService.isRunning = false;
+            }else{
+                Log.d("ben!", "home content IS null");
+            }
         }
     }
 }

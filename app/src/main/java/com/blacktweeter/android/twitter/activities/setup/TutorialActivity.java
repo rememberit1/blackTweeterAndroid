@@ -27,6 +27,7 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
@@ -34,6 +35,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.blacktweeter.android.twitter.R;
 import com.blacktweeter.android.twitter.data.Circle;
 
 import java.text.DecimalFormat;
@@ -101,6 +103,9 @@ public class TutorialActivity extends Activity {
             super(context);
 
             this.setBackgroundColor(Color.TRANSPARENT);
+            Drawable drawBackground = getResources().getDrawable( R.drawable.whatshappening );
+
+            this.setBackground(drawBackground);
             this.setZOrderOnTop(true);
             getHolder().setFormat(PixelFormat.TRANSPARENT);
 
@@ -118,6 +123,8 @@ public class TutorialActivity extends Activity {
             TEXT3 = context.getResources().getString(com.blacktweeter.android.twitter.R.string.part_3);
         }
 
+
+
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) { }
 
@@ -132,24 +139,24 @@ public class TutorialActivity extends Activity {
                     new Circle(circle1,
                             .3,
                             .95,
-                            getResources().getColor(android.R.color.holo_red_dark),
+                            getResources().getColor(R.color.toast_color),
                             getWidth() - circle1 - padding,
                             padding + circle1,
-                            2000),
+                            1000),
                     new Circle(circle2,
                             .25,
                             .9,
-                            getResources().getColor(android.R.color.holo_orange_light),
+                            getResources().getColor(R.color.holo_blue),
                             padding * 3,
                             getHeight() / 2 - 2 * padding,
-                            5000),
+                            6500),
                     new Circle(circle3,
                             .35,
                             .85,
-                            getResources().getColor(android.R.color.holo_green_dark),
+                            getResources().getColor(R.color.pressed_app_color),
                             getWidth() / 2,
                             getHeight() - circle3 - (padding * 2),
-                            9000)
+                            12000)
             };
 
             thread.setRunning(true);

@@ -85,7 +85,9 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
     private TextView refreshText;
     private boolean refreshJustClicked = false;
 
-    Long versionNumber = 1L;
+    Long versionNumber = 2L;
+    long  legitChecker = 0;
+    long testingChecker = 1;
 
 
     VerticalAdapter mClickedAdapter;
@@ -179,7 +181,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
         firebaseRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.getKey().equals("Version")){
+                if (dataSnapshot.getKey().equals("VersionGoogle")){
                     Long myLong = (Long)dataSnapshot.getValue();
                     // if (myLong < 2){
                     Log.d("ben!", "The Version is: " + dataSnapshot.getValue());
@@ -245,7 +247,10 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
     }
 
 
+
+
     private void childEventListener2() {
+
         Glide.with(context).load(R.drawable.fourcirclemakeasquare).into(loadingGifIV);
 
        // mFirebaseDictionary.clear();//Maybe unnecessary or cause a bug. Watch out.
@@ -253,8 +258,8 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
         firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {//were doing this to wait for all firebase data BEFORE we go to twitter. https://stackoverflow.com/questions/34530566
             //this happens second (look at the website in the comments)
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("ben! We're done loading the initial " + dataSnapshot.getChildrenCount() + " item");
-                doSearch2();
+                System.out.println("ben! We're done loading the second section: " + dataSnapshot.getChildrenCount() + " item(s)");
+               // doSearch2();
             }
 
             public void onCancelled(DatabaseError firebaseError) {
@@ -271,6 +276,8 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
              //   Map<String, Object> eachTopic = new HashMap<>();
 
                 numberOfTopics = (int) dataSnapshot.getChildrenCount();
+                    System.out.println("ben! We're done loading the first section " + dataSnapshot.getChildrenCount() + " item(s)");
+                    legitChecker = dataSnapshot.getChildrenCount();
 
               //  Map<String, ArrayList<TheLatestFragmentTwo.LatestTweetModel>> eachTheseSection = new HashMap<>();//everytime the data "changes" we clear it
                 Map<String, FBCategory> firebaseCategories = new HashMap<>();
@@ -326,10 +333,19 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
                     }
 
 
-                    mFirebaseDictionary = firebaseCategories;
-                }
-            }
 
+                }
+                    mFirebaseDictionary = firebaseCategories;
+                    int total = 0;
+                    for (FBCategory l : mFirebaseDictionary.values()) {
+                        total = total + 1;
+                    }
+                    Log.d("ben", "we're the total number of categories: " + total);
+                    testingChecker = total;
+                    if(legitChecker == testingChecker) {
+                        doSearch2();
+                    }
+                }
             }
 
             @Override
@@ -391,6 +407,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
                             for (Status status : result) {
                                 if (status.getId() == fbTweet.getTweetId()) {
                                     fbTweet.setStatus(status);
+                                    //Log.d("ben!", "this is the text we actuall got we're: " +  fbTweet.getStatus().getText());
                                 }
                             }
                         }
@@ -439,6 +456,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
                             realHoriRecycler.setAdapter(horizontalAdapter);
 
                             if(changeableTopicKey == null || refreshJustClicked){
+                           // if (changeableTopicKey == null){
                                 //changeableTopicKey = new ArrayList<>(mFirebaseDictionary.values()).get(0).getName();
                                 changeableTopicKey = mFirebaseList.get(0).getName();
                                 catgoryHeaderText.setText(changeableTopicKey);
@@ -450,6 +468,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
                             realVertRecycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                             realVertRecycler.setAdapter(mClickedAdapter);
                             realVertRecycler.setVisibility(View.VISIBLE);
+                            mClickedAdapter.notifyDataSetChanged();
 
                             loadingGifIV.setVisibility(View.GONE);
                             // spinner.setVisibility(View.GONE);
@@ -472,6 +491,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
 
             }
         }).start();
+
     }
 
 

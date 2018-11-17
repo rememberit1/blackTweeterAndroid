@@ -350,7 +350,8 @@
                 android:text="View More Images"
                 android:textAlignment="center"
                 android:textColor="#497f77"
-                android:textSize="16dp"
+                android:textSize="18dp"
+                android:textStyle="bold"
                 android:visibility="gone" />
         </LinearLayout>
 

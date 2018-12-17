@@ -47,6 +47,7 @@
             android:background="#6ebfb3"
             android:gravity="center"
             android:text="Refresh ✊🏾"
+            android:padding="8dp"
             android:textColor="@color/black_background"
             android:textSize="20sp"
             android:textStyle="bold|italic" />

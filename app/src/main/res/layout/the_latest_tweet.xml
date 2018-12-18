@@ -17,93 +17,103 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?fullScreenTweet">
 
     <LinearLayout
         android:id="@+id/background"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingRight="5dp"
+        android:background="?fullScreenTweet"
+        android:layoutDirection="ltr"
+        android:orientation="vertical"
         android:paddingLeft="5dp"
         android:paddingTop="10dp"
-        android:layoutDirection="ltr"
-        android:background="?fullScreenTweet" >
+        android:paddingRight="5dp">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layoutDirection="ltr">
+            android:layoutDirection="ltr"
+            android:orientation="horizontal">
 
             <!-- The tweeters prof picture -->
             <!--<com.blacktweeter.android.twitter.views.NetworkedCacheableImageView-->
-            <ImageView
+            <android.support.v7.widget.CardView
                 android:layout_width="@dimen/pro_pic_size"
+                app:cardCornerRadius="5dp"
                 android:layout_height="@dimen/pro_pic_size"
-                android:id="@+id/profile_pic"
-                android:visibility="visible"
-                android:contentDescription="Profile Picture"
-                android:src="?circleBorder"
-                android:minHeight="@dimen/pro_pic_size" android:minWidth="@dimen/pro_pic_size"
-                android:scaleType="centerCrop" android:adjustViewBounds="true"
-                android:maxWidth="@dimen/pro_pic_size" android:maxHeight="@dimen/pro_pic_size"
+                android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_marginLeft="2dp"/>
+                android:maxWidth="@dimen/pro_pic_size"
+                android:maxHeight="@dimen/pro_pic_size"
+                android:minWidth="@dimen/pro_pic_size"
+                android:minHeight="@dimen/pro_pic_size"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/profile_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="Profile Picture"
+                    android:scaleType="centerCrop"
+                    android:src="?circleBorder" />
+            </android.support.v7.widget.CardView>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="13dp"
-                android:layout_marginStart="13dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                android:layout_marginStart="13dp"
+                android:layout_marginLeft="13dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <com.blacktweeter.android.twitter.views.HoloTextView
                     android:id="@+id/name"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textColor="?textColor"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:gravity="center_vertical" />
+                    android:textColor="?textColor"
+                    android:textStyle="bold" />
 
                 <com.blacktweeter.android.twitter.views.HoloTextView
                     android:id="@+id/screenname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="?dateColor"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:gravity="center_vertical" />
+                    android:textColor="?dateColor" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginRight="6dp"
                 android:layout_marginLeft="6dp"
-                android:layout_marginBottom="3dp">
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="3dp"
+                android:orientation="vertical">
 
                 <com.blacktweeter.android.twitter.views.HoloTextView
                     android:id="@+id/time"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:textColor="?dateColor" />
 
                 <ImageView
                     android:id="@+id/is_a_conversation"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="?directMessageItem"
                     android:scaleType="fitCenter"
+                    android:src="?directMessageItem"
                     android:visibility="gone" />
 
             </LinearLayout>
@@ -115,38 +125,38 @@
 
         <com.blacktweeter.android.twitter.views.HoloTextView
             android:id="@+id/tweet"
-            android:tag="tweet"
-            android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:paddingRight="5dp"
+            android:layout_height="wrap_content"
+            android:layoutDirection="locale"
             android:paddingTop="6dp"
-            android:layoutDirection="locale" />
+            android:paddingRight="5dp"
+            android:tag="tweet" />
 
         <com.blacktweeter.android.twitter.views.HoloTextView
             android:id="@+id/retweeter"
-            android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:paddingBottom="4dp"
-            android:paddingTop="3dp"
+            android:layout_height="wrap_content"
             android:gravity="right"
-            android:textColor="?dateColor"
+            android:paddingTop="3dp"
+            android:paddingBottom="4dp"
             android:text="@string/placeholder"
+            android:textColor="?dateColor"
             android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/expansion"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingTop="5dp"
             android:visibility="gone">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="3dp"
-                android:layout_gravity="center_vertical">
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingRight="3dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -158,32 +168,38 @@
                         android:id="@+id/quote_button"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="?quote_button"
-                        android:contentDescription="Quote Tweet"
-                        android:minHeight="32dp" android:minWidth="32dp"
-                        android:scaleType="fitCenter" android:adjustViewBounds="true"
-                        android:maxWidth="32dp" android:maxHeight="32dp"
+                        android:layout_marginLeft="5dp"
+                        android:adjustViewBounds="true"
                         android:background="@drawable/pressed_button"
-                        android:layout_marginLeft="5dp" />
+                        android:contentDescription="Quote Tweet"
+                        android:maxWidth="32dp"
+                        android:maxHeight="32dp"
+                        android:minWidth="32dp"
+                        android:minHeight="32dp"
+                        android:scaleType="fitCenter"
+                        android:src="?quote_button" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="37dp"
+                    android:layout_weight="1"
                     android:gravity="center">
 
                     <ImageButton
                         android:id="@+id/share_button"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:contentDescription="Share"
-                        android:minHeight="37dp" android:minWidth="37dp"
-                        android:scaleType="fitCenter" android:adjustViewBounds="true"
-                        android:maxWidth="37dp" android:maxHeight="37dp"
+                        android:adjustViewBounds="true"
                         android:background="@drawable/pressed_button"
-                        android:src="?shareButton"/>
+                        android:contentDescription="Share"
+                        android:maxWidth="37dp"
+                        android:maxHeight="37dp"
+                        android:minWidth="37dp"
+                        android:minHeight="37dp"
+                        android:scaleType="fitCenter"
+                        android:src="?shareButton" />
 
                 </LinearLayout>
 
@@ -198,23 +214,26 @@
                         android:id="@+id/favorite"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@drawable/pressed_button"
                         android:contentDescription="Favorite Tweet"
-                        android:src="?notFavoritedButton"
-                        android:background="@drawable/pressed_button"/>
+                        android:src="?notFavoritedButton" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_horizontal|bottom"
-                        android:orientation="horizontal"
-                        android:layoutDirection="ltr">
+                        android:layoutDirection="ltr"
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:minHeight="32dp" android:minWidth="32dp"
-                            android:scaleType="fitCenter" android:adjustViewBounds="true"
-                            android:maxWidth="32dp" android:maxHeight="32dp" />
+                            android:adjustViewBounds="true"
+                            android:maxWidth="32dp"
+                            android:maxHeight="32dp"
+                            android:minWidth="32dp"
+                            android:minHeight="32dp"
+                            android:scaleType="fitCenter" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -223,14 +242,14 @@
                             android:layoutDirection="ltr">
 
                             <com.blacktweeter.android.twitter.views.HoloTextView
-                                android:layout_height="wrap_content"
+                                android:id="@+id/fav_count"
                                 android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_marginLeft="-4dp"
                                 android:layout_marginBottom="2dp"
-                                android:textSize="13dp"
-                                android:singleLine="true"
                                 android:paddingRight="3dp"
-                                android:id="@+id/fav_count" />
+                                android:singleLine="true"
+                                android:textSize="13dp" />
 
                         </LinearLayout>
 
@@ -247,23 +266,26 @@
                         android:id="@+id/retweet"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@drawable/pressed_button"
                         android:contentDescription="Retweet"
-                        android:src="?retweetButton"
-                        android:background="@drawable/pressed_button"/>
+                        android:src="?retweetButton" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_horizontal|bottom"
-                        android:orientation="horizontal"
-                        android:layoutDirection="ltr">
+                        android:layoutDirection="ltr"
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="37dp"
                             android:layout_height="37dp"
-                            android:minHeight="37dp" android:minWidth="37dp"
-                            android:scaleType="fitCenter" android:adjustViewBounds="true"
-                            android:maxWidth="37dp" android:maxHeight="37dp" />
+                            android:adjustViewBounds="true"
+                            android:maxWidth="37dp"
+                            android:maxHeight="37dp"
+                            android:minWidth="37dp"
+                            android:minHeight="37dp"
+                            android:scaleType="fitCenter" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -272,15 +294,15 @@
                             android:layoutDirection="ltr">
 
                             <com.blacktweeter.android.twitter.views.HoloTextView
-                                android:layout_height="wrap_content"
+                                android:id="@+id/retweet_count"
                                 android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_marginLeft="-4dp"
                                 android:layout_marginBottom="2dp"
-                                android:paddingRight="3dp"
-                                android:textSize="13dp"
-                                android:singleLine="true"
                                 android:gravity="bottom|right"
-                                android:id="@+id/retweet_count" />
+                                android:paddingRight="3dp"
+                                android:singleLine="true"
+                                android:textSize="13dp" />
 
                         </LinearLayout>
 
@@ -291,20 +313,20 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom">
+                android:layout_gravity="bottom"
+                android:orientation="horizontal">
 
                 <com.blacktweeter.android.twitter.views.HoloEditText
                     android:id="@+id/reply"
-                    android:layout_height="50dp"
                     android:layout_width="0dp"
+                    android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:hint="@string/reply"
                     android:contentDescription="Reply"
-                    android:textSize="14dp"
-                    android:inputType="textMultiLine|textCapSentences"/>
+                    android:hint="@string/reply"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:textSize="14dp" />
 
             </LinearLayout>
 
@@ -317,30 +339,28 @@
             <!--<com.blacktweeter.android.twitter.views.NetworkedCacheableImageView-->
             <ImageView
                 android:id="@+id/image"
-                android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="275dp"
+                android:layout_marginTop="6dp"
                 android:scaleType="centerCrop"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
             <com.blacktweeter.android.twitter.views.NetworkedCacheableImageView
                 android:id="@+id/play_button"
-                android:layout_marginTop="6dp"
-                android:src="@drawable/ic_action_play"
-                android:layout_height="275dp"
                 android:layout_width="match_parent"
+                android:layout_height="275dp"
+                android:layout_marginTop="6dp"
                 android:scaleType="centerInside"
-                android:visibility="gone"
-                />
+                android:src="@drawable/ic_action_play"
+                android:visibility="gone" />
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="3dp"
-            android:paddingTop="3dp">
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
 
             <TextView
                 android:id="@+id/view_more_text"
@@ -358,9 +378,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+            android:paddingTop="10dp"
+            android:paddingRight="10dp">
 
             <View
                 android:layout_width="match_parent"

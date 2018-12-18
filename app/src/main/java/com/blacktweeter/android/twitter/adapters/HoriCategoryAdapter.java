@@ -88,7 +88,7 @@ public class HoriCategoryAdapter extends RecyclerView.Adapter<HoriCategoryAdapte
         final FBCategoryViewHolder fbCategoryViewHolder = (FBCategoryViewHolder) holder;
 
         Picasso.with(context).load(fbCategory.getPictureUrl()).into(fbCategoryViewHolder.imageView);
-        fbCategoryViewHolder.categoryText.setText(fbCategory.getName());
+        fbCategoryViewHolder.categoryText.setText(fbCategory.getName() + "\n");
 
     }
 

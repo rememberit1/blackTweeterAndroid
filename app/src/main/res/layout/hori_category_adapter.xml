@@ -7,7 +7,7 @@
     android:clickable="true"
     android:focusable="true"
     app:cardElevation="2dp"
-    app:cardCornerRadius="5dp">
+    app:cardCornerRadius="15dp">
 
     <ImageView
         android:id="@+id/category_Imageview"
@@ -26,7 +26,8 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="2"
-        android:text="Item"
+        android:text="Item
+"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="14dp" />
 

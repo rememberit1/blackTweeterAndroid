@@ -290,6 +290,7 @@ public class MainActivity extends DrawerActivity {
         if (getIntent().getBooleanExtra("from_drawer", false)) {
             mViewPager.setCurrentItem(getIntent().getIntExtra("page_to_open", 1));
         }
+
     }
 
     private void setBTCustomDrawer () {

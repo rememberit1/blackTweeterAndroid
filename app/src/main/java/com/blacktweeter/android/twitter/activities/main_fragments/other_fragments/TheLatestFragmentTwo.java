@@ -1,6 +1,8 @@
 package com.blacktweeter.android.twitter.activities.main_fragments.other_fragments;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -155,6 +157,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
         catgoryHeaderText = layout.findViewById(R.id.catHeaderText);
         refreshText = layout.findViewById(R.id.refreshText);
 
+
         refreshText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,6 +196,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
                     }
 
                 }
+
             }
 
             @Override

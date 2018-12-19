@@ -16,6 +16,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
@@ -260,7 +261,9 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
         final long fOriginalTime = originalTime;
 
         holder.profilePic.setImageDrawable(context.getResources().getDrawable(border));
-        holder.image.setVisibility(View.VISIBLE);
+
+        holder.imageCard.setVisibility(View.VISIBLE);
+        //holder.image.setVisibility(View.VISIBLE);
 
         User user = thisStatus.getUser();
 
@@ -495,8 +498,11 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
 
         if(settings.inlinePics) {
             if (holder.picUrl.equals("")) {
-                if (holder.image.getVisibility() != View.GONE) {
-                    holder.image.setVisibility(View.GONE);
+//                if (holder.image.getVisibility() != View.GONE) {
+//                    holder.image.setVisibility(View.GONE);
+//                }
+                if (holder.imageCard.getVisibility() != View.GONE){
+                    holder.imageCard.setVisibility(View.GONE);
                 }
 
 
@@ -512,7 +518,8 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
 
                     final String myRetweeter = retweeter;
 
-                    holder.image.setOnClickListener(new View.OnClickListener() {
+                   // holder.image.setOnClickListener(new View.OnClickListener() {
+                    holder.image2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             String link;
@@ -545,12 +552,14 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
                         }
                     });
 
-                    holder.image.setImageDrawable(transparent);
+                   // holder.image.setImageDrawable(transparent);
+                    holder.image2.setImageDrawable(transparent);
 
                     picture = true;
 
                 } else {
-                    holder.image.setImageDrawable(transparent);
+                  //  holder.image.setImageDrawable(transparent);
+                    holder.image2.setImageDrawable(transparent);
 
                     picture = true;
 
@@ -558,7 +567,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
                         holder.playButton.setVisibility(View.GONE);
                     }
 
-                    holder.image.setOnClickListener(new View.OnClickListener() {
+                    holder.image2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             if (holder.picUrl.contains(" ")) {
@@ -583,8 +592,11 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
 
                 }
 
-                if (holder.image.getVisibility() == View.GONE) {
-                    holder.image.setVisibility(View.VISIBLE);
+//                if (holder.image.getVisibility() == View.GONE) {
+//                    holder.image.setVisibility(View.VISIBLE);
+//                }
+                if (holder.imageCard.getVisibility() == View.GONE) {
+                    holder.imageCard.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -613,16 +625,20 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
         if (picture) {
             CacheableBitmapDrawable wrapper = mCache.getFromMemoryCache(holder.picUrl);
             if (wrapper != null) {
-                holder.image.setImageDrawable(wrapper);
-                holder.image.setVisibility(View.VISIBLE);
-                Picasso.with(context).load(picUrl).into(holder.image);
+                holder.imageCard.setVisibility(View.VISIBLE);
+                holder.image2.setImageDrawable(wrapper);
+                //holder.image.setImageDrawable(wrapper);
+                //holder.image.setVisibility(View.VISIBLE);
+                Picasso.with(context).load(picUrl).into(holder.image2);
                 if (picUrl.contains(" ")) {
                     String picUrlArray[] = picUrl.split(" ");
                     String firstPicUrl = picUrlArray[0];
                    // int myInt = (int) (MainActivity.screenWidth * 0.5);
                    // holder.image.getLayoutParams().width = myInt;
 
-                    Picasso.with(context).load(firstPicUrl).into(holder.image);
+                    //Picasso.with(context).load(firstPicUrl).into(holder.image);
+                    holder.imageCard.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(firstPicUrl).into(holder.image2);
                     holder.viewMoreText.setVisibility(View.VISIBLE);
 
                 }
@@ -762,6 +778,8 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
         public ImageButton replyButton;
         public ImageView image;
         public TextView viewMoreText;
+        public CardView imageCard;
+        public ImageView image2;
         public LinearLayout background;
         public ImageView playButton;
         public TextView screenTV;
@@ -797,6 +815,8 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
             replyButton = (ImageButton) itemView.findViewById(R.id.reply_button);
             image = (ImageView) itemView.findViewById(R.id.image);
             viewMoreText = (TextView) itemView.findViewById(R.id.view_more_text);
+            imageCard = (CardView) itemView.findViewById(R.id.card_image);
+            image2 = (ImageView) itemView.findViewById(R.id.image2);
             retweeter = (TextView) itemView.findViewById(R.id.retweeter);
             background = (LinearLayout) itemView.findViewById(R.id.background);
             playButton = (NetworkedCacheableImageView) itemView.findViewById(R.id.play_button);
@@ -1617,16 +1637,20 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
 
         BitmapDrawable wrapper = mCache.getFromMemoryCache(url);
 
-        if (null != wrapper && holder.image.getVisibility() != View.GONE) {
+//        if (null != wrapper && holder.image.getVisibility() != View.GONE) {
+        if (null != wrapper && holder.imageCard.getVisibility() != View.GONE) {
             // The cache has it, so just display it
-            holder.image.setImageDrawable(wrapper);
+            //holder.image.setImageDrawable(wrapper);
+            holder.image2.setImageDrawable(wrapper);
             Log.d("ben!", "pic url 1542: " + url);
             Animation fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in);
 
-            holder.image.startAnimation(fadeInAnimation);
+            //holder.image.startAnimation(fadeInAnimation);
+            holder.image2.startAnimation(fadeInAnimation);
         } else {
             // Memory Cache doesn't have the URL, do threaded request...
-            holder.image.setImageDrawable(null);
+            //holder.image.setImageDrawable(null);
+            holder.image2.setImageDrawable(null);
 
             mCurrentTask = new ImageUrlAsyncTask(context, holder, mCache, tweetId);
 
@@ -1852,7 +1876,8 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
                 if (result != null && holder.tweetId == id) {
                     // holder.image.setImageDrawable(result);
                     Log.d("ben!", "pic url 1773: " + result.getUrl());
-                    holder.image.setVisibility(View.VISIBLE);
+                    //holder.image.setVisibility(View.VISIBLE);
+                    holder.imageCard.setVisibility(View.VISIBLE);
 
                     ColorDrawable myTransparent = new ColorDrawable(context.getResources().getColor(R.color.pressed_app_color));
                     if (result.getUrl().contains(" ")){
@@ -1865,18 +1890,24 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.Vertic
                        // Log.d("ben!", "image width  " + myInt);
                       //  holder.image.getLayoutParams().width = myInt;
 
-                        Picasso.with(context).load(firstPicUrl).into(holder.image);
+
+                       // Picasso.with(context).load(firstPicUrl).into(holder.image);
+                        holder.imageCard.setVisibility(View.VISIBLE);
+                        Picasso.with(context).load(firstPicUrl).into(holder.image2);
+
                         holder.viewMoreText.setVisibility(View.VISIBLE);
 
 
 
                     }  else {
-                        Picasso.with(context).load(result.getUrl()).into(holder.image);
+                        //Picasso.with(context).load(result.getUrl()).into(holder.image);
+                        Picasso.with(context).load(result.getUrl()).into(holder.image2);
 
                         Animation fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in_fast);
 
                         if (holder.tweetId == id) {
-                            holder.image.startAnimation(fadeInAnimation);
+                           // holder.image.startAnimation(fadeInAnimation);
+                            holder.image2.startAnimation(fadeInAnimation);
                            // holder.image.setAlpha((float) .5);
                         }
                     }

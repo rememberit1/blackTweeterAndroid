@@ -38,20 +38,37 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
 
+        <!--<TextView-->
+            <!--android:id="@+id/refreshText2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginTop="70dp"-->
+            <!--android:background="#6ebfb3"-->
+            <!--android:gravity="center"-->
+            <!--android:text="Refresh ✊🏾"-->
+            <!--android:padding="8dp"-->
+            <!--android:textColor="@color/black_background"-->
+            <!--android:textSize="20sp"-->
+            <!--android:textStyle="bold" />-->
+
         <TextView
             android:id="@+id/refreshText"
+            android:text="Refresh ✊🏾"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:padding="4dp"
+            android:background="@drawable/green_rounded_corners_bg"
+            android:layout_marginTop="75dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="70dp"
-            android:background="#6ebfb3"
-            android:gravity="center"
-            android:text="Refresh ✊🏾"
-            android:padding="8dp"
             android:textColor="@color/black_background"
-            android:textSize="20sp"
-            android:textStyle="bold|italic" />
-        <!--android:text="←    BlackTweeter ✊🏾  →"-->
+            android:elevation="5dp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
 
         <android.support.v7.widget.RecyclerView
             android:padding="4dp"
@@ -71,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black_background"
-            android:elevation="2dp"
+            android:elevation="0dp"
             android:gravity="center"
             android:layout_gravity="center"/>
 

@@ -39,7 +39,7 @@ public class MarkReadService extends IntentService {
     @Override
     public void onHandleIntent(Intent intent) {
 
-        Log.v("talon_mark_read", "running the mark read service for account 1");
+        Log.v("mark_read", "running the mark read service for account 1");
 
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

@@ -1619,7 +1619,7 @@ Log.v("talon_remake", "load finished, " + cursor.getCount() + " tweets");
             HomeDataSource.getInstance(context).markAllRead(currentAccount);
 
             if (cursor.moveToPosition(cursor.getCount() - current)) {
-                Log.v("talon_marking_read", cursor.getLong(cursor.getColumnIndex(HomeSQLiteHelper.COLUMN_TWEET_ID)) + "");
+                Log.v("marking_read", cursor.getLong(cursor.getColumnIndex(HomeSQLiteHelper.COLUMN_TWEET_ID)) + "");
                 final long id = cursor.getLong(cursor.getColumnIndex(HomeSQLiteHelper.COLUMN_TWEET_ID));
                 sharedPrefs.edit().putLong("current_position_" + currentAccount, id).commit();
 

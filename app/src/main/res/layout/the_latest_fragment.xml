@@ -68,9 +68,11 @@
             android:textColor="@color/black_background"
             android:elevation="5dp"
             android:gravity="center"
+            android:visibility="gone"
             android:layout_gravity="center"/>
 
         <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="70dp"
             android:padding="4dp"
             android:clipToPadding="false"
             android:layout_height="wrap_content"
@@ -84,6 +86,7 @@
             android:padding="4dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginBottom="4dp"
             android:background="@drawable/green_rounded_corners_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,6 +94,12 @@
             android:elevation="0dp"
             android:gravity="center"
             android:layout_gravity="center"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="8dp"
@@ -101,9 +110,7 @@
             android:layout_marginBottom="16dp"
             android:layout_height="match_parent"/>
 
-
-
-
+        </android.support.v4.widget.SwipeRefreshLayout>
 
 
         <!--<com.blacktweeter.android.twitter.views.HoloTextView-->

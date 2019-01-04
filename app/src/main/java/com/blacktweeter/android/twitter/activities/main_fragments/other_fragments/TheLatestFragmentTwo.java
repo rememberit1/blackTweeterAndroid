@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -70,7 +71,7 @@ import android.widget.Toast;
  * Created by benakinlosotuwork on 8/1/18.
  */
 
-public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCallback {
+public class TheLatestFragmentTwo extends MainFragment implements SwipeRefreshLayout.OnRefreshListener { //implements AdapterCallback {
     public static final int ACTIVITY_REFRESH_ID = 131;
 
     public int unread = 0;
@@ -96,6 +97,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
     private HoriCategoryAdapter horizontalAdapter;
     private LinearLayoutManager horizontalLayoutManager;
     public RecyclerView realHoriRecycler;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
 
     //******************************************************************************************************************************///
@@ -161,7 +163,28 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
         refreshText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Refreshing...", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Refreshing...", Toast.LENGTH_SHORT).show();
+                refreshJustClicked = true;
+                pureReload();
+            }
+        });
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.black_tweeter_teal,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_blue_dark);
+
+        mSwipeRefreshLayout.post(new Runnable() {
+
+            @Override
+            public void run() {
+
+                mSwipeRefreshLayout.setRefreshing(true);
+
+                // Fetching data from server
+               // Toast.makeText(context, "Refreshing...", Toast.LENGTH_LONG).show();
                 refreshJustClicked = true;
                 pureReload();
             }
@@ -245,6 +268,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
 
     private void pureReload() {
         //because of the clearing, no need to do notifiy dataset change.
+        mSwipeRefreshLayout.setRefreshing(true);
         mFirebaseDictionary.clear();
         twitterDictionary.clear();
         childEventListener2();
@@ -476,6 +500,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
 
                             loadingGifIV.setVisibility(View.GONE);
                             // spinner.setVisibility(View.GONE);
+                            mSwipeRefreshLayout.setRefreshing(false);
                             canRefresh = true;
 
                         }
@@ -487,6 +512,7 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
                         public void run() {
                             loadingGifIV.setVisibility(View.GONE);
                             // spinner.setVisibility(View.GONE);
+                            mSwipeRefreshLayout.setRefreshing(false);
                             canRefresh = false;
                         }
                     });
@@ -637,6 +663,13 @@ public class TheLatestFragmentTwo extends MainFragment { //implements AdapterCal
         //this is probably unnecessary
         latestIsVisible = false;
 
+    }
+
+    @Override
+    public void onRefresh() {
+        Toast.makeText(context, "Refreshing...", Toast.LENGTH_SHORT).show();
+        refreshJustClicked = true;
+        pureReload();
     }
 
     private class LatestTweetModel {

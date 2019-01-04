@@ -76,6 +76,7 @@
     <color name="green_primary_color_light">#72d572</color>
     <color name="green_accent_color">#5677fc</color>
     <color name="green_accent_color_light">#afbfff</color>
+    <color name="black_tweeter_teal">#6ebfb3</color>
 
     <color name="light_green_primary_color">#8bc34a</color>
     <color name="light_green_primary_color_dark">#689f38</color>

@@ -31,6 +31,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
+import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.Spannable;
 import android.util.Log;
@@ -136,6 +137,7 @@ public class TimelineArrayAdapter extends ArrayAdapter<Status> {
         public LinearLayout expandArea;
         public ImageButton replyButton;
         public ImageView image;
+        public CardView cardImage;
         public LinearLayout background;
         public ImageView playButton;
         public TextView screenTV;
@@ -252,7 +254,8 @@ public class TimelineArrayAdapter extends ArrayAdapter<Status> {
         if (settings.roundContactImages) {
             b = context.getTheme().obtainStyledAttributes(new int[]{R.attr.circleBorder});
         } else {
-            b = context.getTheme().obtainStyledAttributes(new int[]{R.attr.squareBorder});
+            b = context.getTheme().obtainStyledAttributes(new int[]{R.attr.circleBorder});
+            //b = context.getTheme().obtainStyledAttributes(new int[]{R.attr.squareBorder});
         }
         border = b.getResourceId(0, 0);
         b.recycle();
@@ -312,7 +315,9 @@ public class TimelineArrayAdapter extends ArrayAdapter<Status> {
                     holder.retweetCount = (TextView) v.findViewById(res.getIdentifier("retweet_count", "id", settings.addonThemePackage));
                     holder.expandArea = (LinearLayout) v.findViewById(res.getIdentifier("expansion", "id", settings.addonThemePackage));
                     holder.replyButton = (ImageButton) v.findViewById(res.getIdentifier("reply_button", "id", settings.addonThemePackage));
+                    //holder.cardImage = (CardView) v.findViewById(R.id.card_image2);
                     holder.image = (ImageView) v.findViewById(res.getIdentifier("image", "id", settings.addonThemePackage));
+                    holder.image.setClipToOutline(true);
                     holder.retweeter = (TextView) v.findViewById(res.getIdentifier("retweeter", "id", settings.addonThemePackage));
                     holder.background = (LinearLayout) v.findViewById(res.getIdentifier("background", "id", settings.addonThemePackage));
                     holder.playButton = (ImageView) v.findViewById(res.getIdentifier("play_button", "id", settings.addonThemePackage));
@@ -345,7 +350,9 @@ public class TimelineArrayAdapter extends ArrayAdapter<Status> {
                 holder.retweetCount = (TextView) v.findViewById(R.id.retweet_count);
                 holder.expandArea = (LinearLayout) v.findViewById(R.id.expansion);
                 holder.replyButton = (ImageButton) v.findViewById(R.id.reply_button);
+               // holder.cardImage = (CardView) v.findViewById(R.id.card_image2);
                 holder.image = (NetworkedCacheableImageView) v.findViewById(R.id.image);
+                holder.image.setClipToOutline(true);
                 holder.retweeter = (TextView) v.findViewById(R.id.retweeter);
                 holder.background = (LinearLayout) v.findViewById(R.id.background);
                 holder.playButton = (NetworkedCacheableImageView) v.findViewById(R.id.play_button);
@@ -377,7 +384,9 @@ public class TimelineArrayAdapter extends ArrayAdapter<Status> {
             holder.retweetCount = (TextView) v.findViewById(R.id.retweet_count);
             holder.expandArea = (LinearLayout) v.findViewById(R.id.expansion);
             holder.replyButton = (ImageButton) v.findViewById(R.id.reply_button);
+           // holder.cardImage = (CardView) v.findViewById(R.id.card_image2);
             holder.image = (NetworkedCacheableImageView) v.findViewById(R.id.image);
+            holder.image.setClipToOutline(true);
             holder.retweeter = (TextView) v.findViewById(R.id.retweeter);
             holder.background = (LinearLayout) v.findViewById(R.id.background);
             holder.playButton = (NetworkedCacheableImageView) v.findViewById(R.id.play_button);
@@ -412,6 +421,7 @@ public class TimelineArrayAdapter extends ArrayAdapter<Status> {
 
     public void bindView(final View view, Status status, int position) {
         final ViewHolder holder = (ViewHolder) view.getTag();
+        holder.image.setClipToOutline(true);
 
         if (holder.expandArea.getVisibility() == View.VISIBLE) {
             removeExpansionNoAnimation(holder);
@@ -664,6 +674,7 @@ public class TimelineArrayAdapter extends ArrayAdapter<Status> {
         if(settings.inlinePics) {
             if (holder.picUrl.equals("")) {
                 if (holder.image.getVisibility() != View.GONE) {
+                   // holder.cardImage.setVisibility(View.GONE);
                     holder.image.setVisibility(View.GONE);
                 }
 
@@ -738,6 +749,7 @@ public class TimelineArrayAdapter extends ArrayAdapter<Status> {
                 }
 
                 if (holder.image.getVisibility() == View.GONE) {
+                  //  holder.cardImage.setVisibility(View.VISIBLE);
                     holder.image.setVisibility(View.VISIBLE);
                 }
             }
@@ -888,6 +900,7 @@ public class TimelineArrayAdapter extends ArrayAdapter<Status> {
 
             holder.profilePic.setImageDrawable(context.getResources().getDrawable(border));
             if (holder.image.getVisibility() == View.VISIBLE) {
+               // holder.cardImage.setVisibility(View.GONE);
                 holder.image.setVisibility(View.GONE);
             }
         }
@@ -1719,6 +1732,7 @@ public class TimelineArrayAdapter extends ArrayAdapter<Status> {
 
         if (null != wrapper && holder.image.getVisibility() != View.GONE) {
             // The cache has it, so just display it
+           // holder.cardImage.setVisibility(View.VISIBLE);
             Picasso.with(context).load(url).into(holder.image);
            // holder.image.setImageDrawable(wrapper);
             Log.d("ben!", "pic timelinearray url 1722: " + url);
@@ -1951,6 +1965,7 @@ public class TimelineArrayAdapter extends ArrayAdapter<Status> {
 
             try {
                 if (result != null && holder.tweetId == id) {
+                  //  holder.cardImage.setVisibility(View.VISIBLE);
                     holder.image.setImageDrawable(result);
                     Log.d("ben!", "pic timelinearray url 1953: " + result.getUrl());
                     Animation fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in_fast);

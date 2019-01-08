@@ -243,9 +243,6 @@ public class TheLatestFragmentTwo extends MainFragment implements SwipeRefreshLa
             }
         });
 
-
-
-
         return layout;
     }
 

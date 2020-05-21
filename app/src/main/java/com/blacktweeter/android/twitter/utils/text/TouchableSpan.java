@@ -31,6 +31,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 
@@ -118,12 +119,14 @@ public class TouchableSpan extends ClickableSpan {
     @Override
     public void onClick(View widget) {
         if (Patterns.WEB_URL.matcher(mValue).find()) {
-            String url = "http://" + full.replace("http://", "").replace("https://", "").replace("\"", "");
-
-            new WebIntentBuilder(mContext)
-                    .setUrl(url)
-                    .setShouldForceExternal(extBrowser)
-                    .build().start();
+            Log.d("ben!", "regular click");
+            longClickWeb();
+//            String url = "http://" + full.replace("http://", "").replace("https://", "").replace("\"", "");
+//
+//            new WebIntentBuilder(mContext)
+//                    .setUrl(url)
+//                    .setShouldForceExternal(extBrowser)
+//                    .build().start();
 
         } else if (Regex.HASHTAG_PATTERN.matcher(mValue).find()) {
             // found a hashtag, so open the hashtag search

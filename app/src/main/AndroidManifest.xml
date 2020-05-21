@@ -215,7 +215,7 @@
             android:label="@string/lists"
             android:theme="@style/Theme.TalonLight"
             />
-S
+
         <activity android:name="com.blacktweeter.android.twitter.settings.configure_pages.SearchChooser"
             android:label="@string/saved_searches"
             android:theme="@style/Theme.TalonLight"

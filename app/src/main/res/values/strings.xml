@@ -254,7 +254,7 @@
     <string name="part_1_tablet">This is the\n \'Whats Happening\'\nsection. Select a\ntopic like \'Wimminz in Yellow\'\nto see interesting Black\ncontent show up below.</string>
     <string name="part_1_phone">This is the\n \'Whats Happening\'\nsection. Select a\ntopic like \'Wimminz in Yellow\'\nto see interesting Black\ncontent show up below.</string>
     <string name="part_2">Page between\nregular timelines with\na swipe either\nway from the middle\nof the screen</string>
-    <string name="part_3">You\'re also gonna\nreceive notifications whenver\nthere\'s new content.\nSo touch the screen and\nlet\'s get it moving!</string>asc
+    <string name="part_3">You\'re also gonna\nreceive notifications whenever\nthere\'s new content.\nSo touch the screen and\nlet\'s get it moving!</string>asc
     <!-- Settings Menu -->
     <string name="theme_settings">Theme Settings</string>
     <string name="theme_options">Theme Options</string>

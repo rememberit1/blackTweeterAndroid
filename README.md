@@ -2,7 +2,7 @@
 
 (This is a public Twitter client created from the ground up by Ben Akinlosotu. It utilizes and combines Twitter's open API and Google Firebase platform for dynamic data storage and constantly updating, releveant content.)
 
-Pulbic open version of BlackTweeter
+Public open version of BlackTweeter
 
 Welcome to the only social media app for the Latest in black endeavors and knowledge, relevant to THEE community.
 

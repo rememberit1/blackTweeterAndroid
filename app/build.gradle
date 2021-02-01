@@ -19,8 +19,8 @@ android {
     exclude 'META-INF/DEPENDENCIES'
     }
 
-    compileSdkVersion Integer.parseInt(project.TARGET_SDK)
-    buildToolsVersion project.BUILD_TOOLS_VERSION
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
 
     defaultConfig {
         def code = System.getenv("BUILD_NUMBER") as Integer ?: Integer.parseInt(project.VERSION_CODE)
